@@ -1,0 +1,174 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+<script src="~/Scripts/myscripts/disconlist_v2.0.0.js"></script>
+
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2>Generation of Disconnection List Version 2</h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-4 text-warning text-center">
+        <label id="lblBillPeriod"></label>
+    </div>
+    <div class="col-lg-6 text-right">
+        <button class="btn btn-default" id="btnResetClear" onclick="resetPage()"><i class="glyphicon glyphicon-refresh"></i> Reset</button>
+    </div>
+</div>
+@*Header*@
+<h3>Please select parameters:</h3>
+<div class="row">
+    <div class="col-lg-2">
+        <select class="form-control select2 select2-hidden-accessible" id="cboNumOfMo" onchange="resetCbos()">
+            <option selected value="0">Select # Month</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <select id="cboStatus" class="form-control select2 select2-hidden-accessible" style="min-width: 100%">
+            <option selected value="1">All Status</option>
+            <option value="2">Active</option>
+            <option value="3">Disconnected</option>
+        </select>
+    </div>
+    <div class="col-lg-4">
+        <select id="cboOffice" class="form-control select2 select2-hidden-accessible" onchange="return cboOfficeOnChange();" style="min-width: 100%"></select>
+    </div>
+    <div class="col-lg-4">
+        <select id="cboRoute" class="form-control select2 select2-hidden-accessible" style="min-width: 100%"></select>
+    </div>
+</div>
+<hr />
+@*Crew List*@
+<div class="row">
+    <div class="col-lg-4" style="vertical-align:middle;">
+        Disconnection Crew(s):
+    </div>
+    <div class="col-lg-offset-3 col-lg-6" style="text-align:right;vertical-align:middle;">
+        <button class="btn btn-primary" id="btnAddCrew" onclick="showAddCrewModal()"><i class="glyphicon glyphicon-plus-sign"></i> Add Crew(s)</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-offset-3 col-lg-6" style="background-color:aliceblue;padding:5px;">
+        <table class="table table-striped table-bordered table-hover" id="tblAddedCrews">
+            <thead>
+                <tr>
+                    <th style="text-align:center;vertical-align:middle;" width="50">Id</th>
+                    <th style="text-align:center;vertical-align:middle;">Name</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyCrewList"></tbody>
+        </table>
+    </div>
+</div>
+<hr />
+@*Main Buttons*@
+
+<div class="row">
+    <div class="col-lg-4" style="vertical-align:middle;">
+        Disconnection List:
+    </div>
+    <div class="col-lg-offset-2 col-lg-6 text-right" style="vertical-align:middle;">
+        <button class="btn btn-success" id="btnGenList" onclick="generateDisconList()"><i class="glyphicon glyphicon-cog"></i> Generate Discon List</button>
+        <button class="btn btn-warning" id="btnSaveList" onclick="saveExportDisconList()"><i class="glyphicon glyphicon-save"></i> Save and Export</button>
+    </div>
+</div>
+@using (Html.BeginForm("ExportData", "DisconListV2", FormMethod.Post, new { id = "frmExport" }))
+{
+    <div class="table-responsive-sm">
+        <table class="table table-hover table-bordered" id="tblDisconList">
+            <thead class="bg-primary">
+                <tr>
+                    <th scope="col" style="text-align:center;">Account No</th>
+                    <th scope="col" style="text-align:center;">Account Name</th>
+                    <th scope="col" style="text-align:center;">Address</th>
+                    <th scope="col" style="text-align:center;">Meter No.</th>
+                    <th scope="col" style="text-align:center;">Fist Bill</th>
+                    <th scope="col" style="text-align:center;">Last Bill</th>
+                    <th scope="col" style="text-align:center;"># Months</th>
+                    <th scope="col" style="text-align:center;">Amount</th>
+                    <th scope="col" style="text-align:center;">Remark</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+}
+@*Modal For Adding Crew(s)*@
+<div class="modal fade"
+     id="modalAddCrew"
+     data-backdrop="static"
+     data-keyboard="false"
+     tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" style="height:800% !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5 class="modal-title" style="vertical-align:central;float:left;">ADDING CREW(S)</h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-danger" style="float:right;" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed table-striped table-bordered" id="tblCrews">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="25"><input type="checkbox" class="select-all checkbox" name="select-all" onchange="selUnselAllCrews()" id="chkSelUnselall" /></th>
+                            <th class="text-center" width="50" scope="col">Id</th>
+                            <th class="text-center" scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyCrew"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="getAllSelectedCrews()">Add Selected Crew(s)</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(
+            loadcboOffices()
+        );
+    </script>
+}

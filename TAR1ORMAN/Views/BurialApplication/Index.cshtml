@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Burial Assistance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+<script src="~/Scripts/myscripts/bavscriptv1.js"></script>
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2><strong>Burial Assistance Application</strong></h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-10">
+        @*<div class="row">
+            <div class="col-sm-5" style="text-align:right;padding-top:4px;">
+                <label>Please type ten (10) digits Account Number:</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="txtAccountNo" class="form-control" style="text-align:center;" placeholder="9999999999" maxlength="10" />
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-success" id="btnCheckAcct" onclick="checkAcct()"><i class="glyphicon glyphicon-check"></i> Check Account</button>
+            </div>
+        </div>*@
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/soa_v1.0.0.0.js"></script>
+<h2>Processing Statement of Account</h2>
+
+<div class="row">
+    <div class="col-lg-3">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-3">
+        <select class="form-control select2 select2-hidden-accessible" id="cboRoute"></select>
+    </div>
+    <div class="col-lg-3">
+        <select class="form-control select2 select2-hidden-accessible" id="cboBPeriod"></select>
+    </div>
+    <div class="col-lg-3">
+        <div class="row">
+            <div class="col-lg-offset-2 col-lg-2">
+                <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<div class="modal fade" id="myRptModal" tabindex="-1" role="dialog" aria-labelledby="myRptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="@Url.Action("SOA","Index")">X</button>
+                <h4 class="modal-title" id="myRptModalLabel">SOA Report</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <embed src="" width="100%" height="500" type="application/pdf" id="soapdf" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="@Url.Action("SOA","Index")">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 
+
+@section Scripts{
+    <script>
+        $(document).ready(loadPage());
+    </script>
+    }

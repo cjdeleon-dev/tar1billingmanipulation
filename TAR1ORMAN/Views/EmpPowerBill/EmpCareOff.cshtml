@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Employees' Care Off";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/empcareoffscript.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2>Employees' Care-Off Power Bill</h2>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    @using (Html.BeginForm("ExportToExcel", "EmpPowerBill", FormMethod.Post))
+    {
+        <div class="col-lg-offset-4 col-lg-4">
+            <div class="row">
+                <div class="col-lg-offset-8 col-lg-4">
+                    <input type="submit" value="Export to Excel" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Employee Name</th>
+                <th scope="col" style="text-align:center;">Account No</th>
+                <th scope="col" style="text-align:center;">Account Name</th>
+                <th scope="col" style="text-align:center;">No. Of Month(s)</th>
+                <th scope="col" style="text-align:center;">Power Bill</th>
+                <th scope="col" style="text-align:center;">VAT</th>
+                <th scope="col" style="text-align:center;">Surcharge</th>
+                <th scope="col" style="text-align:center;">Total</th>
+                <th scope="col" style="text-align:center;">Status</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(loadProcess());
+    </script>
+}

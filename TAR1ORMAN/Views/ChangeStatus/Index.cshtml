@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "Change Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+<script src="~/Scripts/myscripts/changestatusscript.js"></script>
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2><strong>Changing Consumer Status</strong></h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-10">
+        <p>Please select option for changing consumer's status:</p>
+        <div class="row">
+            <div class="col-lg-6">
+                <input type="radio" id="optradio_acttodtd" name="optradio_status" onclick="loadActive()">
+                <label for="optradio_acttodtd" id="acttodtd">Active To Disconnected</label>
+            </div>
+            <div class="col-lg-6">
+                <input type="radio" id="optradio_dtdtoactive" name="optradio_status" onclick="loadDiscon()">
+                <label for="optradio_dtdtoactive" id="" dtdtoact">Disconnected To Active</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Account No</th>
+                <th scope="col" style="text-align:center;">Account Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Meter No.</th>
+                <th scope="col" style="text-align:center;">Pole Id</th>
+                <th scope="col" style="text-align:center;">Status</th>
+                <th scope="col" style="text-align:center;">Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@* View History Modal *@
+<div class="modal fade" id="myViewModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="@Url.Action("ChangeStatus","Index")">X</button>
+                <h4 class="modal-title" id="myViewModalLabel">Consumer's Status Log</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Account Number:</label>
+                            <input type="text" id="modTxtAcctNo" readonly="readonly" style="width:100%;text-align:center;" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Account Name:</label>
+                            <input type="text" id="modTxtAcctName" readonly="readonly" style="width:100%;" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="table-responsive-sm">
+                    <table class="table table-hover table-bordered" id="statusTable">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th scope="col" style="text-align:center;">Date</th>
+                                <th scope="col" style="text-align:center;">Change From</th>
+                                <th scope="col" style="text-align:center;">Change To</th>
+                                <th scope="col" style="text-align:center;">Reason</th>
+                                <th scope="col" style="text-align:center;">User</th>
+                                <th scope="col" style="text-align:center;">Act Date</th>
+                                <th scope="col" style="text-align:center;">DTD Read</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-default" data-dismiss="modal" onclick="@Url.Action("ChangeStatus","Index")" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Change Status form modal *@
+<div class="modal fade" id="myChangeStatusModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myChangeStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="@Url.Action("ChangeStatus","Index")">X</button>
+                <h4 class="modal-title" id="myChangeStatusModalLabel">Change Status Form</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Account Number:</label>
+                            <input type="text" id="txtAcctNo" readonly="readonly" style="width:100%;text-align:center;" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Account Name:</label>
+                            <input type="text" id="txtAcctName" readonly="readonly" style="width:100%;" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <p style="color:red;"><strong>Note:</strong> Fields with asterisk (*) are required.</p>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label><strong><span style="color:red;">*</span></strong>Change From:</label>
+                            <input type="text" id="txtChangeFr" readonly="readonly" style="width:100%" />
+                            <input type="hidden" id="txtStatusFrom" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label><strong><span style="color:red;">*</span></strong>Change To:</label>
+                            <select id="cboChangeTo" class="form-control select2 select2-hidden-accessible" onchange="return cboChangeToOnChange();" style="min-width: 100%"></select>
+                            <input type="hidden" id="txtStatusTo" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label><strong><span style="color:red;">*</span></strong>Act Date:</label>
+                            <input type="date" id="dtpActDate" style="width:100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Reason:</label>
+                            <input type="text" id="txtReason" style="width:100%" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>DTD Read:</label>
+                            <input type="text" id="txtDtdRead" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-warning" data-dismiss="modal" onclick="@Url.Action("ChangeStatus","Index")" value="Cancel" />
+                <input type="button" class="btn btn-primary" onclick="setStatusByAcctno()" value="Save" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}

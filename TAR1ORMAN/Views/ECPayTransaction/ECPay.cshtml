@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "ECPay Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EC Pay Transactions</h2>
+
+<div class="row">
+    <p>
+        <div class="col-lg-6">
+            <button class="btn btn-success" id="btnPreview" onclick="return previewdata();"><i class="glyphicon glyphicon-baby-formula"></i> Preview Source Data</button>
+            <button class="btn btn-danger" id="btnPost" onclick="return postdata();"><i class="glyphicon glyphicon-exclamation-sign"></i> Posting Data</button>
+            <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+
+        </div>
+    </p>
+
+</div>
+

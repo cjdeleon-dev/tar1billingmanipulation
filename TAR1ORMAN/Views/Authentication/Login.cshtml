@@ -1,0 +1,50 @@
+﻿@model TAR1ORDATA.DataModel.UserLoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .form {
+        background: none;
+        padding: 40px;
+        max-width: 600px;
+        margin: 40px auto;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px 4px;
+    }
+</style>
+<div style="padding-top:18px;">
+    @using (Html.BeginForm("Login", "Authentication", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="form">
+                    <center>
+                        <img src="~/Content/images/tarelco1.png" alt="avatar" class="logo" height="80%" width="80%" style="border-radius:50%" />
+                    </center>
+                    <br />
+                    <p>@Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control", placeholder = "User ID" } })</p>
+                    <p>@Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })</p>
+                    <p>@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password", type = "password" } })</p>
+                    <p>@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })</p>
+                    <p>@Html.ValidationMessage("CredentialError", new { style = "color:red;" })</p>
+                    <br />
+                    <p><input type="submit" class="btn btn-primary" value="Sign In" /></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#mnulogout').hide();
+            $('#mnudbsettings').hide();
+        });
+    </script>
+}
+

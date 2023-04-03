@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "For Write Off";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/forwriteoffscript_v1.1.1.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2>For Write Off Processing</h2>
+
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-2">
+        <select id="cboYear" class="form-control select2 select2-hidden-accessible" onchange="return cboYearOnChange();" style="min-width: 100%"></select>
+    </div>
+    <div class="col-lg-2">
+        <select id="cboArea" class="form-control select2 select2-hidden-accessible" onchange="return cboAreaOnChange();" style="min-width: 100%"></select>
+    </div>
+    <div class="col-lg-2">
+        <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+    </div>
+    @using (Html.BeginForm("ExportToExcel", "ForWriteOff", FormMethod.Post))
+    {
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-offset-8 col-lg-4">
+                    <input type="hidden" id="txtYear" name="yr" class="form-control" />
+                    <input type="hidden" id="txtArea" name="area" class="form-control" />
+                    <input type="submit" value="Export to Excel" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Account No</th>
+                <th scope="col" style="text-align:center;">Account Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Status</th>
+                <th scope="col" style="text-align:center;">Type</th>
+                <th scope="col" style="text-align:center;">Balance Amount</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}

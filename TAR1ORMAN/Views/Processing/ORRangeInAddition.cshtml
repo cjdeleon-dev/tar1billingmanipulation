@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "OR Range In Addition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myScripts/orInAddition.js"></script>
+
+<p>
+    <h1><strong>Changing OR Number By Range In Addition</strong></h1>
+</p>
+
+<hr />
+
+<style>
+    * {
+        font-size: 11px;
+    }
+
+    .body-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <p><strong>OR From</strong></p>
+            @Html.TextBox("txtOrFrom", null, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-4">
+            <p><strong>OR To</strong></p>
+            @Html.TextBox("txtOrTo", null, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-4">
+            <p><strong>Value to be added per OR</strong></p>
+            @Html.TextBox("txtAddend", null, new { @class = "form-control", @onkeypress = "return isNumber(event)" })
+        </div>
+    </div>
+    <div class="row">
+        <p>
+            <div class="col-lg-12">
+                <strong style="color:green;">Note: Please click Preview button and check thoroughly the data table below before clicking Process button.</strong>
+            </div>
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            <div class="col-lg-4">
+                <button class="btn btn-success" id="btnPreview" onclick="return previewdata();"><i class="glyphicon glyphicon-certificate"></i> Preview</button>
+                <button class="btn btn-danger" id="btnProcess" onclick="return processdata();"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+                <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+
+            </div>
+        </p>
+
+    </div>
+    <div>
+        <div>
+            <hr />
+        </div>
+        <div id="waiting">
+            <p>Processing, please wait . . . <img src="../../Content/images/ajax-loader.gif" /></p>
+        </div>
+
+        <p class="execmsg">
+
+        </p>
+    </div>
+    <div>
+        <p>
+            <table class="table table-bordered table-hover table-striped">
+                <tr>
+                    <th>
+                        OR Number
+                    </th>
+                    <th>
+                        New OR Number
+                    </th>
+                    <th>
+                        Account Number
+                    </th>
+                    <th>
+                        Payee
+                    </th>
+                    <th>
+                        Transaction Date
+                    </th>
+                </tr>
+                <tbody class="tbody"></tbody>
+            </table>
+        </p>
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //do when the page is already loaded.
+            $("#waiting").hide();
+            $('#btnProcess').addClass('disabled');
+        });
+    </script>
+}

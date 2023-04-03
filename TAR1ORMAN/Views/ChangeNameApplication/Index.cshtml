@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Appplication For Change Name";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+<script src="~/Scripts/myscripts/changenamescript.js"></script>
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2><strong>APPLICATION FOR CHANGE NAME</strong></h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-10">
+        <div class="row">
+            <div class="col-sm-5" style="text-align:right;padding-top:4px;">
+                <label>EXISTING ACCOUNT NUMBER (10 Digits):</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="text" id="txtAccountNo" class="form-control noborder" style="text-align:center;" placeholder="9999999999" maxlength="10" />
+            </div>
+            <div class="col-sm-3" style="text-align:right;">
+                <button class="btn btn-success" id="btnCheckAcct" onclick="checkAcct()"><i class="glyphicon glyphicon-check"></i> Check Account</button>
+            </div>
+            <div class="col-sm-2" style="text-align:left;">
+                <button class="btn btn-info" id="btnReset" onclick="resetPage()"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<div class="container" id="divExistingAcctDetails">
+    @*AutoGenerate view at runtime*@
+</div>
+
+@*Modal for Report*@
+
+<div class="modal fade" id="myRptModal" tabindex="-1" role="dialog" aria-labelledby="myRptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="resetPage()">X</button>
+                <h4 class="modal-title" id="myRptModalLabel">Change Name Application</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <embed src="" width="100" height="500" type="application/pdf" id="cnpdf" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetPage()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

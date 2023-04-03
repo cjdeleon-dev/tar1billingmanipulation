@@ -1,0 +1,69 @@
+﻿@model TAR1ORDATA.DataModel.DBSettingModel
+
+@{
+    ViewBag.Title = "Database Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style type="text/css">
+    .form {
+        background: none;
+        padding: 40px;
+        max-width: 600px;
+        margin: 40px auto;
+        border-radius: 4px;
+        box-shadow: 0 4px 10px 4px;
+    }
+</style>
+<div style="padding-top:18px;">
+    @using (Html.BeginForm("DBSettings", "Settings", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <center>
+            <h2>Database Settings</h2>
+        </center>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="form">
+                    <br />
+                    <div class="form-group">
+                        <p>@Html.LabelFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control" } })</p>
+                        <p>@Html.EditorFor(model => model.ServerName, new { htmlAttributes = new { @class = "form-control", placeholder = "Server Name" } })</p>
+                        <p>@Html.ValidationMessageFor(model => model.ServerName, "", new { @class = "text-danger" })</p>
+                    </div>
+                    <div class="form-group">
+                        <p>@Html.LabelFor(model => model.DatabaseName, new { htmlAttributes = new { @class = "form-control" } })</p>
+                        <p>@Html.EditorFor(model => model.DatabaseName, new { htmlAttributes = new { @class = "form-control", placeholder = "Database Name" } })</p>
+                        <p>@Html.ValidationMessageFor(model => model.DatabaseName, "", new { @class = "text-danger" })</p>
+                    </div>
+                    <div class="form-group">
+                        <p>@Html.LabelFor(model => model.UserID, new { htmlAttributes = new { @class = "form-control" } })</p>
+                        <p>@Html.EditorFor(model => model.UserID, new { htmlAttributes = new { @class = "form-control", placeholder = "User Id" } })</p>
+                        <p>@Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })</p>
+                    </div>
+                    <div class="form-group">
+                        <p>@Html.LabelFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })</p>
+                        <p>@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password", type = "password" } })</p>
+                        <p>@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })</p>
+                    </div>
+                    <div class="form-group">
+                        <p>@Html.ValidationMessage("ConnectionError", new { style = "color:red;" })</p>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-offset-5 col-lg-3">
+                                <button type="submit" class="btn btn-danger" id="btnSave"><i class="glyphicon glyphicon-exclamation-sign"></i> Save</button>
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="button" class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

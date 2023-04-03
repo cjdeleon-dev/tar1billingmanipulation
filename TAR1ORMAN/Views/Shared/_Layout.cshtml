@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - TARELCO I Application</title>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style type="text/css">
+        a {
+            text-decoration: none !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header" style="padding-top:18px;">
+                <p><strong><font style="color:antiquewhite;">ELECTRONIC BILLING AND COLLECTION SYSTEM</font></strong></p>
+            </div>
+
+            <div class="nav navbar-nav navbar-right" style="padding-top:18px;">
+                <p><strong><a href='@Url.Action("Logout","Authentication")' id="mnulogout">Logout&nbsp;</a></strong></p>
+            </div>
+            <div class="nav navbar-nav navbar-right" style="padding-top:18px;">
+                <p><strong><a href='@Url.Action("DBSettings","Settings")' id="mnudbsettings">DBSettings&nbsp;</a></strong></p>
+            </div>
+
+        </div>
+    </div>
+    <div class="container body-content">
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Tarelco I Billing Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        var idleTime = 0;
+        $(document).ready(function () {
+            //Increment the idle time counter every minute.
+            var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+            //Zero the idle timer on mouse movement.
+            $(this).mousemove(function (e) {
+                idleTime = 0;
+            });
+            $(this).keypress(function (e) {
+                idleTime = 0;
+            });
+        });
+
+        function timerIncrement() {
+            idleTime = idleTime + 1;
+            if (idleTime > 1) { // 2 minutes
+                window.location = "/Authentication/Logout";
+            }
+        }
+    </script>
+</body>
+</html>

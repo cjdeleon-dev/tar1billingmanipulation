@@ -1,0 +1,375 @@
+﻿
+@{
+    ViewBag.Title = "MemberConsumer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+<script src="~/Scripts/myscripts/memconsumer_v1.1.6.js"></script>
+
+<h2><strong>Memeber Consumer's Information</strong></h2>
+
+<style>
+    .divAccnts {
+        background-color: #ffffff;
+        color: black;
+        border-radius: 30px;
+        margin: 10px;
+        padding: 10px;
+        position: center;
+    }
+
+    #txtAccountNo:focus {
+        outline: none;
+        border: 0px solid;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-10">
+        <div class="row">
+            <div class="col-sm-5" style="text-align:right;padding-top:4px;">
+                <label>Please type ten (10) digits Account Number:</label>
+            </div>
+            <div class="col-sm-2">
+                <input type="text" id="txtAccountNo" class="form-control noborder" style="text-align:center;" placeholder="9999999999" maxlength="10" />
+            </div>
+            <div class="col-sm-3" style="text-align:right;">
+                <button class="btn btn-success" id="btnCheckAcct" onclick="checkAcct()"><i class="glyphicon glyphicon-check"></i> Check Account</button>
+            </div>
+            <div class="col-sm-2" style="text-align:left;">
+                <button class="btn btn-info" id="btnReset" onclick="resetPage()"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+@*<div class="container">*@
+<div class="row">
+    <div class="col-sm-2" style="padding:5px;">
+        <button class="btn btn-info" id="btnCS" style="width:100%;margin-bottom:5px;" onclick="showChangeStatModal()">Change Status</button>
+        <button class="btn btn-info" id="btnUP" style="width:100%;margin-bottom:5px;" onclick="showUpdateProfileModal()">Update Profile</button>
+        <button class="btn btn-info" id="btnUL" style="width:100%;margin-bottom:5px;" onclick="swal('Sorry', 'You are not allowed to update load information.', 'warning');">Update Load Info.</button>
+        <button class="btn btn-info" id="btnMS" style="width:100%;margin-bottom:5px;" onclick="swal('Sorry', 'You are not allowed to update meter specifications.', 'warning');">Update Meter Specs.</button>
+        <button class="btn btn-info" id="btnHS" style="width:100%;margin-bottom:5px;" onclick="viewStatusByAcctno()">View Status History</button>
+        <button class="btn btn-info" id="btnBL" style="width:100%;margin-bottom:5px;" onclick="viewBalance()">View Balance</button>
+    </div>
+    <div class="col-sm-10" style="border:solid;">
+        <div class="divAccnts" style="overflow:auto;">
+            <table style="width:100%;" class="table-responsive">
+                <tr>
+                    <td colspan="8" style="text-align:center;"><strong class="bg-info">== PROFILE ==</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;"><strong>Name:</strong></td>
+                    <td style="padding:2px;" colspan="3"><input type="text" id="txtName" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:250px;"><strong>Status:</strong></td>
+                    <td style="width:350px;padding:2px;" colspan="4">
+                        <input type="text" id="txtStatus" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" />
+                        <input type="hidden" id="txtStatusId" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;"><strong>Address:</strong></td>
+                    <td style="padding:2px;" colspan="7"><input type="text" id="txtAddress" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Pole Id:</strong></td>
+                    <td style="width:250px;padding:2px;" colspan="3"><input type="text" id="txtPoleId" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:250px;"><strong>Consumer Type:</strong></td>
+                    <td style="width:350px;padding:2px;" colspan="4"><select id="cboConsumerType" class="form-control select2 select2-hidden-accessible" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Member OR:</strong></td>
+                    <td style="width:250px;padding:2px;"><input type="text" id="txtMemberOR" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:150px;"><strong>Member Date:</strong></td>
+                    <td style="width:150px;padding:2px;"><input type="date" id="dtpMemberDate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Book No:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtBookNo" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:10px;"><strong>Seq. No:</strong></td>
+                    <td style="width:50px;padding:2px;"><input type="text" id="txtSeqNo" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Billing Group:</strong></td>
+                    <td style="width:150px;padding:2px;" colspan="2"><select class="form-control select2 select2-hidden-accessible" id="cboArea" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:150px;"><strong>Collecting Area:</strong></td>
+                    <td style="width:350px;padding:2px;"><select class="form-control select2 select2-hidden-accessible" id="cboOffice" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;font-size:8px!important;"><strong>Burial Claimed:</strong></td>
+                    <td style="width:50px;padding:2px;" colspan="2"><input type="date" id="dtpBurial" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align:center;"><strong class="bg-info">== LOAD INFORMATION ==</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Flat Rate:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="text" id="txtFlatRate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:120px;"><strong>KVA Rating:</strong></td>
+                    <td style="width:150px;padding:2px;"><input type="text" id="txtKVARate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>Fixed Demand:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtFixedDem" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:10px;"><strong>TSF Rental:</strong></td>
+                    <td style="width:50px;padding:2px;"><input type="text" id="txtTSFRental" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Coreloss:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="text" id="txtCoreloss" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:120px;"><strong>Multiplier:</strong></td>
+                    <td style="width:150px;padding:2px;"><input type="text" id="txtMultiplier" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>TSFR Count:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtTSFCount" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td colspan="8" style="text-align:center;"><strong class="bg-info">== METER SPECIFICATION ==</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Meter SN:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="text" id="txtSN" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:120px;"><strong>Prev SN:</strong></td>
+                    <td style="width:150px;padding:2px;"><input type="text" id="txtPrevSN" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>Brand:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtMtrBrand" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>Ampere:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtMtrAmp" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Meter Type:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="text" id="txtMtrType" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:120px;"><strong>Cal. Seal:</strong></td>
+                    <td style="width:150px;padding:2px;"><input type="text" id="txtCalSeal" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>Terminal Seal:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtTermSeal" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:200px;"><strong>Dial:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtDial" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>Date Installed:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="date" id="dtpDateIns" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>SC Flag:</strong></td>
+                    <td style="width:180px;padding:2px;">
+                        <select class="form-control select2 select2-hidden-accessible" id="cboSCFlag" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled">
+                            <option value="T">T</option>
+                            <option value="F">F</option>
+                            <option value="Y">Y</option>
+                        </select>
+                    </td>
+                    <td style="padding:5px;text-align:right;width:190px;"><strong>CLR SR:</strong></td>
+                    <td style="width:180px;padding:2px;">
+                        <select class="form-control select2 select2-hidden-accessible" id="cboSRFlag" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled">
+                            <option value="T">T</option>
+                            <option value="F">F</option>
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+@* Change Status form modal *@
+<div class="modal fade" id="myChangeStatusModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myChangeStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myChangeStatusModalLabel">Change Status Form</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Change From:</label>
+                            <input type="text" class="form-control" id="txtChangeFr" disabled="disabled" style="width:100%" />
+                            <input type="hidden" id="txtStatusFrom" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Change To:</label>
+                            <select id="cboChangeTo" class="form-control select2 select2-hidden-accessible" style="min-width: 100%"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Act Date:</label>
+                            <input type="date" id="dtpActDate" class="form-control" style="width:100%" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Reason:</label>
+                            <input type="text" id="txtReason" class="form-control" style="width:100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>DTD Read:</label>
+                            <input type="text" class="form-control" id="txtDtdRead" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" onclick="setStatusByAcctno()" value="Save" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@*VIEW STATUS LOG MODAL*@
+<div class="modal fade" id="myViewStatusLogModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myViewModalLabel">Consumer's Status Log</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label>Account Number:</label>
+                            <input type="text" class="form-control" id="modTxtAcctNo" disabled="disabled" style="width:100%;text-align:center;" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Account Name:</label>
+                            <input type="text" class="form-control" id="modTxtAcctName" disabled="disabled" style="width:100%;" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="table-responsive-sm">
+                    <table class="table table-hover table-bordered" id="statusTable">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th scope="col" style="text-align:center;">Date</th>
+                                <th scope="col" style="text-align:center;">Change From</th>
+                                <th scope="col" style="text-align:center;">Change To</th>
+                                <th scope="col" style="text-align:center;">Reason</th>
+                                <th scope="col" style="text-align:center;">User</th>
+                                <th scope="col" style="text-align:center;">Act Date</th>
+                                <th scope="col" style="text-align:center;">DTD Read</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@*UPDATE PROFILE FORM MODAL*@
+<div class="modal fade" id="myUpdProfileModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myViewModalLabel">Consumer's Profile</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <table style="width:100%;" class="table-responsive">
+                        <tr>
+                            <td style="padding:5px;text-align:right;"><strong>Name:</strong></td>
+                            <td style="padding:2px;" colspan="3"><input type="text" id="txtModName" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:250px;"><strong>Status:</strong></td>
+                            <td style="width:350px;padding:2px;" colspan="4">
+                                <input type="text" id="txtModStatus" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" />
+                                <input type="hidden" id="txtModStatusId" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;text-align:right;"><strong>Address:</strong></td>
+                            <td style="padding:2px;" colspan="7"><input type="text" id="txtModAddress" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;text-align:right;width:190px;"><strong>Pole Id:</strong></td>
+                            <td style="width:250px;padding:2px;" colspan="3"><input type="text" id="txtModPoleId" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:250px;"><strong>Consumer Type:</strong></td>
+                            <td style="width:350px;padding:2px;" colspan="4"><select id="cboModConsumerType" class="form-control select2 select2-hidden-accessible" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;text-align:right;width:190px;"><strong>Member OR:</strong></td>
+                            <td style="width:250px;padding:2px;"><input type="text" id="txtModMemberOR" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:150px;"><strong>Member Date:</strong></td>
+                            <td style="width:150px;padding:2px;"><input type="date" id="dtpModMemberDate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:100px;"><strong>Book No:</strong></td>
+                            <td style="width:80px;padding:2px;"><input type="text" id="txtModBookNo" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:10px;"><strong>Seq. No:</strong></td>
+                            <td style="width:50px;padding:2px;"><input type="text" id="txtModSeqNo" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px;text-align:right;width:190px;"><strong>Billing Group:</strong></td>
+                            <td style="width:200px;padding:2px;" colspan="4"><select class="form-control select2 select2-hidden-accessible" id="cboModArea" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                            <td style="padding:5px;text-align:right;width:200px;"><strong>Collecting Area:</strong></td>
+                            <td style="width:350px;padding:2px;" colspan="2"><select class="form-control select2 select2-hidden-accessible" id="cboModOffice" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td style="padding:5px;text-align:right;width:150px;"><strong>Is Claimed Burial?</strong> <input type="checkbox" id="chkIsClaimed" onchange="chkBurialOnChange()" /></td>
+                            <td style="width:150px;padding:2px;"><input type="date" id="dtpModBurialDate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                            
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" data-dismiss="modal" value="Update" onclick="updateProfile()" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@*VIEW BALANCE MODAL*@
+<div class="modal fade" id="myViewBalanceModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myViewBalModalLabel">Consumer's Balance(s)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive-sm">
+                    <table class="table table-hover table-bordered" id="statusTable">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th scope="col" style="text-align:center;">BillPeriod</th>
+                                <th scope="col" style="text-align:center;">TrxBalance</th>
+                                <th scope="col" style="text-align:center;">VATBalance</th>
+                                <th scope="col" style="text-align:center;">Surcharge</th>
+                                <th scope="col" style="text-align:center;">TotalAmount</th>
+                                <th scope="col" style="text-align:center;">Month(s)</th>
+                                <th scope="col" style="text-align:center;">PayAmount</th>
+                            </tr>
+                            <tbody id="tbodybal">
+
+                            </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}

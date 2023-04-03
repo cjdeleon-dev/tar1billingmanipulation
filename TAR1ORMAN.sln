@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAR1ORMAN", "TAR1ORMAN\TAR1ORMAN.csproj", "{4AA42164-E449-4B9D-A121-DF6F1D222924}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAR1ORDATA", "TAR1ORDATA\TAR1ORDATA.csproj", "{78D16535-50E1-4346-91E8-9DB15D4075D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AA42164-E449-4B9D-A121-DF6F1D222924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA42164-E449-4B9D-A121-DF6F1D222924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA42164-E449-4B9D-A121-DF6F1D222924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA42164-E449-4B9D-A121-DF6F1D222924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78D16535-50E1-4346-91E8-9DB15D4075D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D16535-50E1-4346-91E8-9DB15D4075D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D16535-50E1-4346-91E8-9DB15D4075D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D16535-50E1-4346-91E8-9DB15D4075D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {542CD7EB-0EA6-4750-BE58-A3652446323E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Disconnection List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<script src="~/Scripts/myscripts/disconlistscript.js"></script>
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2>Generation of Disconnection List</h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-lg-2">
+        <select class="form-control select2 select2-hidden-accessible" id="cboNumOfMo" onchange="return cboNumOfMoChange();">
+            <option selected>Select # Month</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <select id="cboStatus" class="form-control select2 select2-hidden-accessible" onchange="return cboStatusOnChange();" style="min-width: 100%">
+            <option selected value="1">All Status</option>
+            <option value="2">Active</option>
+            <option value="3">Disconnected</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <select id="cboRoute" class="form-control select2 select2-hidden-accessible" onchange="return cboRouteOnChange();" style="min-width: 100%">
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <input type="date" id="txtDate" class="form-control" />
+    </div>
+
+    <div class="col-lg-2">
+        <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+    </div>
+
+    @using (Html.BeginForm("ExportToExcel", "DisconList", FormMethod.Post))
+    {
+        <div class="col-lg-2">
+            <input type="submit" value="Export to Excel" class="btn btn-success" />
+            <div class="row">
+                <div class="col-lg-offset-8 col-lg-4">
+                    <input type="hidden" id="txtStatus" name="cstatus" class="form-control" />
+                    <input type="hidden" id="txtNumMonths" name="cnomonths" class="form-control" />
+                    <input type="hidden" id="txtRoute" name="croute" class="form-control" />
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Account No</th>
+                <th scope="col" style="text-align:center;">Account Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Meter No.</th>
+                <th scope="col" style="text-align:center;">Fist Bill</th>
+                <th scope="col" style="text-align:center;">Last Bill</th>
+                <th scope="col" style="text-align:center;"># Months</th>
+                <th scope="col" style="text-align:center;">Amount</th>
+                <th scope="col" style="text-align:center;">Remark</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}

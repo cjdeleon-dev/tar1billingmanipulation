@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    * {
+        font-size: 12px;
+    }
+</style>
+
+<script src="~/Scripts/myscripts/homescriptv1.1.8.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" id="txtUserIdLogged" class="form-control" value=@ViewBag.UserId />
+            <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4" id="oradddiv">
+            <h5>Changing OR by Range in Addition</h5>
+            <p><a class="btn btn-success" href="@Url.Action("ORRangeInAddition","Processing")">Input OR Range Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="orsubdiv">
+            <h5>Changing OR by Range in Subtraction</h5>
+            <p><a class="btn btn-success" href="@Url.Action("ORRangeInSubtraction","Processing")">Input OR Range Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="orprefdiv">
+            <h5>Changing Prefix of the OR Range</h5>
+            <p><a class="btn btn-success" href="@Url.Action("PrefixORRange","Processing")">Input OR Range Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="lstburial">
+            <h5>List of Claimed Burial Consumers</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ClaimedBurial")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="lstsc">
+            <h5>List of Senior Citizen Consumers</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","SeniorCitizen")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="empco">
+            <h5>TARELCO-I Employees' Power Bill Balance </h5>
+            <p><a class="btn btn-success" href="@Url.Action("EmpCareOff","EmpPowerBill")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="writeoff">
+            <h5>For Write Off Data By Year</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ForWriteOff")">Input Year Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="topAD">
+            <h5>Top 300 Active/Disconnected By Town</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","TopActiveDisconByTown")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="dtdbilled">
+            <h5>DTD with Current Bills</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","DTDWithCurrentBills")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="activezero">
+            <h5>Active With Zero Consumption</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ActiveWithZeroConsumption")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="highkwh">
+            <h5>Residential Consumers With High KwH</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","TopHighKwH")">View List Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="soa">
+            <h5>Statement Of Account Report</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","SOA")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="tor">
+            <h5>Teller's Official Receipt By Year and Month</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","TORtoPDF")">Proceed Now &raquo;</a></p>
+        </div>
+        @*<div class="col-md-4" id="consstat">
+            <h5>Change Consumer Status</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ChangeStatus")">Proceed Now &raquo;</a></p>
+        </div>*@
+        <div class="col-md-4" id="disconlist">
+            <h5>Generate Disconnection List</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","DisconList")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="memconsupddtl">
+            <h5>Member Consumer (Update Details or Change Status)</h5>
+            <p><a class="btn btn-success" href="@Url.Action("MemberConsumer","MemCons")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="sumdtdrpt">
+            <h5>Generate Summary of Disconnection Report</h5>
+            <p><a class="btn btn-success" href="@Url.Action("SumDisconRpt","SumOfDisconReport")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="disconlist">
+            <h5>User's Daily Changed Status Report</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","DailyChangedStatus")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="burialverify">
+            <h5>Application and Verifying Account for Claiming Burial</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","BurialApplicationValidation")">Proceed Now &raquo;</a></p>
+        </div>
+        <div class="col-md-4" id="changename">
+            <h5>Change Name Application</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ChangeNameApplication")">Proceed Now &raquo;</a></p>
+        </div>
+        @*<div class="col-md-4" id="disconlistv2">
+            <h5>Generate Disconnection List Version 2</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","DisconListV2")">Proceed Now &raquo;</a></p>
+        </div>*@
+
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/JavaScript">
+        $(document).ready(hideunneccessaryoptions);
+    </script>
+}

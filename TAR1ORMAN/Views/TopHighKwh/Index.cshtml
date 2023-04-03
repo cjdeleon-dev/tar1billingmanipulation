@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Top High Kwh Residential Consumers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/myscripts/tophighkwhperbillperiod1.1.3.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<br />
+<strong>Top Residential Consumers with High Consumption Per Billing Period</strong>
+<br />
+
+
+<div class="row">
+    <div class="col-lg-1">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-lg-2">
+        <select class="form-control select2 select2-hidden-accessible" id="cboTop" onchange="return cboTopOnChange();">
+            <option selected>Select Top</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <select id="cboBillPeriod" class="form-control select2 select2-hidden-accessible" onchange="return cboBPOnChange();" style="min-width: 100%"></select>
+    </div>
+    <div class="col-lg-2">
+        <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+    </div>
+    @using (Html.BeginForm("ExportToExcel", "TopHighKwh", FormMethod.Post))
+    {
+        <div class="col-lg-5">
+            <div class="row">
+                <div class="col-lg-offset-8 col-lg-4">
+                    <input type="hidden" id="txtBillPeriod" name="cBillPeriod" class="form-control" />
+                    <input type="hidden" id="txtTop" name="ctop" class="form-control" />
+                    <input type="submit" value="Export to Excel" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Account No</th>
+                <th scope="col" style="text-align:center;">Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Pole</th>
+                <th scope="col" style="text-align:center;">Meter #</th>
+                <th scope="col" style="text-align:center;">KwH</th>
+                <th scope="col" style="text-align:center;">Amount</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}
