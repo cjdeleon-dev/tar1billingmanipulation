@@ -741,7 +741,7 @@ namespace TAR1ORMAN.Controllers
                                   "CAST(count(c.description) * 100 AS numeric(18, 2)) " +
                                   "else case when rtrim(c.description)= 'Industrial' then " +
                                   "CAST(count(c.description) * 500 AS numeric(18, 2)) " +
-                                  "else	CAST(0 as numeric(18, 2)) " +
+                                  "else	CAST(count(c.description) * 50 as numeric(18, 2)) " +
                                   "end end end[Commission] " +
                                   "from tbl_sumdtdrptdtl a " +
                                   "inner join arsconsumer b " +

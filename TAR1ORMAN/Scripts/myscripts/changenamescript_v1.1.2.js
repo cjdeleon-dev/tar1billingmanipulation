@@ -19,7 +19,7 @@ function checkAcct() {
                     html += '<hr id="topHLine" />';
 
                     html += '<div class="row">';
-                    html += '    <div style="background-color:darkgrey;text-align:center;"><strong>EXISTING MEMBER-COSUMER\'S INFORMATION</strong ></div > ';
+                    html += '    <div style="background-color:darkgrey;text-align:center;"><strong>EXISTING MEMBER-CONSUMER\'S INFORMATION</strong ></div > ';
                     html += '    <div class="form-group col-sm-5" style="padding:0;margin:7px;"> ';
                     html += '        <label for="txtAcctName">Account Name:</label> <label for="chkDied" style="color:red;">Died:</label> ';
                     html += '        <input type="checkbox"  id="chkDied" onchange="chkDiedOnChange()" /> ';
