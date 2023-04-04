@@ -15,6 +15,7 @@ namespace TAR1ORDATA.DataModel
         public string MemberId { get; set; }
         public string MemberDate { get; set; }
         public string SequenceNo { get; set; }
+        public bool IsDied { get; set; }
         public string NewName { get; set; }
         public string NewMemberId { get; set; }
         public string NewMemberDate { get; set; }
