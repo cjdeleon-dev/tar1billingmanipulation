@@ -148,10 +148,10 @@ namespace TAR1ORMAN.Controllers
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "insert into tbl_changename(appdate,accountno,nw_name,nw_memberid," +
                                       "nw_memberdate,nw_birthday,nw_contactnum,nw_relationship,nw_reason," +
-                                      "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby) " +
+                                      "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby,isdied) " +
                                       "values(getdate(),@accountno,@nw_name,@nw_memberid," +
                                       "@nw_memberdate,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason," +
-                                      "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby);";
+                                      "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby,@isdied);";
 
                     cmd.Parameters.AddWithValue("@accountno", pcnm.AccountNo);
                     cmd.Parameters.AddWithValue("@nw_name", pcnm.NewName);
@@ -165,6 +165,7 @@ namespace TAR1ORMAN.Controllers
                     cmd.Parameters.AddWithValue("@nw_forwithdrawnew", pcnm.ForWithdrawNew);
                     cmd.Parameters.AddWithValue("@nw_forretention", pcnm.ForRetention);
                     cmd.Parameters.AddWithValue("@madeby", pcnm.MadeById);
+                    cmd.Parameters.AddWithValue("@isdied", pcnm.IsDied);
 
                     cmd.ExecuteNonQuery();
                     trans.Commit();

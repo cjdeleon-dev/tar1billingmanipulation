@@ -211,6 +211,7 @@
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontWeight>Normal</FontWeight>
+                  <Format>MMMM d, yyyy</Format>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -450,6 +451,7 @@
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontWeight>Normal</FontWeight>
+                  <Format>MMMM d, yyyy</Format>
                 </Style>
               </TextRun>
             </TextRuns>

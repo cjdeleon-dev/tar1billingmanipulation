@@ -21,7 +21,8 @@ function checkAcct() {
                     html += '<div class="row">';
                     html += '    <div style="background-color:darkgrey;text-align:center;"><strong>EXISTING MEMBER-COSUMER\'S INFORMATION</strong ></div > ';
                     html += '    <div class="form-group col-sm-5" style="padding:0;margin:7px;"> ';
-                    html += '        <label for="txtAcctName">Account Name:</label> ';
+                    html += '        <label for="txtAcctName">Account Name:</label> <label for="chkDied" style="color:red;">Died:</label> ';
+                    html += '        <input type="checkbox"  id="chkDied" onchange="chkDiedOnChange()" /> ';
                     html += '        <input type="text" class="form-control" id="txtAcctName" readonly="readonly" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
                     html += '    </div> ';
                     html += '    <div class="form-group col-sm-6" style="padding:0;margin:7px;"> ';
@@ -137,12 +138,26 @@ function resetPage() {
     window.location = "/ChangeNameApplication/Index";
 }
 
+function chkDiedOnChange() {
+    var isdied = document.getElementById("chkDied").checked;
+    if (isdied) {
+        $('#optradio_newmem').attr('checked', 'checked');
+        $('#optradio_oldmem').attr('disabled', 'disabled');
+        $('#optradio_ret').attr('disabled', 'disabled');
+    } else {
+        $('#optradio_newmem').removeAttr('checked');
+        $('#optradio_oldmem').removeAttr('disabled');
+        $('#optradio_ret').removeAttr('disabled');
+    }
+}
+
 function saveAndPrev() {
-    var chkold, chknew, chkret;
+    var chkold, chknew, chkret, isdied;
 
     chkold = document.getElementById("optradio_oldmem").checked;
     chknew = document.getElementById("optradio_newmem").checked;
     chkret = document.getElementById("optradio_ret").checked;
+    isdied = document.getElementById("chkDied").checked;
 
     var objcna = {
         Id: 0,
@@ -153,6 +168,7 @@ function saveAndPrev() {
         MemberId: "",
         MemberDate: "",
         SequenceNo: "",
+        IsDied: isdied,
         NewName: $('#txtNewName').val(),
         NewMemberId: $('#txtMemberNewORNo').val(),
         NewMemberDate: $('#dtpNewORDate').val(),
