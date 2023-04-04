@@ -16,7 +16,7 @@ namespace TAR1ORMAN.Controllers
         ITopActiveDisconService itads;
         private static GridView gv = new GridView();
 
-        [Authorize(Roles = "AUDIT,FINHEAD,IT,SYSADMIN,AREA MANAGER")]
+        [Authorize(Roles = "AUDIT,FINHEAD,IT,SYSADMIN,AREAMNGR")]
         // GET: TopActiveDisconByTown
         public ActionResult Index()
         {
