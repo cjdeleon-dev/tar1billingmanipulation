@@ -58,14 +58,14 @@ function checkAcct() {
                     html += '</div> ';
 
                     html += '<div class="row"> ';
-                    html += '    <div class="form-group col-sm-2" style="padding:0;margin:7px;"> ';
-                    html += '        <label for="txtMemberNewORNo">New Member OR #:</label> ';
-                    html += '        <input type="text" class="form-control" id="txtMemberNewORNo" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
-                    html += '    </div> ';
-                    html += '    <div class="form-group col-sm-2" style="padding:0;margin:7px;"> ';
-                    html += '        <label for="dtpNewORDate">New OR DATE:</label> ';
-                    html += '        <input type="date" class="form-control" id="dtpNewORDate" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
-                    html += '    </div> ';
+                    //html += '    <div class="form-group col-sm-2" style="padding:0;margin:7px;"> ';
+                    //html += '        <label for="txtMemberNewORNo">New Member OR #:</label> ';
+                    //html += '        <input type="text" class="form-control" id="txtMemberNewORNo" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
+                    //html += '    </div> ';
+                    //html += '    <div class="form-group col-sm-2" style="padding:0;margin:7px;"> ';
+                    //html += '        <label for="dtpNewORDate">New OR DATE:</label> ';
+                    //html += '        <input type="date" class="form-control" id="dtpNewORDate" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
+                    //html += '    </div> ';
                     html += '    <div class="form-group col-sm-2" style="padding:0;margin:7px;"> ';
                     html += '        <label for="dtpBirthday">Birthday:</label> ';
                     html += '        <input type="date" class="form-control" id="dtpBirthday" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" /> ';
@@ -124,6 +124,7 @@ function checkAcct() {
                     $('#txtSeqNo').attr('readonly', 'readonly');
                     $('#txtAccountNo').attr('readonly', 'readonly');
                     $('#btnCheckAcct').hide();
+                    $('#btnShowPending').hide();
                 }
             },
             error: function (errormessage) {
@@ -165,8 +166,8 @@ function saveAndPrev() {
         AccountNo: $('#txtAccountNo').val(),
         AccountName: "",
         Address: "",
-        MemberId: "",
-        MemberDate: "",
+        MemberId: $('#txtMemberORNo').val(),
+        MemberDate: $('#txtORDate').val(),
         SequenceNo: "",
         IsDied: isdied,
         NewName: $('#txtNewName').val(),
@@ -208,4 +209,8 @@ function saveAndPrev() {
             alert(errormessage.responseText);
         }
     });
+}
+
+function showPendingList() {
+    window.location = "/PendingChangeNameList/Index";
 }

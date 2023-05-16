@@ -170,6 +170,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListForDisconnectionController.cs" />
     <Compile Include="Controllers\MemConsController.cs" />
+    <Compile Include="Controllers\PendingChangeNameListController.cs" />
     <Compile Include="Controllers\ProcessingController.cs" />
     <Compile Include="Controllers\SeniorCitizenController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -588,6 +589,7 @@
     <Content Include="Scripts\myscripts\changenamescript_v1.1.2.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
+    <Content Include="Scripts\myscripts\cnpendinglistscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\dailychangedstat.js" />
     <Content Include="Scripts\myscripts\disconlistscript.js" />
     <Content Include="Scripts\myscripts\empcareoffscript.js" />
@@ -660,6 +662,7 @@
     <Content Include="Views\MemCons\MemberConsumer.cshtml" />
     <Content Include="Views\SumOfDisconReport\SumDisconRpt.cshtml" />
     <Content Include="Views\DisconRptSummaryList\Index.cshtml" />
+    <Content Include="Views\PendingChangeNameList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

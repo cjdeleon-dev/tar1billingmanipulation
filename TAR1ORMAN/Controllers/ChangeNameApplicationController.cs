@@ -149,14 +149,14 @@ namespace TAR1ORMAN.Controllers
                     cmd.CommandText = "insert into tbl_changename(appdate,accountno,nw_name,nw_memberid," +
                                       "nw_memberdate,nw_birthday,nw_contactnum,nw_relationship,nw_reason," +
                                       "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby,isdied) " +
-                                      "values(getdate(),@accountno,@nw_name,@nw_memberid," +
-                                      "@nw_memberdate,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason," +
+                                      "values(getdate(),@accountno,@nw_name,null," +
+                                      "null,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason," +
                                       "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby,@isdied);";
 
                     cmd.Parameters.AddWithValue("@accountno", pcnm.AccountNo);
                     cmd.Parameters.AddWithValue("@nw_name", pcnm.NewName);
-                    cmd.Parameters.AddWithValue("@nw_memberid", pcnm.NewMemberId);
-                    cmd.Parameters.AddWithValue("@nw_memberdate", pcnm.NewMemberDate);
+                    //cmd.Parameters.AddWithValue("@nw_memberid", pcnm.NewMemberId);
+                    //cmd.Parameters.AddWithValue("@nw_memberdate", pcnm.NewMemberDate);
                     cmd.Parameters.AddWithValue("@nw_birthday", pcnm.Birthday);
                     cmd.Parameters.AddWithValue("@nw_contactnum", pcnm.ContactNo);
                     cmd.Parameters.AddWithValue("@nw_relationship", pcnm.Relationship);

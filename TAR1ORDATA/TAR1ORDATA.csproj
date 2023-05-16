@@ -126,11 +126,13 @@
     <Compile Include="DataModel\ForWriteOffModel.cs" />
     <Compile Include="DataModel\HighArrearsConsumerModel.cs" />
     <Compile Include="DataModel\MemberConsumerModel.cs" />
+    <Compile Include="DataModel\MemberORModel.cs" />
     <Compile Include="DataModel\MemConsBalanceModel.cs" />
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />
     <Compile Include="DataModel\MemConsProfileModel.cs" />
     <Compile Include="DataModel\OfficeModel.cs" />
+    <Compile Include="DataModel\PendingChangeNameModel.cs" />
     <Compile Include="DataModel\RoleModel.cs" />
     <Compile Include="DataModel\RouteModel.cs" />
     <Compile Include="DataModel\SeniorCitizenModel.cs" />

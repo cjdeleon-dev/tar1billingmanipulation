@@ -34,11 +34,12 @@
     <table class="table table-hover table-bordered" id="myTable1">
         <thead class="bg-primary">
             <tr>
+                <th scope="col" style="text-align:center;">Reference ID</th>
                 <th scope="col" style="text-align:center;">Account #</th>
-                <th scope="col" style="text-align:center;">Name</th>
-                <th scope="col" style="text-align:center;">Address</th>
-                <th scope="col" style="text-align:center;">Applied Date</th>
-                <th scope="col" style="text-align:center;">Expiry Date</th>
+                <th scope="col" style="text-align:center;">New Name</th>
+                <th scope="col" style="text-align:center;">Application Date</th>
+                <th scope="col" style="text-align:center;">Reason</th>
+                <th scope="col" style="text-align:center;">Remarks</th>
             </tr>
         </thead>
     </table>
@@ -49,6 +50,6 @@
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(loadProcess());
+        $(document).ready(loadList());
     </script>
 }
