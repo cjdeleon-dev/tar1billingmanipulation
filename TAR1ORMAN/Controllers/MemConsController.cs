@@ -19,6 +19,9 @@ namespace TAR1ORMAN.Controllers
         // GET: MemCons
         public ActionResult MemberConsumer()
         {
+            ViewBag.IsRecOfcr = User.IsInRole("MSERVE").ToString();
+            ViewBag.IsTeller = User.IsInRole("TELLER").ToString();
+
             return View();
         }
 

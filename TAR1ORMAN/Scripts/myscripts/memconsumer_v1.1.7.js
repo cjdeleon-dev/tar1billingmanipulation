@@ -164,10 +164,26 @@ function resetPage() {
 
 
 function showChangeStatModal() {
+
+    var isRecordOfcr = $('#txtIsRecOfcr').val();
+    var isTeller = $('#txtIsTeller').val();
+
+    if (isRecordOfcr == "True" && $('#txtStatusId').val() == "D") {
+        swal("Sorry", "You do not have the right to change its status from Disconnected to Active.", "warning");
+        return false;
+    }
+        
+    if (isTeller == "True" && $('#txtStatusId').val() == "A") {
+        swal("Sorry", "You do not have the right to change its status from Active to Disconnected or Apprehended.", "warning");
+        return false;
+    }
+
     $('#myChangeStatusModal').modal('show');
     loadcboChangeTo();
     $('#txtChangeFr').val($('#txtStatus').val());
     $('#txtStatusFrom').val($('#txtStatusId').val())
+
+    return true;
 }
 
 function loadcboChangeTo() {
