@@ -305,7 +305,7 @@ namespace TAR1ORMAN.Controllers
                                                "where workgroupid = 'FINHEAD' " +
                                                "and right(rtrim(name),3)<> 'MRB' " +
                                                "and rtrim(defrevcenterid)<> '' " +
-                                               "and userid not in ('0906', '0601', '0521', '0804')";
+                                               "and userid not in ('0906', '0601', '0521')";
 
                 DataTable dt = new DataTable();
 
