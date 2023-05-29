@@ -349,7 +349,7 @@ namespace TAR1ORMAN.Controllers
                 da.SelectCommand.Connection.Open();
 
                 da.SelectCommand.CommandType = CommandType.Text;
-                da.SelectCommand.CommandText = "select statusid, description from arsstatus where statusid<>@exceptstat;";
+                da.SelectCommand.CommandText = "select statusid, description from arsstatus where statusid<>@exceptstat and statusid not in ('F','T');";
 
                 da.SelectCommand.Parameters.AddWithValue("@exceptstat", exceptStat);
 
