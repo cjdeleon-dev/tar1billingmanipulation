@@ -169,12 +169,12 @@ function showChangeStatModal() {
     var isTeller = $('#txtIsTeller').val();
 
     if (isRecordOfcr == "True" && $('#txtStatusId').val() == "D") {
-        swal("Sorry", "You do not have the right to change its status from Disconnected to Active.", "warning");
+        swal("Sorry", "You do not have the rights to change its status from Disconnected to Active.", "warning");
         return false;
     }
         
     if (isTeller == "True" && $('#txtStatusId').val() == "A") {
-        swal("Sorry", "You do not have the right to change its status from Active to Disconnected or Apprehended.", "warning");
+        swal("Sorry", "You do not have the rights to change its status from Active to Disconnected or Apprehended.", "warning");
         return false;
     }
 

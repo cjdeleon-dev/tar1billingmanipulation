@@ -15,7 +15,7 @@
             || $('#txtUserIdLogged').val() == '9051' || $('#txtUserIdLogged').val() == '9052' || $('#txtUserIdLogged').val() == '9053'
             || $('#txtUserIdLogged').val() == '9054' || $('#txtUserIdLogged').val() == '9055' || $('#txtUserIdLogged').val() == '9056'
             || $('#txtUserIdLogged').val() == '9057' || $('#txtUserIdLogged').val() == '9058' || $('#txtUserIdLogged').val() == '9059'
-            || $('#txtUserIdLogged').val() == '0825' || $('#txtUserIdLogged').val() == '0804') {
+            || $('#txtUserIdLogged').val() == '0825' || $('#txtUserIdLogged').val() == '0804' || $('#txtUserIdLogged').val() == '0128') {
             $('#soa').show();
             $('#tor').show();
         }
