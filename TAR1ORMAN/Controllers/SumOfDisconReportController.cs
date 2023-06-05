@@ -14,7 +14,7 @@ namespace TAR1ORMAN.Controllers
 {
     public class SumOfDisconReportController : Controller
     {
-        [Authorize(Roles = "AREAMNGR,IT,MDTO,SYSADMIN,FINHEAD,BILLING")]
+        [Authorize(Roles = "AREAMNGR,IT,MDTO,SYSADMIN,FINHEAD,BILLING,MSERVE")]
         // GET: SumOfDisconReport
         public ActionResult SumDisconRpt()
         {

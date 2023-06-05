@@ -60,7 +60,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.28125in</Height>
+                  <Height>0.16667in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -131,7 +131,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.28125in</Height>
+                  <Height>0.125in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -202,7 +202,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.17708in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -273,7 +273,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.27083in</Height>
+                  <Height>0.17708in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -344,7 +344,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.17708in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -445,7 +445,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>dsTORDetailTransNoVat</DataSetName>
-            <Height>1.33333in</Height>
+            <Height>0.82291in</Height>
             <Width>2.23958in</Width>
             <Style>
               <Border>
@@ -466,7 +466,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.33333in</Height>
+        <Height>0.82291in</Height>
         <Style />
       </Body>
       <Width>2.44791in</Width>
