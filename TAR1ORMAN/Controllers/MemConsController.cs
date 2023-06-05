@@ -59,10 +59,9 @@ namespace TAR1ORMAN.Controllers
             string userid = User.Identity.Name;
             cslm.EntryUser = userid;
 
-            if (icss.SetStatusOfConsumerId(cslm))
-                return Json(new { message = "Success" }, JsonRequestBehavior.AllowGet);
-            else
-                return Json(new { message = "Fail" }, JsonRequestBehavior.AllowGet);
+            ProcessResultModel prm = icss.SetStatusOfConsumerId(cslm);
+
+            return Json(prm, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult LoadStatusLogData(string accountno)

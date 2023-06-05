@@ -260,16 +260,16 @@ function setStatusByAcctno() {
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                if (result.message == "Success") {
+                if (result.IsSucceed) {
                     $('#txtReason').val('');
                     $('#txtDtdRead').val('');
-                    $('#myChangeStatusModal').modal('hide');
-                    checkAcct();
                     swal('Status Changed!', 'Successfully Changed.', 'success');
                     
                 } else {
-                    swal('Error', 'Fail to change status.', 'error');
+                    swal('Error', result.ResultMessage, 'error');
                 }
+                $('#myChangeStatusModal').modal('hide');
+                checkAcct();
             },
             error: function (errormessage) {
                 swal('Error', errormessage.responseText, 'warning');

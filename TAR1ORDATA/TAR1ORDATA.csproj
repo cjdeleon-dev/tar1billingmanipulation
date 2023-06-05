@@ -133,6 +133,7 @@
     <Compile Include="DataModel\MemConsProfileModel.cs" />
     <Compile Include="DataModel\OfficeModel.cs" />
     <Compile Include="DataModel\PendingChangeNameModel.cs" />
+    <Compile Include="DataModel\ProcessResultModel.cs" />
     <Compile Include="DataModel\RoleModel.cs" />
     <Compile Include="DataModel\RouteModel.cs" />
     <Compile Include="DataModel\SeniorCitizenModel.cs" />

@@ -594,7 +594,7 @@
     <Content Include="Scripts\myscripts\disconlistscript.js" />
     <Content Include="Scripts\myscripts\empcareoffscript.js" />
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
-    <Content Include="Scripts\myscripts\memconsumer_v1.1.7.js" />
+    <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
     <Content Include="Scripts\myscripts\summaryofdtdlist_v1.0.0.js" />
     <Content Include="Scripts\myscripts\sumofdtdrpt.js" />

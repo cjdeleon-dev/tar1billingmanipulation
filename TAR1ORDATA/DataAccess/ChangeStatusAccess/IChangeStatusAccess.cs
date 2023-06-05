@@ -12,7 +12,7 @@ namespace TAR1ORDATA.DataAccess.ChangeStatusAccess
         List<ConsumerModel> GetAllActiveConsumers();
         List<ConsumerModel> GetAllDisconConsumers();
 
-        bool SetStatusOfConsumerId(ConsumerStatusLogModel cslm);
+        ProcessResultModel SetStatusOfConsumerId(ConsumerStatusLogModel cslm);
 
         List<ConsumerStatusLogModel> GetStatusLogByConsumerid(string consumerid);
         List<StatusModel> GetAllStatus(string exceptStatus);

@@ -221,17 +221,26 @@ namespace TAR1ORDATA.DataAccess.ChangeStatusAccess
             return lstcslm;
         }
 
-        public bool SetStatusOfConsumerId(ConsumerStatusLogModel cslm)
+        public ProcessResultModel SetStatusOfConsumerId(ConsumerStatusLogModel cslm)
         {
-            bool result = false;
+            ProcessResultModel prm = new ProcessResultModel();
 
             SqlConnection conn = new SqlConnection(this.ConnectionString);
             SqlCommand cmd = new SqlCommand();
+            
+            try
+            {
+                conn.Open();
+            }catch(Exception)
+            {
+                prm.IsSucceed = false;
+                prm.ResultMessage = "Error in connecting database.";
+                return prm;
+            }
 
-            conn.Open();
 
             SqlTransaction trans = conn.BeginTransaction();
-            
+
             try
             {
                 cmd.Connection = conn;
@@ -246,28 +255,30 @@ namespace TAR1ORDATA.DataAccess.ChangeStatusAccess
                 cmd.Parameters.AddWithValue("@reason", cslm.Reason);
                 cmd.Parameters.AddWithValue("@entryuser", cslm.EntryUser);
                 cmd.Parameters.AddWithValue("@actiondate", cslm.ActionDate);
-                if(cslm.DTDRead!=null)
+                if (cslm.DTDRead != null)
                     cmd.Parameters.AddWithValue("@dtdread", cslm.DTDRead);
                 else
                     cmd.Parameters.AddWithValue("@dtdread", DBNull.Value);
 
                 cmd.ExecuteNonQuery();
-                result = true;
                 trans.Commit();
+
+                prm.IsSucceed = true;
+                prm.ResultMessage = "Successfully Saved.";
             }
             catch (Exception ex)
             {
-                result = false;
-                trans.Rollback();
+                prm.IsSucceed = false;
+                prm.ResultMessage = ex.Message;
             }
             finally
             {
                 conn.Close();
-                trans.Dispose();
                 cmd.Dispose();
+                
             }
+            return prm;
 
-            return result;
         }
     }
 }

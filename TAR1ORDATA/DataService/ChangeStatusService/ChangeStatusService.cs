@@ -35,7 +35,7 @@ namespace TAR1ORDATA.DataService.ChangeStatusService
             return icsa.GetStatusLogByConsumerid(consumerid);
         }
 
-        public bool SetStatusOfConsumerId(ConsumerStatusLogModel cslm)
+        public ProcessResultModel SetStatusOfConsumerId(ConsumerStatusLogModel cslm)
         {
             return icsa.SetStatusOfConsumerId(cslm);
         }
