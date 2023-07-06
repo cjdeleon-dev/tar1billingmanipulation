@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "FourPsVerify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+<script src="~/Scripts/myscripts/fourpsverifyscript.js"></script>
+
+<h2><strong>Verify 4Ps Details</strong></h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    <div class="col-lg-3">
+        <input type="text" placeholder="Last Name" id="txtlname" class="form-control" />
+    </div>
+    <div class="col-lg-3">
+        <input type="text" placeholder="First Name" id="txtfname" class="form-control" />
+    </div>
+    <div class="col-lg-3">
+        <input type="text" placeholder="Middle Name" id="txtmname" class="form-control" />
+    </div>
+    <div class="col-lg-1">
+        <button class="btn btn-primary" id="btnVerify" onclick="verify4PsDetails()"><i class="glyphicon glyphicon-search"></i> Verify</button>
+    </div>
+</div>
+

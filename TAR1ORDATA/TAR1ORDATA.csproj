@@ -124,6 +124,7 @@
     <Compile Include="DataModel\EmpPowerBillModel.cs" />
     <Compile Include="DataModel\FinanceHeadModel.cs" />
     <Compile Include="DataModel\ForWriteOffModel.cs" />
+    <Compile Include="DataModel\FourPsModel.cs" />
     <Compile Include="DataModel\HighArrearsConsumerModel.cs" />
     <Compile Include="DataModel\MemberConsumerModel.cs" />
     <Compile Include="DataModel\MemberORModel.cs" />
