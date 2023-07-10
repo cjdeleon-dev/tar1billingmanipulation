@@ -10,6 +10,25 @@
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
 <script src="~/Scripts/myscripts/fourpsverifyscript.js"></script>
 
+@*<style>
+    .fixed_header {
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+        .fixed_header tbody {
+            overflow: auto;
+            height: 300px;
+        }
+
+        .fixed_header th,
+        .fixed_header td {
+            padding: 5px;
+            text-align: left;
+            border: 1px solid #797878;
+        }
+</style>*@
+
 <h2><strong>Verify 4Ps Details</strong></h2>
 
 <div class="row">
@@ -30,4 +49,7 @@
         <button class="btn btn-primary" id="btnVerify" onclick="verify4PsDetails()"><i class="glyphicon glyphicon-search"></i> Verify</button>
     </div>
 </div>
-
+<br />
+<div class="row" id="divResult">
+    
+</div>

@@ -86,7 +86,7 @@ namespace TAR1ORMAN.Controllers
                                 EntryId = rdr["entry_id"].ToString(),
                                 Name = rdr["name"].ToString(),
                                 Address = rdr["address"].ToString(),
-                                Birthday = rdr["birthday"].ToString(),
+                                Birthday = Convert.ToDateTime(rdr["birthday"]).ToShortDateString(),
                                 Gender = rdr["sex"].ToString()
                             });
                         }

@@ -15,6 +15,6 @@ namespace TAR1ORDATA.Queries
                                                             "having max(CAST(arstrxhdr.billperiod AS INT))<=CAST(CAST(@lastbillperiod as VARCHAR(4)) + '12' as INT) " + 
                                                             "and sum(arstrxhdr.trxbalance)>0;";
 
-        public static readonly string sqlGetYearOf = "select * from (VALUES(1, 2015),(2, 2016),(3, 2017),(4, 2018),(5, 2019),(6, 2020),(7, 2021)) q(id,yearof);";
+        public static readonly string sqlGetYearOf = "select * from (VALUES(1, 2012),(2, 2013),(3, 2014),(4, 2015),(5, 2016),(6, 2017),(7, 2018),(8, 2019),(9, 2020),(10, 2021),(11, 2022)) q(id,yearof);";
     }
 }
