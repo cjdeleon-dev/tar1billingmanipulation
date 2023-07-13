@@ -32,7 +32,17 @@ namespace TAR1ORMAN.Controllers
         }
 
 
+        public JsonResult CheckAccounts(string searchparams)
+        {
+            List<ConsumerModel> lstcons = new List<ConsumerModel>();
+            string[] arrparams = searchparams.Split('~');
+            if (arrparams.Length == 3)
+            {
+                lstcons = searchAccount(arrparams[0], arrparams[1], arrparams[2]);
+            }
 
+            return Json(new { data = lstcons }, JsonRequestBehavior.AllowGet);
+        }
 
 
 
@@ -88,6 +98,72 @@ namespace TAR1ORMAN.Controllers
                                 Address = rdr["address"].ToString(),
                                 Birthday = Convert.ToDateTime(rdr["birthday"]).ToShortDateString(),
                                 Gender = rdr["sex"].ToString()
+                            });
+                        }
+                    }
+
+
+                }
+                catch (Exception)
+                {
+                    lst = null;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+
+            }
+
+            return lst;
+        }
+
+        private List<ConsumerModel> searchAccount(string acctno, string name, string address)
+        {
+            List<ConsumerModel> lst = new List<ConsumerModel>();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "select consumerid,name,address " +
+                                      "from arsconsumer " +
+                                      "where COALESCE(consumerid, '') like COALESCE('%'+@acctno+'%',consumerid,'') " +
+                                      "and COALESCE(name,'') like COALESCE('%'+@name+'%',name,'') " +
+                                      "and COALESCE(address,'') like COALESCE('%'+@address+'%',address,'');";
+
+                    cmd.Parameters.Clear();
+                    if (acctno == string.Empty)
+                        cmd.Parameters.AddWithValue("@acctno", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@acctno", acctno);
+
+                    if (name == string.Empty)
+                        cmd.Parameters.AddWithValue("@name", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@name", name);
+
+                    if (address == string.Empty)
+                        cmd.Parameters.AddWithValue("@address", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@address", address);
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            lst.Add(new ConsumerModel
+                            {
+                                AccountNo = rdr["consumerid"].ToString(),
+                                AccountName = rdr["name"].ToString(),
+                                Address = rdr["address"].ToString()
                             });
                         }
                     }

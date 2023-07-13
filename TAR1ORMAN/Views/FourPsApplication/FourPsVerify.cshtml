@@ -10,24 +10,21 @@
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
 <script src="~/Scripts/myscripts/fourpsverifyscript.js"></script>
 
-@*<style>
-    .fixed_header {
-        table-layout: fixed;
-        border-collapse: collapse;
+<style>
+    .input-group-multi [class*='col-'] {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-        .fixed_header tbody {
-            overflow: auto;
-            height: 300px;
-        }
+    .input-group-multi .form-control {
+        border-right: 0;
+    }
 
-        .fixed_header th,
-        .fixed_header td {
-            padding: 5px;
-            text-align: left;
-            border: 1px solid #797878;
-        }
-</style>*@
+    .input-group-multi [class*='col-']:last-child .form-control {
+        border-radius: 0 4px 4px 0;
+        border-right: 1px solid #ccc;
+    }
+</style>
 
 <h2><strong>Verify 4Ps Details</strong></h2>
 
@@ -47,9 +44,65 @@
     </div>
     <div class="col-lg-1">
         <button class="btn btn-primary" id="btnVerify" onclick="verify4PsDetails()"><i class="glyphicon glyphicon-search"></i> Verify</button>
+        <button class="btn btn-primary" id="btnReset" onclick="reloadPage()"><i class="glyphicon glyphicon-refresh"></i> Reset</button>
     </div>
 </div>
 <br />
 <div class="row" id="divResult">
-    
 </div>
+
+<div id="frmFPS">
+</div>
+
+@*==============================MODALS=======================================*@
+<div class="modal fade"
+     id="modalSearchAcct"
+     data-backdrop="static"
+     data-keyboard="false"
+     tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="max-height:500% !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5 class="modal-title" style="vertical-align:central;float:left;">SEARCH ACCOUNT</h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-danger" style="float:right;" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <input type="text" class="form-control" id="txtsrcacctno" placeholder="Enter Account No" />
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="text" class="form-control" id="txtsrcacctname" placeholder="Enter Account Name" />
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="text" class="form-control" id="txtsrcaddress" placeholder="Enter Address" />
+                    </div>
+                    <div class="col-lg-3">
+                        <button class="btn btn-info" id="btnsrcaccount" onclick="displayAccounts()"><i class="glyphicon glyphicon-check"></i> Search</button>
+                    </div>
+                </div><br />
+                <div style="overflow:scroll;" id="divSeachResult">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(loadPage());
+    </script>
+}
