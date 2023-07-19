@@ -158,7 +158,11 @@ namespace TAR1ORMAN.Controllers
                     //cmd.Parameters.AddWithValue("@nw_memberid", pcnm.NewMemberId);
                     //cmd.Parameters.AddWithValue("@nw_memberdate", pcnm.NewMemberDate);
                     cmd.Parameters.AddWithValue("@nw_birthday", pcnm.Birthday);
-                    cmd.Parameters.AddWithValue("@nw_contactnum", pcnm.ContactNo);
+                    if(pcnm.ContactNo==null)
+                        cmd.Parameters.AddWithValue("@nw_contactnum", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@nw_contactnum", pcnm.ContactNo);
+
                     cmd.Parameters.AddWithValue("@nw_relationship", pcnm.Relationship);
                     cmd.Parameters.AddWithValue("@nw_reason", pcnm.Reason);
                     cmd.Parameters.AddWithValue("@nw_forwithdrawold", pcnm.ForWithdrawOld);
