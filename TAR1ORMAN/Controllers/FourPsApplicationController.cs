@@ -135,7 +135,7 @@ namespace TAR1ORMAN.Controllers
                                       "from arsconsumer " +
                                       "where COALESCE(consumerid, '') like COALESCE('%'+@acctno+'%',consumerid,'') " +
                                       "and COALESCE(name,'') like COALESCE('%'+@name+'%',name,'') " +
-                                      "and COALESCE(address,'') like COALESCE('%'+@address+'%',address,'');";
+                                      "and COALESCE(address,'') like COALESCE('%'+@address+'%',address,'') and statusid='A';";
 
                     cmd.Parameters.Clear();
                     if (acctno == string.Empty)

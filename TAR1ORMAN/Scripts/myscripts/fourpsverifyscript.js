@@ -28,7 +28,7 @@ function verify4PsDetails() {
                 html += '<table class="table table-bordered" id="tblQualified"> ';
                 html += '   <thead> ';
                 html += '       <tr> ';
-                html += '           <th style="text-align:center;">ID</th> ';
+                html += '           <th style="text-align:center;">ENTRY ID</th> ';
                 html += '           <th style="text-align:center;">HOUSE HOLD ID</th> ';
                 html += '           <th style="text-align:center;">NAME</th> ';
                 html += '           <th style="text-align:center;">ADDRESS</th> ';
@@ -389,7 +389,7 @@ function appendToSearchTableBody(data) {
         html += '<td id="' + item.AccountNo + '" class="text-center">' + item.AccountNo + '</td>';
         html += '<td id="' + item.AccountName + '" class="text-center">' + item.AccountName + '</td>';
         html += '<td>' + item.Address + '</td>';
-        html += '<td><input type="button" class="btn btn-danger" value="SET THIS ACCOUNT" onclick="setThisAccount(' + item.AccountNo + ')" /></td>';
+        html += '<td><input type="button" class="btn btn-danger" value="SET THIS ACCOUNT" onclick="setThisAccount(' + item.AccountNo.toString() + ')" /></td>';
         html += '</tr>';
     });
 
@@ -398,7 +398,9 @@ function appendToSearchTableBody(data) {
 
 
 function setThisAccount(acctnumber) {
-    $('#txtaccountno').val(acctnumber);
+
+    var stractno = ("0" + acctnumber).substr(-10);
+    $('#txtaccountno').val(stractno);
 
     $('#txtsrcacctno').val("");
     $('#txtsrcacctname').val("");
@@ -406,4 +408,8 @@ function setThisAccount(acctnumber) {
     $('#divSeachResult').empty();
 
     $('#modalSearchAcct').modal("hide");
+}
+
+function setAccount() {
+    //check the account if existing and active
 }

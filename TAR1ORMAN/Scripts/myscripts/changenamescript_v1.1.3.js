@@ -1,4 +1,4 @@
-﻿const { stringify } = require("querystring");
+﻿//const { stringify } = require("querystring");
 
 function checkAcct() {
     var acctnum = $('#txtAccountNo').val();
