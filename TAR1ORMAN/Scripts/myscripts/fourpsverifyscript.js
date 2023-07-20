@@ -81,7 +81,7 @@ function showQMEApp() {
 }
 
 
-function showFourPsApp(id) {
+function showFourPsApp(entryId) {
     $('#btnVerify').hide();
     $('#btnReset').show();
 
@@ -92,6 +92,30 @@ function showFourPsApp(id) {
 
     appendToFPSdiv();
 
+    //Four Ps Detail By EntryId
+    $.ajax({
+        url: "/FourPsApplication/GetFourPsDetailByEntryId?entryId=" + entryId,
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            $.each(result, function (key, item) {
+                $('#txtsurname').val(item.Surname);
+                $('#txtfirstname').val(item.Givenname);
+                $('#txtmiddlename').val(item.Middlename);
+                $('#txtbarangay').val(item.Brgyname);
+                $('#txtcitymun').val(item.Cityname);
+                $('#txtprovince').val(item.Provname);
+                $('#txtregion').val("REGION III");
+                $('#dtpbirthdate').val(item.Birthday);
+                $('#txthouseholdno').val(item.HH_Id);
+            });
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
 }
 
 function appendToFPSdiv()
@@ -114,7 +138,7 @@ function appendToFPSdiv()
     html += '    <div class="col-lg-3"> ';
     html += '        <div class="form-group"> ';
     html += '            <span>Surname (Apilyedo)</span> ';
-    html += '            <input class="form-control" type="text" id="txtsurename" placeholder="Enter surname" /> ';
+    html += '            <input class="form-control" type="text" id="txtsurname" placeholder="Enter surname" /> ';
     html += '        </div> ';
     html += '    </div> '; 
     html += '    <div class="col-lg-3"> ';
@@ -220,18 +244,18 @@ function appendToFPSdiv()
     html += '    <div class="form-group"> ';
     html += '        <div class="col-lg-2"> ';
     html += '            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
-    html += '                <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span> ';
+    html += '                <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span> ';
     html += '            </div> ';
     html += '        </div> ';
     html += '        <div class="col-lg-2"> ';
     html += '            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
-    html += '                <input type="radio" id="rbrented" name="ownership" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">rented</span> ';
+    html += '                <input type="radio" id="rbrented" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">rented</span> ';
     html += '            </div> ';
     html += '        </div> ';
     html += '        <div class="col-lg-8"> ';
     html += '            <div class="input-group input-group-multi"> ';
     html += '                <div class="input-group-addon" style="background-color:transparent !important;"> ';
-    html += '                    <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> ';
+    html += '                    <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> ';
     html += '                </div> ';
     html += '                <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtothers" placeholder="if others, please specify" disabled /></div> ';
     html += '            </div> ';
@@ -318,7 +342,7 @@ function appendToFPSdiv()
     html += '    </div> ';
     html += '</div>'
 
-    $('#frmFPS').append(html);
+    $('#frmFPS').html(html);
 }
 
 function reloadPage() {
@@ -412,4 +436,22 @@ function setThisAccount(acctnumber) {
 
 function setAccount() {
     //check the account if existing and active
+}
+
+
+function rbothersOnChange() {
+    if ($("#rbothers").prop('checked', true)) {
+        $('#txtothers').prop('disabled', false);
+       
+    }
+    else {
+
+        $('#txtothers').val("");
+        $('#txtothers').prop('disabled', true);
+    }
+        
+}
+
+function rbdisapprovedOnChange() {
+
 }

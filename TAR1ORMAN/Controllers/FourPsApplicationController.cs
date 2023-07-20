@@ -44,7 +44,10 @@ namespace TAR1ORMAN.Controllers
             return Json(new { data = lstcons }, JsonRequestBehavior.AllowGet);
         }
 
-
+        public JsonResult GetFourPsDetailByEntryId(string entryId)
+        {
+            return Json(new { data = getFourPsDetailByEntryId(entryId) }, JsonRequestBehavior.AllowGet);
+        }
 
 
         //FUNCTIONS AND PROCEDURES
@@ -182,6 +185,66 @@ namespace TAR1ORMAN.Controllers
             }
 
             return lst;
+        }
+
+
+        private FourPsModel getFourPsDetailByEntryId(string entryid)
+        {
+            FourPsModel fpm = new FourPsModel();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "select prov_name,city_name,brgy_name,psgc_bgy,hh_id,entry_id," +
+                                      "last_name,first_name,middle_name,ext_name,birthday,sex " +
+                                      "from tbl_mstrfourps " +
+                                      "where entry_id = @entryid";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@entryid", entryid);
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            fpm.Provname = rdr["prov_name"].ToString();
+                            fpm.Cityname = rdr["city_name"].ToString();
+                            fpm.Brgyname = rdr["brgy_name"].ToString();
+                            fpm.PSGC_Bgy = rdr["psgc_bgy"].ToString();
+                            fpm.HH_Id = rdr["hh_id"].ToString();
+                            fpm.EntryId = rdr["entry_id"].ToString();
+                            fpm.Surname = rdr["last_name"].ToString();
+                            fpm.Givenname = rdr["first_name"].ToString();
+                            fpm.Middlename = rdr["middle_name"].ToString();
+                            fpm.Extensionname = rdr["ext_name"].ToString();
+                            fpm.Birthday = Convert.ToDateTime(rdr["birthday"]).ToString("yyyy-MM-dd");
+                            fpm.Gender = rdr["sex"].ToString();
+                        }
+                    }
+
+
+                }
+                catch (Exception)
+                {
+                    fpm = null;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+
+            }
+
+            return fpm;
+
         }
     }
 }
