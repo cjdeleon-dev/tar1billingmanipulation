@@ -244,18 +244,18 @@ function appendToFPSdiv()
     html += '    <div class="form-group"> ';
     html += '        <div class="col-lg-2"> ';
     html += '            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
-    html += '                <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span> ';
+    html += '                <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbownedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span> ';
     html += '            </div> ';
     html += '        </div> ';
     html += '        <div class="col-lg-2"> ';
     html += '            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
-    html += '                <input type="radio" id="rbrented" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">rented</span> ';
+    html += '                <input type="radio" id="rbrented" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbrentedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">rented</span> ';
     html += '            </div> ';
     html += '        </div> ';
     html += '        <div class="col-lg-8"> ';
     html += '            <div class="input-group input-group-multi"> ';
     html += '                <div class="input-group-addon" style="background-color:transparent !important;"> ';
-    html += '                    <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnChange()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> ';
+    html += '                    <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> ';
     html += '                </div> ';
     html += '                <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtothers" placeholder="if others, please specify" disabled /></div> ';
     html += '            </div> ';
@@ -316,13 +316,13 @@ function appendToFPSdiv()
     html += '    <br /> ';
     html += '    <div class="col-lg-2"> ';
     html += '        <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
-    html += '            <input type="radio" id="rbapproved" name="evaluation" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">approved</span> ';
+    html += '            <input type="radio" id="rbapproved" name="evaluation" style="vertical-align:middle; margin:0px;" onclick="rbapprovedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">approved</span> ';
     html += '        </div> ';
     html += '    </div> ';
     html += '    <div class="col-lg-6"> ';
     html += '        <div class="input-group input-group-multi"> ';
     html += '            <div class="input-group-addon" style="background-color:transparent !important;"> ';
-    html += '                <input type="radio" id="rbdisapproved" name="evaluation" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">disapproved</span> ';
+    html += '                <input type="radio" id="rbdisapproved" name="evaluation" style="vertical-align:middle; margin:0px;" onclick="rbdisapprovedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">disapproved</span> ';
     html += '            </div> ';
     html += '            <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtdisapprovereason" placeholder="Reasons for disapproval" disabled /></div> ';
     html += '        </div> ';
@@ -371,7 +371,7 @@ function displayAccounts() {
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
-            $('#tbodyAccounts').empty();
+            $('#divSeachResult').empty();
             if (result.data.length > 0) {
                 var html = '';
 
@@ -388,6 +388,8 @@ function displayAccounts() {
                 html += '</table> ';
 
                 $('#divSeachResult').append(html);
+
+                $('#tbodyAccounts').empty();
 
                 appendToSearchTableBody(result.data);
             }
@@ -439,19 +441,43 @@ function setAccount() {
 }
 
 
-function rbothersOnChange() {
+function rbothersOnClick() {
     if ($("#rbothers").prop('checked', true)) {
-        $('#txtothers').prop('disabled', false);
-       
+        $('#txtothers').removeAttr('disabled'); 
     }
     else {
 
         $('#txtothers').val("");
-        $('#txtothers').prop('disabled', true);
+        $('#txtothers').attr('disabled','disabled');
     }
         
 }
 
-function rbdisapprovedOnChange() {
+function rbrentedOnClick() {
+    if ($("#rbrented").prop('checked', true)) {
+        $('#txtothers').removeAttr('disabled');
+        $('#txtothers').attr('disabled','disabled');
+    }
 
+}
+
+function rbownedOnClick() {
+    if ($("#rbowned").prop('checked', true)) {
+        $('#txtothers').removeAttr('disabled');
+        $('#txtothers').attr('disabled', 'disabled');
+    }
+
+}
+
+function rbdisapprovedOnClick() {
+    if ($('#rbdisapproved').prop('checked', true)) {
+        $('#txtdisapprovereason').removeAttr('disabled');
+    }
+}
+
+function rbapprovedOnClick() {
+    if ($('#rbapproved').prop('checked', true)) {
+        $('#txtdisapprovereason').removeAttr('disabled');
+        $('#txtdisapprovereason').attr('disabled','disabled');
+    }
 }
