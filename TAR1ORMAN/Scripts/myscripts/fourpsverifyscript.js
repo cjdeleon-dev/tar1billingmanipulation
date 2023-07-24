@@ -101,6 +101,7 @@ function showFourPsApp(entryId) {
         success: function (result) {
             console.log(result);
             $.each(result, function (key, item) {
+                $('#txtentryid').val(entryId);
                 $('#txtsurname').val(item.Surname);
                 $('#txtfirstname').val(item.Givenname);
                 $('#txtmiddlename').val(item.Middlename);
@@ -138,6 +139,7 @@ function appendToFPSdiv()
     html += '    <div class="col-lg-3"> ';
     html += '        <div class="form-group"> ';
     html += '            <span>Surname (Apilyedo)</span> ';
+    html += '            <input class="form-control" type="hidden" id="txtentryid" placeholder="Enter surname" /> ';
     html += '            <input class="form-control" type="text" id="txtsurname" placeholder="Enter surname" /> ';
     html += '        </div> ';
     html += '    </div> '; 
@@ -218,7 +220,7 @@ function appendToFPSdiv()
     html += '    <div class="col-lg-4"> ';
     html += '        <div class="form-group"> ';
     html += '            <span>Marital Status</span> ';
-    html += '            <select class="form-control" style="max-width:100%;"> ';
+    html += '            <select class="form-control" style="max-width:100%;" id="cbomaritalstatus"> ';
     html += '                <option disabled selected>Select Marital Status</option> ';
     html += '                <option value="single" id="optSngl">Single</option> ';
     html += '                <option value="married" id="optMrrd">Married</option> ';
@@ -244,6 +246,7 @@ function appendToFPSdiv()
     html += '    <div class="form-group"> ';
     html += '        <div class="col-lg-2"> ';
     html += '            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;"> ';
+    html += '                <input type="hidden" id="txtownership" />';
     html += '                <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbownedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span> ';
     html += '            </div> ';
     html += '        </div> ';
@@ -257,7 +260,7 @@ function appendToFPSdiv()
     html += '                <div class="input-group-addon" style="background-color:transparent !important;"> ';
     html += '                    <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> ';
     html += '                </div> ';
-    html += '                <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtothers" placeholder="if others, please specify" disabled /></div> ';
+    html += '                <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtownothers" placeholder="if others, please specify" disabled /></div> ';
     html += '            </div> ';
     html += '        </div> ';
     html += '    </div> ';
@@ -436,13 +439,9 @@ function setThisAccount(acctnumber) {
     $('#modalSearchAcct').modal("hide");
 }
 
-function setAccount() {
-    //check the account if existing and active
-}
-
-
 function rbothersOnClick() {
     if ($("#rbothers").prop('checked', true)) {
+        $("#txtownership").val("OTHERS");
         $('#txtothers').removeAttr('disabled'); 
     }
     else {
@@ -455,6 +454,7 @@ function rbothersOnClick() {
 
 function rbrentedOnClick() {
     if ($("#rbrented").prop('checked', true)) {
+        $("#txtownership").val("RENTED");
         $('#txtothers').removeAttr('disabled');
         $('#txtothers').attr('disabled','disabled');
     }
@@ -463,6 +463,7 @@ function rbrentedOnClick() {
 
 function rbownedOnClick() {
     if ($("#rbowned").prop('checked', true)) {
+        $("#txtownership").val("OWNED");
         $('#txtothers').removeAttr('disabled');
         $('#txtothers').attr('disabled', 'disabled');
     }
@@ -480,4 +481,115 @@ function rbapprovedOnClick() {
         $('#txtdisapprovereason').removeAttr('disabled');
         $('#txtdisapprovereason').attr('disabled','disabled');
     }
+}
+
+function savepreview() {
+
+    var docchk1, docchk2, docchk3, docchk4 = false;
+    var supPOR, supLOA, supVGID, supSWDO = false;
+    var isapproved;
+
+    //checklist
+    if ($("#chkduly").prop('checked', true))
+        docchk1 = true;
+    else
+        docchk1 = false;
+
+    if ($("#chkeb").prop('checked', true))
+        docchk2 = true;
+    else
+        docchk2 = false;
+
+    if ($("#chkvalid").prop('checked', true))
+        docchk3 = true;
+    else
+        docchk3 = false;
+
+    //supporting documents
+    if ($("#chkproof").prop('checked', true))
+        supPOR = true;
+    else
+        supPOR = false;
+
+    if ($("#chkauth").prop('checked', true))
+        supLOA = true;
+    else
+        supLOA = false;
+
+    if ($("#chkvalidrep").prop('checked', true))
+        supVGID = true;
+    else
+        supVGID = false;
+
+    //Validation entry
+
+    if ($("#rbapproved").prop('checked', true)) {
+        isapproved = true;
+    } else {
+        isapproved = false;
+    }
+    if (isValidEntry()) {
+        var objData = {
+            Id: 0,
+            AccountNo: $("#txtaccountno").val(),
+            PSGC_Bgy: "",
+            HH_Id: $("#txthouseholdno").val(),
+            EntryId: $("#txtentryid").val(),
+            AccountNo: $("#txtaccountno").val(),
+            Surname: $("#txtsurname").val(),
+            Givenname: $("#txtgivenname").val(),
+            Middlename: $("#txtmiddlename").val(),
+            Extensionname: "",
+            Maidenname: $("#txtmaidenname").val(),
+            Gender: "",
+            HouseNumber: "",
+            Street: $("#txtstreet").val(),
+            Brgyname: $("#txtbarangay").val(),
+            Cityname: $('#txtcitymun').val(),
+            Provname: $('#txtprovince').val(),
+            Region: $('#txtregion').val(),
+            Postal: $("#txtpostal").val(),
+            Birthday: $("#dtpbirthdate").val(),
+            MaritalStatus: $("#cbomaritalstatus").val(),
+            ContactNo: $("#txtcontactno").val(),
+            Ownership: $("#txtownership").val(),
+            OwnershipOther: $("#txtownothers"),
+            ValidID: $("#txtvalidid").val().val(),
+            ValidIdNo: $("#txtvalididno").val(),
+            AnnualIncome: "",
+            DocCheckList1: docchk1,
+            DocCheckList2: docchk2,
+            DocCheckList3: docchk3,
+            DocCheckList4: docchk4,
+            SupportPOR: supPOR,
+            SupportLOA: supLOA,
+            SupportVGID: supVGID,
+            SupportSWDO: supSWDO,
+            IsApproved: isapproved,
+            ReasonForDisapproved: $("#txtdisapprovereason").val(),
+            EntryUserId: "",
+            LastUpdated: "",
+            UpdatedBy: "",
+            Name: "",
+            Address: ""
+        }
+    }
+    
+
+
+}
+
+function isValidEntry() {
+    if ($("#txtaccountno").val() == "") {
+        swal("Invalid Entry", "Please select Account Number.", "warning");
+        return false;
+    }
+
+    if ($("#txtcontactno").val() == "") {
+        swal("Invalid Entry", "Contact Number is required.", "warning");
+        return false;
+    }
+        
+
+    return true;
 }
