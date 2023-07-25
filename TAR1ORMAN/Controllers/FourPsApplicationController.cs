@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -48,6 +49,21 @@ namespace TAR1ORMAN.Controllers
         {
             return Json(new { data = getFourPsDetailByEntryId(entryId) }, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult InsertQualifiedLifeliner(FourPsModel fpm)
+        {
+            bool result = false;
+            if (saveEntryQLifeLiner(fpm))
+                result = true;
+
+            return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        //public ActionResult PreviewQualifiedLifelinerReport()
+        //{
+
+        //}
 
 
         //FUNCTIONS AND PROCEDURES
@@ -187,7 +203,6 @@ namespace TAR1ORMAN.Controllers
             return lst;
         }
 
-
         private FourPsModel getFourPsDetailByEntryId(string entryid)
         {
             FourPsModel fpm = new FourPsModel();
@@ -245,6 +260,244 @@ namespace TAR1ORMAN.Controllers
 
             return fpm;
 
+        }
+
+        private bool isExistAccountNo(string accountno)
+        {
+            bool result = false;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "select count(*) numrows " +
+                                      "from tbl_qualifiedFPQME " +
+                                      "where consumerid = @consumerid";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@consumerid", accountno);
+
+                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            if (Convert.ToInt32(rdr["numrows"]) > 0)
+                                result = true;
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+
+            }
+
+            return result;
+        }
+
+        private bool saveEntryQLifeLiner(FourPsModel fpm)
+        {
+            bool result = false;
+
+            if (isExistAccountNo(fpm.AccountNo))
+                return result;
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                con.Open();
+                SqlTransaction trans;
+                trans = con.BeginTransaction();
+                try
+                {
+
+                    cmd.Connection = con;
+                    cmd.Transaction = trans;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "INSERT INTO [ebs].[dbo].[tbl_qualifiedFPQME]											   " +
+                                      "           ([hh_id],[entryid],[consumerid],[dateapplied],[isQualified]				   " +
+                                      "           ,[app_lname],[app_fname],[app_mname],[app_extname],[app_mdname]			   " +
+                                      "           ,[app_gender],[app_addhouseno],[app_addstreet],[app_addbarangay]			   " +
+                                      "           ,[app_addmunicipality],[app_addprovince],[app_addregion],[app_addpostal]	   " +
+                                      "           ,[app_birthdate],[app_maritalstatus],[app_contactnumber],[ownership],[ownershipother] " +
+                                      "           ,[validid],[valididno],[annualincome],[docchklst1],[docchklst2]			   " +
+                                      "           ,[docchklst3],[docchklst4],[supportdocPOR],[supportdocLOA]				   " +
+                                      "           ,[supportVGID],[supportSWDO],[evalisapproved],[reasonfordisapproved]		   " +
+                                      "           ,[userid])																   " +
+                                      "VALUES(@hh_id,@entryid,@consumerid,getdate(),@isQualified,@app_lname				   " +
+                                      "	  ,@app_fname,@app_mname,@app_extname,@app_mdname,@app_gender,@app_addhouseno		   " +
+                                      "	  ,@app_addstreet,@app_addbarangay,@app_addmunicipality,@app_addprovince			   " +
+                                      "	  ,@app_addregion,@app_addpostal,@app_birthdate,@app_maritalstatus,@app_contactnumber  " +
+                                      "	  ,@ownership,@ownershipother,@validid,@valididno,@annualincome,@docchklst1,@docchklst2,@docchklst3	   " +
+                                      "	  ,@docchklst4,@supportdocPOR,@supportdocLOA,@supportVGID,@supportSWDO,@evalisapproved " +
+                                      "	  ,@reasonfordisapproved,@userid)													   ";
+
+                    cmd.Parameters.AddWithValue("@hh_id", fpm.HH_Id);
+                    cmd.Parameters.AddWithValue("@entryid", fpm.EntryId);
+                    cmd.Parameters.AddWithValue("@consumerid", fpm.AccountNo);
+                    cmd.Parameters.AddWithValue("@isQualified", fpm.IsQualified);
+                    cmd.Parameters.AddWithValue("@app_lname", fpm.Surname);
+                    cmd.Parameters.AddWithValue("@app_fname", fpm.Givenname);
+                    cmd.Parameters.AddWithValue("@app_mname", fpm.Middlename);
+
+                    if(fpm.Extensionname==null)
+                        cmd.Parameters.AddWithValue("@app_extname", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_extname", fpm.Extensionname);
+                    if (fpm.Maidenname == null)
+                        cmd.Parameters.AddWithValue("@app_mdname", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_mdname", fpm.Maidenname);
+                    cmd.Parameters.AddWithValue("@app_gender", fpm.Gender);
+                    if(fpm.HouseNumber==null)
+                        cmd.Parameters.AddWithValue("@app_addhouseno", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addhouseno", fpm.HouseNumber);
+                    if(fpm.Street==null)
+                        cmd.Parameters.AddWithValue("@app_addstreet", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addstreet", fpm.Street);
+                    if(fpm.Brgyname==null)
+                        cmd.Parameters.AddWithValue("@app_addbarangay", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addbarangay", fpm.Brgyname);
+                    if (fpm.Cityname == null)
+                        cmd.Parameters.AddWithValue("@app_addmunicipality", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addmunicipality", fpm.Cityname);
+                    if(fpm.Provname==null)
+                        cmd.Parameters.AddWithValue("@app_addprovince", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addprovince", fpm.Provname);
+                    if(fpm.Region==null)
+                        cmd.Parameters.AddWithValue("@app_addregion", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addregion", fpm.Region);
+                    if (fpm.Postal==null)
+                        cmd.Parameters.AddWithValue("@app_addpostal",DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_addpostal", fpm.Postal);
+                    
+                    cmd.Parameters.AddWithValue("@app_birthdate", fpm.Birthday);
+
+                    if(fpm.MaritalStatus==null)
+                        cmd.Parameters.AddWithValue("@app_maritalstatus",DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@app_maritalstatus", fpm.MaritalStatus);
+                    cmd.Parameters.AddWithValue("@app_contactnumber", fpm.ContactNo);
+                    cmd.Parameters.AddWithValue("@ownership", fpm.Ownership);
+                    if(fpm.OwnershipOther==null)
+                        cmd.Parameters.AddWithValue("@ownershipother", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@ownershipother", fpm.OwnershipOther);
+
+                    cmd.Parameters.AddWithValue("@validid", fpm.ValidID);
+                    cmd.Parameters.AddWithValue("@valididno", fpm.ValidIdNo);
+                    cmd.Parameters.AddWithValue("@annualincome", fpm.AnnualIncome);
+                    cmd.Parameters.AddWithValue("@docchklst1", fpm.DocCheckList1);
+                    cmd.Parameters.AddWithValue("@docchklst2", fpm.DocCheckList2);
+                    cmd.Parameters.AddWithValue("@docchklst3", fpm.DocCheckList3);
+                    cmd.Parameters.AddWithValue("@docchklst4", fpm.DocCheckList4);
+                    cmd.Parameters.AddWithValue("@supportdocPOR", fpm.SupportPOR);
+                    cmd.Parameters.AddWithValue("@supportdocLOA", fpm.SupportLOA);
+                    cmd.Parameters.AddWithValue("@supportVGID", fpm.SupportVGID);
+                    cmd.Parameters.AddWithValue("@supportSWDO", fpm.SupportSWDO);
+                    cmd.Parameters.AddWithValue("@evalisapproved", fpm.IsApproved);
+
+                    if(fpm.ReasonForDisapproved==null)
+                        cmd.Parameters.AddWithValue("@reasonfordisapproved", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@reasonfordisapproved", fpm.ReasonForDisapproved);
+                    cmd.Parameters.AddWithValue("@userid", User.Identity.Name);
+
+                    cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    result = false;
+                }
+                finally
+                {
+                    trans.Dispose();
+                    con.Close();
+                }
+
+            }
+
+            return result;
+        }
+
+        private int getMaxIdOfUser(string userid)
+        {
+            int id = 0;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "select max(id) [currentid] " +
+                                      "from tbl_mstrfourps " +
+                                      "where userid=@userid";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@userid", userid);
+
+                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            id = Convert.ToInt32(rdr["currentid"]);
+                        }
+                    }
+
+
+                }
+                catch (Exception)
+                {
+                    id = 0;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+
+            }
+
+            return id;
+        }
+
+        private DataTable getDataForReportForm(int reportid)
+        {
+            DataTable dt = new DataTable();
+
+
+
+            return dt;
         }
     }
 }

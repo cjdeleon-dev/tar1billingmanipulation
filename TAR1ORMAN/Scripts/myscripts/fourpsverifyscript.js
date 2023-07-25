@@ -99,7 +99,6 @@ function showFourPsApp(entryId) {
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
-            console.log(result);
             $.each(result, function (key, item) {
                 $('#txtentryid').val(entryId);
                 $('#txtsurname').val(item.Surname);
@@ -111,6 +110,7 @@ function showFourPsApp(entryId) {
                 $('#txtregion').val("REGION III");
                 $('#dtpbirthdate').val(item.Birthday);
                 $('#txthouseholdno').val(item.HH_Id);
+                $('#cbogender').val(item.Gender);
             });
         },
         error: function (errormessage) {
@@ -157,8 +157,13 @@ function appendToFPSdiv()
     html += '    </div> ';
     html += '    <div class="col-lg-3"> ';
     html += '        <div class="form-group"> ';
-    html += '            <span>Maiden Name (if applicable)</span> ';
-    html += '            <input class="form-control" type="text" id="txtmaidenname" placeholder="Enter maiden name" /> ';
+    html += '            <span>Gender</span> ';
+    html += '            <input class="form-control" type="hidden" id="txtmaidenname" placeholder="Enter maiden name" /> ';
+    html += '            <select class="form-control" style="max-width:100%;" id="cbogender"> ';
+    html += '                <option disabled selected>Select Gender</option> ';
+    html += '                <option value="MALE" id="optMale">Male</option> ';
+    html += '                <option value="FEMALE" id="optFemale">Female</option> ';
+    html += '            </select> ';
     html += '        </div> ';
     html += '    </div> ';
     html += '</div> ';
@@ -222,11 +227,11 @@ function appendToFPSdiv()
     html += '            <span>Marital Status</span> ';
     html += '            <select class="form-control" style="max-width:100%;" id="cbomaritalstatus"> ';
     html += '                <option disabled selected>Select Marital Status</option> ';
-    html += '                <option value="single" id="optSngl">Single</option> ';
-    html += '                <option value="married" id="optMrrd">Married</option> ';
-    html += '                <option value="widowed" id="optWdwd">Widowed</option> ';
-    html += '                <option value="divorced" id=optDvrcd>Divorced</option> ';
-    html += '                <option value="separated" id="optSprtd">Separated</option> ';
+    html += '                <option value="SINGLE" id="optSngl">Single</option> ';
+    html += '                <option value="MARRIED" id="optMrrd">Married</option> ';
+    html += '                <option value="WIDOWED" id="optWdwd">Widowed</option> ';
+    html += '                <option value="DIVORCED" id=optDvrcd>Divorced</option> ';
+    html += '                <option value="SEPARATED" id="optSprtd">Separated</option> ';
     html += '            </select> ';
     html += '        </div> ';
     html += '    </div> ';
@@ -341,7 +346,7 @@ function appendToFPSdiv()
     html += '</div> ';
     html += '<div class="row"> ';
     html += '    <div class="col-lg-offset-4 col-lg-4 text-center"> ';
-    html += '         <button class="btn btn-primary" id="btnSave" onclick="savepreview()"><i class="glyphicon glyphicon-save"></i> Save and Preview</button>';  
+    html += '         <button class="btn btn-primary" id="btnSave" onclick="savepreview()"><i class="glyphicon glyphicon-save"></i> Save</button>';  
     html += '    </div> ';
     html += '</div>'
 
@@ -490,12 +495,12 @@ function savepreview() {
     var isapproved;
 
     //checklist
-    if ($("#chkduly").prop('checked', true))
+    if ($("#chkduly").is(':checked'))
         docchk1 = true;
     else
         docchk1 = false;
 
-    if ($("#chkeb").prop('checked', true))
+    if ($("#chkeb").is(':checked'))
         docchk2 = true;
     else
         docchk2 = false;
@@ -506,28 +511,29 @@ function savepreview() {
         docchk3 = false;
 
     //supporting documents
-    if ($("#chkproof").prop('checked', true))
+    if ($("#chkproof").is(':checked'))
         supPOR = true;
     else
         supPOR = false;
 
-    if ($("#chkauth").prop('checked', true))
+    if ($("#chkauth").is(':checked'))
         supLOA = true;
     else
         supLOA = false;
 
-    if ($("#chkvalidrep").prop('checked', true))
+    if ($("#chkvalidrep").is(':checked'))
         supVGID = true;
     else
         supVGID = false;
 
     //Validation entry
 
-    if ($("#rbapproved").prop('checked', true)) {
+    if ($("#rbapproved").is(':checked'))
         isapproved = true;
-    } else {
+    else 
         isapproved = false;
-    }
+    
+
     if (isValidEntry()) {
         var objData = {
             Id: 0,
@@ -536,12 +542,14 @@ function savepreview() {
             HH_Id: $("#txthouseholdno").val(),
             EntryId: $("#txtentryid").val(),
             AccountNo: $("#txtaccountno").val(),
+            DateApply: "",
+            IsQualified: true,
             Surname: $("#txtsurname").val(),
-            Givenname: $("#txtgivenname").val(),
+            Givenname: $("#txtfirstname").val(),
             Middlename: $("#txtmiddlename").val(),
             Extensionname: "",
             Maidenname: $("#txtmaidenname").val(),
-            Gender: "",
+            Gender: $("#cbogender").val(),
             HouseNumber: "",
             Street: $("#txtstreet").val(),
             Brgyname: $("#txtbarangay").val(),
@@ -554,9 +562,9 @@ function savepreview() {
             ContactNo: $("#txtcontactno").val(),
             Ownership: $("#txtownership").val(),
             OwnershipOther: $("#txtownothers"),
-            ValidID: $("#txtvalidid").val().val(),
+            ValidID: $("#txtvalidid").val(),
             ValidIdNo: $("#txtvalididno").val(),
-            AnnualIncome: "",
+            AnnualIncome: 0,
             DocCheckList1: docchk1,
             DocCheckList2: docchk2,
             DocCheckList3: docchk3,
@@ -573,6 +581,34 @@ function savepreview() {
             Name: "",
             Address: ""
         }
+
+        $.ajax({
+            url: "/FourPsApplication/InsertQualifiedLifeliner",
+            type: "POST",
+            data: JSON.stringify(objData),
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                if (result.data) {
+                    //preview report
+                    swal('Success', 'Successfully Saved', 'success');
+
+                    //printing
+                    //var parent = $('embed#cnpdf').parent();
+                    //var newElement = '<embed src="/FourPsApplication/PreviewQualifiedLifelinerReport"  width="100%" height="800" type="application/pdf" id="cnpdf">';
+
+                    //$('embed#cnpdf').remove();
+                    //parent.append(newElement);
+
+                    //$('#myRptFormModal').modal('show');
+                }
+                else
+                    swal('Error', 'An error occured:\nEither the account number is exist or something went wrong.', 'error');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
     }
     
 
