@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Reporting.WebForms;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -60,10 +62,30 @@ namespace TAR1ORMAN.Controllers
 
         }
 
-        //public ActionResult PreviewQualifiedLifelinerReport()
-        //{
+        public ActionResult PreviewQualifiedLifelinerReport()
+        {
+            LocalReport lr = new LocalReport();
+            string p = Path.Combine(Server.MapPath("/Reports"), "rptFourPsForm.rdlc");
+            lr.ReportPath = p;
 
-        //}
+            //initialize parameters
+            DataTable dtData = getDataForReportForm(getMaxIdOfUser(User.Identity.Name));
+           
+            //ReportDataSource
+            ReportDataSource rptds = new ReportDataSource("dsFPQME", dtData);
+
+            //Add datasource to bind
+            lr.DataSources.Add(rptds);
+            
+            string mt, enc, f;
+            string[] s;
+            Warning[] w;
+
+            //Rendering
+            byte[] b = lr.Render("PDF", null, out mt, out enc, out f, out s, out w);
+
+            return File(b, mt);
+        }
 
 
         //FUNCTIONS AND PROCEDURES
@@ -217,7 +239,7 @@ namespace TAR1ORMAN.Controllers
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.CommandText = "select prov_name,city_name,brgy_name,psgc_bgy,hh_id,entry_id," +
-                                      "last_name,first_name,middle_name,ext_name,birthday,sex " +
+                                      "last_name,first_name,middle_name,ext_name,birthday,upper(sex)[sex] " +
                                       "from tbl_mstrfourps " +
                                       "where entry_id = @entryid";
 
@@ -262,7 +284,7 @@ namespace TAR1ORMAN.Controllers
 
         }
 
-        private bool isExistAccountNo(string accountno)
+        private bool isExistAccountNo(string accountno,string entryid)
         {
             bool result = false;
 
@@ -275,12 +297,13 @@ namespace TAR1ORMAN.Controllers
                     con.Open();
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "select count(*) numrows " +
+                    cmd.CommandText = "select isnull(count(*),0) numrows " +
                                       "from tbl_qualifiedFPQME " +
-                                      "where consumerid = @consumerid";
+                                      "where consumerid = @consumerid or entryid=@entryid;";
 
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@consumerid", accountno);
+                    cmd.Parameters.AddWithValue("@entryid", entryid);
 
                     SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
 
@@ -313,7 +336,7 @@ namespace TAR1ORMAN.Controllers
         {
             bool result = false;
 
-            if (isExistAccountNo(fpm.AccountNo))
+            if (isExistAccountNo(fpm.AccountNo,fpm.EntryId))
                 return result;
 
             using (SqlCommand cmd = new SqlCommand())
@@ -399,6 +422,7 @@ namespace TAR1ORMAN.Controllers
                         cmd.Parameters.AddWithValue("@app_maritalstatus",DBNull.Value);
                     else
                         cmd.Parameters.AddWithValue("@app_maritalstatus", fpm.MaritalStatus);
+
                     cmd.Parameters.AddWithValue("@app_contactnumber", fpm.ContactNo);
                     cmd.Parameters.AddWithValue("@ownership", fpm.Ownership);
                     if(fpm.OwnershipOther==null)
@@ -459,7 +483,7 @@ namespace TAR1ORMAN.Controllers
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.CommandText = "select max(id) [currentid] " +
-                                      "from tbl_mstrfourps " +
+                                      "from tbl_qualifiedFPQME " +
                                       "where userid=@userid";
 
                     cmd.Parameters.Clear();
@@ -477,7 +501,7 @@ namespace TAR1ORMAN.Controllers
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     id = 0;
                 }
@@ -495,7 +519,48 @@ namespace TAR1ORMAN.Controllers
         {
             DataTable dt = new DataTable();
 
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
 
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                con.Open();
+
+                try
+                {
+
+                    da.SelectCommand = new SqlCommand("select 'LL'+CAST(YEAR(GETDATE())AS varchar)+'-'+RIGHT('0000000000'+cast(a.id as varchar),10)[ApplicationNo]," +
+                                                      "a.id[Id], a.hh_id[HouseHoldId],a.entryid[EntryId], RTRIM(a.consumerid + ' - ' + b.[name])[AccountNo],a.dateapplied[DateApplied]," +
+                                                      "a.isQualified[IsQualified], RTRIM(a.app_lname)[LastName],RTRIM(a.app_fname)[FirstName], RTRIM(a.app_mname)[MiddleName], a.app_extname[ExtensionName]," +
+                                                      "a.app_mdname[MaidenName], RTRIM(a.app_gender)[Gender], a.app_addhouseno[HouseNumber],a.app_addstreet[Street], a.app_addbarangay[Barangay]," +
+                                                      "a.app_addmunicipality[Municipality],a.app_addprovince[Province], a.app_addregion[Region], a.app_addpostal[Postal]," +
+                                                      "a.app_birthdate[Birthdate], a.app_maritalstatus[MaritalStatus], '+63' + a.app_contactnumber[ContactNo],a.ownership[Ownership]," +
+                                                      "a.ownershipother[OwnershipOther], a.validid[ValidId],a.valididno[ValidIdNo], a.annualincome[AnnualIncome]," +
+                                                      "a.docchklst1[CheckList1], a.docchklst2[CheckList2], a.docchklst3[CheckList3], a.docchklst4[CheckList4]," +
+                                                      "a.supportdocPOR[CheckPOR], a.supportdocLOA[CheckLOA], a.supportVGID[CheckVGID], a.supportSWDO[CheckSWDO]," +
+                                                      "a.evalisapproved[Approved], a.reasonfordisapproved[DisReason], a.userid[UserId], UPPER(RTRIM(c.name))[UserName] " +
+                                                      "from tbl_qualifiedFPQME a inner join arsconsumer b " +
+                                                      "on a.consumerid = b.consumerid " +
+                                                      "inner join secuser c " +
+                                                      "on a.userid = c.userid " +
+                                                      "where id = @id");
+                    da.SelectCommand.CommandType = CommandType.Text;
+                    da.SelectCommand.Parameters.AddWithValue("@id", reportid);
+
+                    da.SelectCommand.Connection = con;
+
+                    da.Fill(dt);
+                    
+                }
+                catch (Exception ex)
+                {
+                    dt = null;
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+            }
 
             return dt;
         }

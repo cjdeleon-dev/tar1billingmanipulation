@@ -346,7 +346,7 @@ function appendToFPSdiv()
     html += '</div> ';
     html += '<div class="row"> ';
     html += '    <div class="col-lg-offset-4 col-lg-4 text-center"> ';
-    html += '         <button class="btn btn-primary" id="btnSave" onclick="savepreview()"><i class="glyphicon glyphicon-save"></i> Save</button>';  
+    html += '         <button class="btn btn-primary" id="btnSave" onclick="savepreview()"><i class="glyphicon glyphicon-save"></i> Save and Preview</button>';  
     html += '    </div> ';
     html += '</div>'
 
@@ -407,7 +407,7 @@ function displayAccounts() {
                 html += '   <h4 class="text-capitalized">No account(s) found.</h4>'
                 html += '</div>'
 
-                $('#divResult').append(html);
+                $('#divSeachResult').append(html);
             }
         },
         error: function (errormessage) {
@@ -446,13 +446,15 @@ function setThisAccount(acctnumber) {
 
 function rbothersOnClick() {
     if ($("#rbothers").prop('checked', true)) {
+        console.log("OTHERS");
         $("#txtownership").val("OTHERS");
-        $('#txtothers').removeAttr('disabled'); 
+        $('#txtownothers').removeAttr('disabled'); 
     }
     else {
 
-        $('#txtothers').val("");
-        $('#txtothers').attr('disabled','disabled');
+        $('#txtownership').val("");
+        $('#txtownothers').removeAttr('disabled');
+        $('#txtownothers').attr('disabled','disabled');
     }
         
 }
@@ -460,8 +462,8 @@ function rbothersOnClick() {
 function rbrentedOnClick() {
     if ($("#rbrented").prop('checked', true)) {
         $("#txtownership").val("RENTED");
-        $('#txtothers').removeAttr('disabled');
-        $('#txtothers').attr('disabled','disabled');
+        $('#txtownothers').removeAttr('disabled');
+        $('#txtownothers').attr('disabled','disabled');
     }
 
 }
@@ -469,8 +471,8 @@ function rbrentedOnClick() {
 function rbownedOnClick() {
     if ($("#rbowned").prop('checked', true)) {
         $("#txtownership").val("OWNED");
-        $('#txtothers').removeAttr('disabled');
-        $('#txtothers').attr('disabled', 'disabled');
+        $('#txtownothers').removeAttr('disabled');
+        $('#txtownothers').attr('disabled', 'disabled');
     }
 
 }
@@ -561,7 +563,7 @@ function savepreview() {
             MaritalStatus: $("#cbomaritalstatus").val(),
             ContactNo: $("#txtcontactno").val(),
             Ownership: $("#txtownership").val(),
-            OwnershipOther: $("#txtownothers"),
+            OwnershipOther: $("#txtownothers").val(),
             ValidID: $("#txtvalidid").val(),
             ValidIdNo: $("#txtvalididno").val(),
             AnnualIncome: 0,
@@ -590,17 +592,17 @@ function savepreview() {
             dataType: "json",
             success: function (result) {
                 if (result.data) {
-                    //preview report
+                    //Saving Success
                     swal('Success', 'Successfully Saved', 'success');
 
-                    //printing
-                    //var parent = $('embed#cnpdf').parent();
-                    //var newElement = '<embed src="/FourPsApplication/PreviewQualifiedLifelinerReport"  width="100%" height="800" type="application/pdf" id="cnpdf">';
+                    //preview report form for printing
+                    var parent = $('embed#fourpsqmepdf').parent();
+                    var newElement = '<embed src="/FourPsApplication/PreviewQualifiedLifelinerReport"  width="100%" height="800" type="application/pdf" id="fourpsqmepdf">';
 
-                    //$('embed#cnpdf').remove();
-                    //parent.append(newElement);
+                    $('embed#fourpsqmepdf').remove();
+                    parent.append(newElement);
 
-                    //$('#myRptFormModal').modal('show');
+                    $('#myRptFormModal').modal('show');
                 }
                 else
                     swal('Error', 'An error occured:\nEither the account number is exist or something went wrong.', 'error');

@@ -195,6 +195,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsChangeName.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Datasets\dsFourPsMargin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsFourPsMargin.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Datasets\dsSOA.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -381,6 +386,7 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\checkMark.png" />
+    <Content Include="Content\images\FourpsForm.jpg" />
     <Content Include="Content\images\questionMark.png" />
     <Content Include="Content\images\rep2.jpg" />
     <Content Include="Content\images\tarelco1.PNG" />
@@ -448,6 +454,17 @@
     </None>
     <Content Include="Datasets\dsChangeName.xss">
       <DependentUpon>dsChangeName.xsd</DependentUpon>
+    </Content>
+    <Content Include="Datasets\dsFourPsMargin.xsc">
+      <DependentUpon>dsFourPsMargin.xsd</DependentUpon>
+    </Content>
+    <None Include="Datasets\dsFourPsMargin.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFourPsMargin.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Datasets\dsFourPsMargin.xss">
+      <DependentUpon>dsFourPsMargin.xsd</DependentUpon>
     </Content>
     <None Include="Datasets\dsSOA.xsd">
       <SubType>Designer</SubType>
