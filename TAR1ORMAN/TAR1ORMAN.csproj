@@ -387,6 +387,7 @@
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\checkMark.png" />
     <Content Include="Content\images\FourpsForm.jpg" />
+    <Content Include="Content\images\QMEForm.jpg" />
     <Content Include="Content\images\questionMark.png" />
     <Content Include="Content\images\rep2.jpg" />
     <Content Include="Content\images\tarelco1.PNG" />
@@ -612,7 +613,7 @@
     <Content Include="Scripts\myscripts\disconlistscript.js" />
     <Content Include="Scripts\myscripts\empcareoffscript.js" />
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
-    <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.1.js" />
+    <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.2.js" />
     <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
     <Content Include="Scripts\myscripts\summaryofdtdlist_v1.0.0.js" />
@@ -718,6 +719,7 @@
     <EmbeddedResource Include="Reports\rptChangeNameWithOld.rdlc" />
     <EmbeddedResource Include="Reports\rptFourPsForm.rdlc" />
     <EmbeddedResource Include="Reports\rptMarginalizedForm.rdlc" />
+    <EmbeddedResource Include="Reports\rptQMEForm.rdlc" />
     <EmbeddedResource Include="Reports\rptSLIP.rdlc" />
     <EmbeddedResource Include="Reports\rptSLIP2.rdlc" />
     <EmbeddedResource Include="Reports\rptSLIPSubDetailTransNoVat.rdlc" />

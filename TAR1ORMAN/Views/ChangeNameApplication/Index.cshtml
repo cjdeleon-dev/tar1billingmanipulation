@@ -40,7 +40,14 @@
                         <button class="btn btn-success" id="btnCheckAcct" onclick="checkAcct()"><i class="glyphicon glyphicon-check"></i> Check Account</button>
                     </div>
                     <div class="col-sm-4" style="text-align:left;padding:0;">
-                        <button class="btn btn-primary" id="btnShowPending" onclick="showPendingList()"><i class="glyphicon glyphicon-list"></i> Pending List</button>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" id="btnShowPending" onclick="showPendingList()"><i class="glyphicon glyphicon-list"></i> For Payment</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" id="btnShowApproval" onclick="showApprovalList()"><i class="glyphicon glyphicon-list-alt"></i> For Aproval</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-4" style="text-align:left;padding:0;">
                         <button class="btn btn-info" id="btnReset" onclick="resetPage()"><i class="glyphicon glyphicon-repeat"></i> Reset</button>

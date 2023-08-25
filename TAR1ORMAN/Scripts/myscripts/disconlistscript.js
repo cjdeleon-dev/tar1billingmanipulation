@@ -12,6 +12,8 @@ function loadPage() {
     hideunneccessaryoptions();
     loadcboRoute();
 
+    $("#txtStatus").val(1);
+
     var today = new Date();
 
     var yy = today.getFullYear();

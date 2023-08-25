@@ -32,6 +32,7 @@ namespace TAR1ORDATA.DataModel
         public string ContactNo { get; set; }
         public string Ownership { get; set; }
         public string OwnershipOther { get; set; }
+        public string CertificationNo { get; set; }
         public string ValidID { get; set; }
         public string ValidIdNo { get; set; }
         public decimal AnnualIncome { get; set; }

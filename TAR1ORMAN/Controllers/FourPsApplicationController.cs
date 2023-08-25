@@ -34,7 +34,6 @@ namespace TAR1ORMAN.Controllers
             return Json(new { data = lstfpm }, JsonRequestBehavior.AllowGet);
         }
 
-
         public JsonResult CheckAccounts(string searchparams)
         {
             List<ConsumerModel> lstcons = new List<ConsumerModel>();
@@ -55,6 +54,8 @@ namespace TAR1ORMAN.Controllers
         public JsonResult InsertQualifiedLifeliner(FourPsModel fpm)
         {
             bool result = false;
+            fpm.EntryUserId = User.Identity.Name;
+
             if (saveEntryQLifeLiner(fpm))
                 result = true;
 
@@ -64,13 +65,20 @@ namespace TAR1ORMAN.Controllers
 
         public ActionResult PreviewQualifiedLifelinerReport()
         {
-            LocalReport lr = new LocalReport();
-            string p = Path.Combine(Server.MapPath("/Reports"), "rptFourPsForm.rdlc");
-            lr.ReportPath = p;
-
             //initialize parameters
             DataTable dtData = getDataForReportForm(getMaxIdOfUser(User.Identity.Name));
-           
+
+            string p = string.Empty;
+
+            LocalReport lr = new LocalReport();
+
+            if (Convert.ToBoolean(dtData.Rows[0]["IsQualified"]))
+                p = Path.Combine(Server.MapPath("/Reports"), "rptFourPsForm.rdlc");
+            else
+                p = Path.Combine(Server.MapPath("/Reports"), "rptQMEForm.rdlc");
+
+            lr.ReportPath = p;
+
             //ReportDataSource
             ReportDataSource rptds = new ReportDataSource("dsFPQME", dtData);
 
@@ -87,6 +95,10 @@ namespace TAR1ORMAN.Controllers
             return File(b, mt);
         }
 
+        public JsonResult GetAccountDetails(string accountno)
+        {
+            return Json(new { data = getAccountDetails(accountno) }, JsonRequestBehavior.AllowGet);
+        }
 
         //FUNCTIONS AND PROCEDURES
         private List<FourPsModel> verifyByName(string lastname, string firstname, string midname)
@@ -297,13 +309,19 @@ namespace TAR1ORMAN.Controllers
                     con.Open();
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = "select isnull(count(*),0) numrows " +
+                    if(entryid!=null)
+                        cmd.CommandText = "select isnull(count(*),0) numrows " +
                                       "from tbl_qualifiedFPQME " +
                                       "where consumerid = @consumerid or entryid=@entryid;";
+                    else
+                        cmd.CommandText = "select isnull(count(*),0) numrows " +
+                                      "from tbl_qualifiedFPQME " +
+                                      "where consumerid = @consumerid;";
 
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@consumerid", accountno);
-                    cmd.Parameters.AddWithValue("@entryid", entryid);
+                    if(entryid!=null)
+                        cmd.Parameters.AddWithValue("@entryid", entryid);
 
                     SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
 
@@ -358,7 +376,7 @@ namespace TAR1ORMAN.Controllers
                                       "           ,[app_gender],[app_addhouseno],[app_addstreet],[app_addbarangay]			   " +
                                       "           ,[app_addmunicipality],[app_addprovince],[app_addregion],[app_addpostal]	   " +
                                       "           ,[app_birthdate],[app_maritalstatus],[app_contactnumber],[ownership],[ownershipother] " +
-                                      "           ,[validid],[valididno],[annualincome],[docchklst1],[docchklst2]			   " +
+                                      "           ,[certificationno],[validid],[valididno],[annualincome],[docchklst1],[docchklst2]			   " +
                                       "           ,[docchklst3],[docchklst4],[supportdocPOR],[supportdocLOA]				   " +
                                       "           ,[supportVGID],[supportSWDO],[evalisapproved],[reasonfordisapproved]		   " +
                                       "           ,[userid])																   " +
@@ -366,12 +384,20 @@ namespace TAR1ORMAN.Controllers
                                       "	  ,@app_fname,@app_mname,@app_extname,@app_mdname,@app_gender,@app_addhouseno		   " +
                                       "	  ,@app_addstreet,@app_addbarangay,@app_addmunicipality,@app_addprovince			   " +
                                       "	  ,@app_addregion,@app_addpostal,@app_birthdate,@app_maritalstatus,@app_contactnumber  " +
-                                      "	  ,@ownership,@ownershipother,@validid,@valididno,@annualincome,@docchklst1,@docchklst2,@docchklst3	   " +
+                                      "	  ,@ownership,@ownershipother,@certificationno,@validid,@valididno,@annualincome,@docchklst1,@docchklst2,@docchklst3	   " +
                                       "	  ,@docchklst4,@supportdocPOR,@supportdocLOA,@supportVGID,@supportSWDO,@evalisapproved " +
                                       "	  ,@reasonfordisapproved,@userid)													   ";
 
-                    cmd.Parameters.AddWithValue("@hh_id", fpm.HH_Id);
-                    cmd.Parameters.AddWithValue("@entryid", fpm.EntryId);
+                    if(fpm.HH_Id==null)
+                        cmd.Parameters.AddWithValue("@hh_id", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@hh_id", fpm.HH_Id);
+
+                    if(fpm.EntryId==null)
+                        cmd.Parameters.AddWithValue("@entryid", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@entryid", fpm.EntryId);
+
                     cmd.Parameters.AddWithValue("@consumerid", fpm.AccountNo);
                     cmd.Parameters.AddWithValue("@isQualified", fpm.IsQualified);
                     cmd.Parameters.AddWithValue("@app_lname", fpm.Surname);
@@ -429,6 +455,11 @@ namespace TAR1ORMAN.Controllers
                         cmd.Parameters.AddWithValue("@ownershipother", DBNull.Value);
                     else
                         cmd.Parameters.AddWithValue("@ownershipother", fpm.OwnershipOther);
+                    if(fpm.CertificationNo==null)
+                        cmd.Parameters.AddWithValue("@certificationno", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@certificationno", fpm.CertificationNo);
+
 
                     cmd.Parameters.AddWithValue("@validid", fpm.ValidID);
                     cmd.Parameters.AddWithValue("@valididno", fpm.ValidIdNo);
@@ -447,7 +478,7 @@ namespace TAR1ORMAN.Controllers
                         cmd.Parameters.AddWithValue("@reasonfordisapproved", DBNull.Value);
                     else
                         cmd.Parameters.AddWithValue("@reasonfordisapproved", fpm.ReasonForDisapproved);
-                    cmd.Parameters.AddWithValue("@userid", User.Identity.Name);
+                    cmd.Parameters.AddWithValue("@userid", fpm.EntryUserId);
 
                     cmd.ExecuteNonQuery();
                     trans.Commit();
@@ -528,13 +559,14 @@ namespace TAR1ORMAN.Controllers
                 try
                 {
 
-                    da.SelectCommand = new SqlCommand("select 'LL'+CAST(YEAR(GETDATE())AS varchar)+'-'+RIGHT('0000000000'+cast(a.id as varchar),10)[ApplicationNo]," +
+                    da.SelectCommand = new SqlCommand("select CASE WHEN a.isQualified=1 THEN 'LL'+CAST(YEAR(GETDATE())AS varchar)+'-'+RIGHT('0000000000'+cast(a.id as varchar),10) " +
+                                                      "ELSE 'ME'+CAST(YEAR(GETDATE())AS varchar)+'-'+RIGHT('0000000000'+cast(a.id as varchar),10) END [ApplicationNo]," +
                                                       "a.id[Id], a.hh_id[HouseHoldId],a.entryid[EntryId], RTRIM(a.consumerid + ' - ' + b.[name])[AccountNo],a.dateapplied[DateApplied]," +
                                                       "a.isQualified[IsQualified], RTRIM(a.app_lname)[LastName],RTRIM(a.app_fname)[FirstName], RTRIM(a.app_mname)[MiddleName], a.app_extname[ExtensionName]," +
                                                       "a.app_mdname[MaidenName], RTRIM(a.app_gender)[Gender], a.app_addhouseno[HouseNumber],a.app_addstreet[Street], a.app_addbarangay[Barangay]," +
                                                       "a.app_addmunicipality[Municipality],a.app_addprovince[Province], a.app_addregion[Region], a.app_addpostal[Postal]," +
                                                       "a.app_birthdate[Birthdate], a.app_maritalstatus[MaritalStatus], '+63' + a.app_contactnumber[ContactNo],a.ownership[Ownership]," +
-                                                      "a.ownershipother[OwnershipOther], a.validid[ValidId],a.valididno[ValidIdNo], a.annualincome[AnnualIncome]," +
+                                                      "a.ownershipother[OwnershipOther],a.certificationno[CertificationNo], a.validid[ValidId],a.valididno[ValidIdNo], a.annualincome[AnnualIncome]," +
                                                       "a.docchklst1[CheckList1], a.docchklst2[CheckList2], a.docchklst3[CheckList3], a.docchklst4[CheckList4]," +
                                                       "a.supportdocPOR[CheckPOR], a.supportdocLOA[CheckLOA], a.supportVGID[CheckVGID], a.supportSWDO[CheckSWDO]," +
                                                       "a.evalisapproved[Approved], a.reasonfordisapproved[DisReason], a.userid[UserId], UPPER(RTRIM(c.name))[UserName] " +
@@ -563,6 +595,54 @@ namespace TAR1ORMAN.Controllers
             }
 
             return dt;
+        }
+
+        private ConsumerModel getAccountDetails(string accountnumber)
+        {
+            ConsumerModel cm = new ConsumerModel();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandText = "select consumerid, name, address " +
+                                      "from arsconsumer " +
+                                      "where consumerid = @consumerid";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@consumerid", accountnumber);
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            cm.AccountNo = rdr["consumerid"].ToString();
+                            cm.AccountName = rdr["name"].ToString();
+                            cm.Address = rdr["address"].ToString();
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    cm = null;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+
+            }
+
+            return cm;
         }
     }
 }

@@ -84,7 +84,7 @@ namespace TAR1ORMAN.Controllers
             idls = new DisconListService();
             string[] _nomonthstatroute = nomonthstatroute.Split('_');
             int nomonth = Convert.ToInt32(_nomonthstatroute[0]);
-            string stat = _nomonthstatroute[1];
+            string stat = _nomonthstatroute[1]=="0"?"1": _nomonthstatroute[1];
             string route = _nomonthstatroute[2];
 
             selRouteId = route;

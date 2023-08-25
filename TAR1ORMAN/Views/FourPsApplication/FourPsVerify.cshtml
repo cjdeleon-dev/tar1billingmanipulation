@@ -8,7 +8,7 @@
 
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
-<script src="~/Scripts/myscripts/fourpsverifyscript_v1.1.1.js"></script>
+<script src="~/Scripts/myscripts/fourpsverifyscript_v1.1.2.js"></script>
 
 <style>
     .input-group-multi [class*='col-'] {
@@ -32,6 +32,7 @@
     <div class="col-lg-2">
         <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
         <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+        <input type="hidden" id="txtLLType" class="form-control" />
     </div>
     <div class="col-lg-3">
         <input type="text" placeholder="Last Name" id="txtlname" class="form-control" />
@@ -52,6 +53,238 @@
 </div>
 
 <div id="frmFPS">
+    @*<div class="row">
+        <div class="col-lg-offset-4 col-lg-2 text-center">
+            <input type="text" class="form-control" id="txtaccountno" placeholder="Enter account number" maxlength="10" />
+        </div>
+        <div class="col-lg-offset-2">
+            <button class="btn btn-warning" id="btnsetacctno" onclick="setAcctNo()"><i class="glyphicon glyphicon-star"></i> Set Account</button>
+            <button class="btn btn-info" id="btnsrcacctno" onclick="showSearchAcct()"><i class="glyphicon glyphicon-eye-open"></i> Search Account</button>
+        </div>
+    </div><br />
+    <div class="row">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>Name of Applicant</strong></span></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Surname (Apilyedo)</span>
+                <input class="form-control" type="hidden" id="txtentryid" placeholder="Enter surname" />
+                <input class="form-control" type="text" id="txtsurname" placeholder="Enter surname" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>First Name (Pangalan)</span>
+                <input class="form-control" type="text" id="txtfirstname" placeholder="Enter first name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Middle Name (Gitnang Pangalan)</span>
+                <input class="form-control" type="text" id="txtmiddlename" placeholder="Enter middle name" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Gender</span>
+                <input class="form-control" type="hidden" id="txtmaidenname" placeholder="Enter maiden name" />
+                <select class="form-control" style="max-width:100%;" id="cbogender">
+                    <option disabled selected>Select Gender</option>
+                    <option value="MALE" id="optMale">Male</option>
+                    <option value="FEMALE" id="optFemale">Female</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>address</strong></span></div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>House No./Zone/Purok/Sitio</span>
+                <input class="form-control" type="text" id="txthouseno" placeholder="Enter House No./Zone/Purok/Sitio" style="max-width:100%;" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Street</span>
+                <input class="form-control" type="text" id="txtstreet" placeholder="Enter Street" style="max-width:100%;" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Barangay</span>
+                <input class="form-control" type="text" id="txtbarangay" placeholder="Enter barangay" style="max-width:100%;" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>City/Municipality</span>
+                <input class="form-control" type="text" id="txtcitymun" placeholder="Enter City/Municipality" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Province</span>
+                <input class="form-control" type="text" id="txtprovince" placeholder="Enter Province" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Region</span>
+                <input class="form-control" type="text" id="txtregion" placeholder="Enter Region" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <span>Postal</span>
+                <input class="form-control" type="text" id="txtpostal" placeholder="Enter Postal" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>date of birth / marital status / contact</strong></span></div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Date of Birth</span>
+                <input class="form-control" type="date" id="dtpbirthdate" style="max-width:100%;" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Marital Status</span>
+                <select class="form-control" style="max-width:100%;" id="cbomaritalstatus">
+                    <option disabled selected>Select Marital Status</option>
+                    <option value="SINGLE" id="optSngl">Single</option> 
+                    <option value="MARRIED" id="optMrrd">Married</option>
+                    <option value="LIVE-IN" id="optlvin">Live-In</option>
+                    <option value="WIDOWED" id="optWdwd">Widowed</option>
+                    <option value="DIVORCED" id=optDvrcd>Divorced</option>
+                    <option value="SEPARATED" id="optSprtd">Separated</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Contact Number</span>
+                <div class="input-group input-group-multi">
+                    <div class="input-group-addon">+63</div>
+                    <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" placeholder="9999999999" id="txtcontactno" maxlength="10" /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom:15px;">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>ownership</strong></span></div>
+        <br />
+        <div class="form-group">
+            <div class="col-lg-2">
+                <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                    <input type="hidden" id="txtownership" />
+                    <input type="radio" id="rbowned" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbownedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">owned</span>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                    <input type="radio" id="rbrented" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbrentedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">rented</span>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="input-group input-group-multi">
+                    <div class="input-group-addon" style="background-color:transparent !important;">
+                        <input type="radio" id="rbothers" name="ownership" style="vertical-align:middle; margin:0px;" onclick="rbothersOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">others</span> 
+                    </div>
+                    <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtownothers" placeholder="if others, please specify" disabled /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>4ps household number (from dswd)</strong></span></div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>4Ps Household No.</span>
+                <input class="form-control" type="text" id="txthouseholdno" placeholder="Enter 4Ps Household No." style="max-width:100%;" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>Valid ID</span>
+                <input class="form-control" type="text" id="txtvalidid" placeholder="Enter Valid ID" style="max-width:100%;" />
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group">
+                <span>ID No.</span>
+                <input class="form-control" type="text" id="txtvalididno" placeholder="Enter ID No." style="max-width:100%;" />
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom:15px;">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>documentary requirements checklist / other supporting documents</strong></span></div>
+        <br />
+        <div class="col-lg-6">
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkduly" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Duly accomplished application form</span>
+            </div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkeb" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Most-recent electricity bill for the service being applied for</span>
+            </div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:60px;border-radius:4px;">
+                <input type="checkbox" id="chkvalid" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Valid government-issued ID containing the signature and &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address of the consumer</span>
+            </div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkcert" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Certification from the local SWDO issued within six (6) months</span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="text-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>If electric service not registered under the name of applicant:</strong></span></div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkproof" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Proof of Residence</span>
+            </div>
+            <div class="text-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>If application filed through a representative:</strong></span></div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkauth" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">letter of authority</span>
+            </div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:60px;border-radius:4px;">
+                <input type="checkbox" id="chkvalidrep" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Valid government-issued ID (with signature) of the &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;representative</span>
+            </div>
+            <div class="text-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>in case of transfer of residence:</strong></span></div>
+            <div class="text-left" style="padding-left:10px;padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="checkbox" id="chkresissued" style="vertical-align:middle; margin:0px;" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">Re-issued certification from the local SWDO</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom:15px;">
+        <div class="text-center bg bg-info" style="vertical-align:middle;"><span class="text-uppercase"><strong>evaluation</strong></span></div>
+        <br />
+        <div class="col-lg-2">
+            <div class="text-center" style="padding-top:5px;border-style:solid;border-color:#dcdcdc;border-width:1px;height:35px;border-radius:4px;">
+                <input type="radio" id="rbapproved" name="evaluation" style="vertical-align:middle; margin:0px;" onclick="rbapprovedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">approved</span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="input-group input-group-multi">
+                <div class="input-group-addon" style="background-color:transparent !important;">
+                    <input type="radio" id="rbdisapproved" name="evaluation" style="vertical-align:middle; margin:0px;" onclick="rbdisapprovedOnClick()" /><span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">disapproved</span>
+                </div>
+                <div class="col-xs-12"><input type="text" class="form-control" style="max-width:100%;" id="txtdisapprovereason" placeholder="Reasons for disapproval" disabled /></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group input-group-multi">
+                <div class="input-group-addon">
+                    <span class="text-uppercase" style="vertical-align:middle;margin:0px;padding-left:5px;">DSWD validity period</span>
+                </div>
+                <div class="col-xs-10"><input type="date" class="form-control" style="max-width:100%;" id="dtpvalidity" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-offset-4 col-lg-4 text-center">
+             <button class="btn btn-primary" id="btnSave" onclick="savepreview()"><i class="glyphicon glyphicon-save"></i> Save and Preview</button>
+        </div>
+    </div>*@
 </div>
 
 @*==============================MODALS=======================================*@
