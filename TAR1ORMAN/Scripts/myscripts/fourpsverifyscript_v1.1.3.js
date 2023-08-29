@@ -670,13 +670,14 @@ function displayAccounts() {
 }
 
 function appendToSearchTableBody(data) {
+    //console.log(data);
     var html = '';
     $.each(data, function (key, item) {
         html += '<tr class="" id="' + item.AccountNo + '">';
         html += '<td id="' + item.AccountNo + '" class="text-center">' + item.AccountNo + '</td>';
         html += '<td id="' + item.AccountName + '" class="text-center">' + item.AccountName + '</td>';
         html += '<td>' + item.Address + '</td>';
-        html += '<td><input type="button" class="btn btn-danger" value="SET THIS ACCOUNT" onclick="setThisAccount(' + item.AccountNo.toString() + ')" /></td>';
+        html += '<td><input type="button" class="btn btn-danger" value="SET THIS ACCOUNT" onclick="setThisAccount(' + parseInt(item.AccountNo) + ')" /></td>';
         html += '</tr>';
     });
 
@@ -686,6 +687,7 @@ function appendToSearchTableBody(data) {
 
 function setThisAccount(acctnumber) {
 
+    //console.log(acctnumber);
     var stractno = ("0" + acctnumber).substr(-10);
     $('#txtaccountno').val(stractno);
 
