@@ -154,6 +154,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActiveWithZeroConsumptionController.cs" />
+    <Compile Include="Controllers\ApprovalChangeNameListController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BurialApplicationValidationController.cs" />
     <Compile Include="Controllers\ChangeNameApplicationController.cs" />
@@ -684,6 +685,8 @@
     <Content Include="Views\DisconRptSummaryList\Index.cshtml" />
     <Content Include="Views\PendingChangeNameList\Index.cshtml" />
     <Content Include="Views\FourPsApplication\FourPsVerify.cshtml" />
+    <Content Include="Scripts\myscripts\cnapprovallistscript_v1.1.1.js" />
+    <Content Include="Views\ApprovalChangeNameList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

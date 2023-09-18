@@ -214,3 +214,7 @@ function saveAndPrev() {
 function showPendingList() {
     window.location = "/PendingChangeNameList/Index";
 }
+
+function showApprovalList() {
+    window.location = "/ApprovalChangeNameList/Index";
+}
