@@ -12,6 +12,8 @@ namespace TAR1ORDATA.DataModel
         public string Address { get; set; }
         public string StatusId { get; set; }
         public string TypeId { get; set; }
-        public double Balance { get; set; }
+        public double TrxBalance { get; set; }
+        public double VATBalance { get; set; }
+        public double TotalBalance { get; set; }
     }
 }

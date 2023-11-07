@@ -41,6 +41,22 @@ function showModalByRefId(id) {
     console.log('selected id: ' + id);
     $('#txtRefID').val(id);
 
+    $.ajax({
+        url: "/PendingChangeNameList/GetDetailsOfChangeNameByRefId?refid=" + id,
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            $('#txtNewName').val(result.Name);
+            $('#txtAccountNo').val(result.AccountNumber);
+            $('#txtReason').val(result.Reason);
+        },
+        error: function (errormessage) {
+            //swal('Error', errormessage.responseText, 'warning');
+            alert(errormessage.responseText);
+        },
+    });
+
     $('#myUpdateModal').modal('show');
 }
 

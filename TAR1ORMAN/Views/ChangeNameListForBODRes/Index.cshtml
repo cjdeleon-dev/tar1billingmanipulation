@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/cnlistforbodresscript.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<style>
+    .dataTables tbody tr {
+        min-height: 30px; /* or whatever height you need to make them all consistent */
+    }
+
+    #myTable1 {
+        font-size: 12px;
+    }
+</style>
+
+<h2>Change Name List for Resolution</h2>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","ChangeNameApplication")'"><i class="glyphicon glyphicon-arrow-left"></i> Application for Change Name</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+    @using (Html.BeginForm("ExportToExcel", "ChangeNameListForBODRes", FormMethod.Post))
+    {
+        <div class="col-lg-offset-4 col-lg-4">
+            <div class="row">
+                <div class="col-lg-offset-8 col-lg-4">
+                    <input type="submit" value="Export to Excel" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">ID</th>
+                <th scope="col" style="text-align:center;">APP DATE</th>
+                <th scope="col" style="text-align:center;">NAME/FORMERLY</th>
+                <th scope="col" style="text-align:center;">ADDRESS</th>
+                <th scope="col" style="text-align:center;">OR#(OLD)</th>
+                <th scope="col" style="text-align:center;">DATE(OLD)</th>
+                <th scope="col" style="text-align:center;">NAME/CHANGE TO</th>
+                <th scope="col" style="text-align:center;">OR#(NEW)</th>
+                <th scope="col" style="text-align:center;">DATE(NEW)</th>
+                <th scope="col" style="text-align:center;">ACCOUNT#</th>
+                <th scope="col" style="text-align:center;">REMARKS</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(loaddata());
+    </script>
+}
+

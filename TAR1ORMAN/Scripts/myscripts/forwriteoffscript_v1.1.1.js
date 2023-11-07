@@ -27,8 +27,9 @@ function loadDataTable1() {
             { "data": "Address", "autoWidth": true },
             { "data": "StatusId", "autoWidth": true },
             { "data": "TypeId", "autoWidth": true },
-            { "data": "Balance", "autoWidth": true }
-            
+            { "data": "TrxBalance", "autoWidth": true },
+            { "data": "VATBalance", "autoWidth": true },
+            { "data": "TotalBalance", "autoWidth": true }
         ]
     });
 

@@ -921,7 +921,7 @@ function savepreview() {
             success: function (result) {
                 if (result.data) {
                     //Saving Success
-                    swal('Success', 'Successfully Saved', 'success');
+                    swal("Success", "\nSuccessfully Saved", "success");
 
                     //preview report form for printing
                     var parent = $('embed#fourpsqmepdf').parent();

@@ -90,7 +90,9 @@ namespace TAR1ORDATA.DataAccess.ForWriteOffAccess
                                 Address = dr["address"].ToString(),
                                 StatusId = dr["statusid"].ToString(),
                                 TypeId = dr["consumertypeid"].ToString(),
-                                Balance = Convert.ToDouble(dr["balance"])
+                                TrxBalance = Convert.ToDouble(dr["trxbalance"]),
+                                VATBalance = Convert.ToDouble(dr["vatbalance"]),
+                                TotalBalance = Convert.ToDouble(dr["totalbalance"])
                             });
                         }
                     }

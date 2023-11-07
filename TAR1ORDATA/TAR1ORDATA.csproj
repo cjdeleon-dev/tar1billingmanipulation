@@ -108,6 +108,8 @@
     <Compile Include="DataModel\BillPeriodModel.cs" />
     <Compile Include="DataModel\BurialClaimantModel.cs" />
     <Compile Include="DataModel\ChangedStatusModel.cs" />
+    <Compile Include="DataModel\ChangeNameAppliedModel.cs" />
+    <Compile Include="DataModel\ChangeNameListForResoModel.cs" />
     <Compile Include="DataModel\ChangeNameModel.cs" />
     <Compile Include="DataModel\ClaimedBurialModel.cs" />
     <Compile Include="DataModel\ConsumerHighKwhModel.cs" />

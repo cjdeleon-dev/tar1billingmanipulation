@@ -37,6 +37,13 @@ namespace TAR1ORMAN.Controllers
             return jsonResult;
         }
 
+        [HttpGet]
+        public JsonResult GetDetailsOfChangeNameByRefId(int refid)
+        {
+            return Json(getAllPendingChangeNameList().Find(x=>x.RefID.Equals(refid)), JsonRequestBehavior.AllowGet);
+        }
+
+
         [HttpPost]
         public JsonResult UpdateNewORMember(MemberORModel mom)
         {
@@ -61,7 +68,7 @@ namespace TAR1ORMAN.Controllers
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "update tbl_changename set nw_memberid=@memberid, nw_memberdate=@memberdate," +
+                cmd.CommandText = "update tbl_changename set nw_memberid=@memberid, nw_memberdate=@memberdate, appstatus='FOR GM'S APPROVAL'," +
                                   "lastupdated=getdate(),updatedby=@updatedby where id=@refid;";
 
                 cmd.Parameters.Clear();
@@ -107,7 +114,7 @@ namespace TAR1ORMAN.Controllers
                         da.SelectCommand.CommandType = CommandType.Text;
                         da.SelectCommand.CommandText = "select id,accountno,nw_name [name],appdate,nw_reason [reason],remarks " +
                                                        "from tbl_changename " +
-                                                       "where nw_memberid is null and nw_memberdate is null;";
+                                                       "where appstatus='FOR PAYMENT';";
 
                         da.Fill(dt);
                         if (dt.Rows.Count > 0)

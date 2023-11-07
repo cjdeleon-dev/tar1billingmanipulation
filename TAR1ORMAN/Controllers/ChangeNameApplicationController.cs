@@ -108,9 +108,15 @@ namespace TAR1ORMAN.Controllers
                             cm.AccountNo = acctnum;
                             cm.AccountName = rdr["name"].ToString();
                             cm.Address = rdr["address"].ToString();
-                            cm.MemberId = rdr["memberid"].ToString();
+                            if (rdr["memberid"].ToString() == "")
+                                cm.MemberId = null;
+                            else
+                                cm.MemberId = rdr["memberid"].ToString();
                             cm.MeterNo = rdr["mtrserialno"].ToString();
-                            cm.ORDate = rdr["memberdate"].ToString();
+                            if (rdr["memberdate"].ToString() == "")
+                                cm.ORDate = null;
+                            else
+                                cm.ORDate = Convert.ToDateTime(rdr["memberdate"].ToString()).ToString("yyyy-MM-dd");
                             cm.SeqNo = rdr["seqno"].ToString();
                         }
                     }
@@ -146,17 +152,38 @@ namespace TAR1ORMAN.Controllers
                     cmd.Connection = con;
                     cmd.Transaction = trans;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "insert into tbl_changename(appdate,accountno,nw_name,nw_memberid," +
+                    cmd.CommandText = "declare @OLD_MEMBERID varchar(10), @OLD_MEMBERDATE datetime;" +
+                                      "insert into tbl_changename(appdate,accountno,old_name,old_memberid,old_memberdate,nw_name,nw_memberid," +
                                       "nw_memberdate,nw_birthday,nw_contactnum,nw_relationship,nw_reason," +
-                                      "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby,isdied) " +
-                                      "values(getdate(),@accountno,@nw_name,null," +
+                                      "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby,isdied,remarks,appstatus) " +
+                                      "values(getdate(),@accountno,@oldname,@oldmemberid,@oldmemberdate,@nw_name,null," +
                                       "null,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason," +
-                                      "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby,@isdied);";
+                                      "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby,@isdied,@remarks,'FOR PAYMENT');" +
+                                      "SELECT @OLD_MEMBERID=RTRIM(memberid), @OLD_MEMBERDATE=memberdate FROM arsconsumer WHERE consumerid=@accountno; " +
+                                      "IF(@OLD_MEMBERID = '') " +
+                                      "BEGIN " +
+                                      "     UPDATE arsconsumer " +
+                                      "     SET memberid = @oldmemberid " +
+                                      "     WHERE consumerid = @accountno; " +
+                                      "END " +
+                                      "IF(@OLD_MEMBERDATE IS NULL) " +
+                                      "BEGIN " +
+                                      "     UPDATE arsconsumer " +
+                                      "     SET memberdate = @oldmemberdate " +
+                                      "     WHERE consumerid = @accountno " +
+                                      "END";
 
                     cmd.Parameters.AddWithValue("@accountno", pcnm.AccountNo);
+                    cmd.Parameters.AddWithValue("@oldname", pcnm.AccountName);
+                    if (pcnm.MadeById == null)
+                        cmd.Parameters.AddWithValue("@oldmemberid", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@oldmemberid", pcnm.MemberId);
+                    if (pcnm.MemberDate == null)
+                        cmd.Parameters.AddWithValue("@oldmemberdate", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@oldmemberdate", pcnm.MemberDate);
                     cmd.Parameters.AddWithValue("@nw_name", pcnm.NewName);
-                    //cmd.Parameters.AddWithValue("@nw_memberid", pcnm.NewMemberId);
-                    //cmd.Parameters.AddWithValue("@nw_memberdate", pcnm.NewMemberDate);
                     cmd.Parameters.AddWithValue("@nw_birthday", pcnm.Birthday);
                     if(pcnm.ContactNo==null)
                         cmd.Parameters.AddWithValue("@nw_contactnum", DBNull.Value);
@@ -170,6 +197,7 @@ namespace TAR1ORMAN.Controllers
                     cmd.Parameters.AddWithValue("@nw_forretention", pcnm.ForRetention);
                     cmd.Parameters.AddWithValue("@madeby", pcnm.MadeById);
                     cmd.Parameters.AddWithValue("@isdied", pcnm.IsDied);
+                    cmd.Parameters.AddWithValue("@remarks", pcnm.Remarks);
 
                     cmd.ExecuteNonQuery();
                     trans.Commit();

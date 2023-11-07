@@ -122,7 +122,7 @@ namespace TAR1ORMAN.Controllers
                                       "set @newName=(select rtrim(nw_name) from tbl_changename where id=@id);" +
                                       "set @newMemberId=(select rtrim(nw_memberid) from tbl_changename where id=@id);" +
                                       "set @newMemberDate=(select rtrim(nw_memberdate) from tbl_changename where id=@id);" +
-                                      "update tbl_changename set isapproved=1,remarks='FOR BOARD RESOLUTION',lastupdated=getdate(),updatedby=@userid where id=@id; " +
+                                      "update tbl_changename set isapproved=1,dateapproved=getdate(),appstatus='FOR BOARD RESOLUTION',lastupdated=getdate(),updatedby=@userid where id=@id; " +
                                       "update arsconsumer set name=@newName," +
                                       "                       memberid=@newMemberId," +
                                       "                       memberdate=@newMemberDate " +

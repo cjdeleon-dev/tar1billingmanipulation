@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+
+<script src="~/Scripts/myscripts/cnappliedlistscript_v1.1.1.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<style>
+    /*.dataTables tbody tr {
+        min-height: 30px;  or whatever height you need to make them all consistent
+        font-size: 9px !important;
+    }*/
+
+    /*#myTable1 {*/
+
+    /*}*/
+    .table.dataTable td, th {
+        font-size: 12px !important;
+    }
+</style>
+
+<h2><strong>APPLIED CHANGE NAME LIST</strong></h2>
+
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","ChangeNameApplication")'"><i class="glyphicon glyphicon-arrow-left"></i> Application for Change Name</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">Id</th>
+                <th scope="col" style="text-align:center;">Date</th>
+                <th scope="col" style="text-align:center;">AccountNo</th>
+                <th scope="col" style="text-align:center;">OLD Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Member Id</th>
+                <th scope="col" style="text-align:center;">Member Date</th>
+                <th scope="col" style="text-align:center;">NEW Name</th>
+                <th scope="col" style="text-align:center;">Status</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="modal fade" id="myUpdateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myUpdateModalLabel">Update Old Member ID and Date</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-2">
+                            <label><strong></strong>Ref. ID:</label>
+                            <input type="text" class="form-control" id="txtRefID" disabled="disabled" style="width:100%;border-style:dashed;" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Account Number:</label>
+                            <input type="text" class="form-control" id="txtAccountNo" disabled="disabled" style="width:100%;border-style:dashed;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Member OR Number:</label>
+                            <input type="text" class="form-control" id="txtMemberID" style="width:100%;border-style:dashed;" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Member OR Date:</label>
+                            <input type="date" class="form-control" id="dtpMemberDate" style="width:100%;border-style:dashed;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" onclick="updateByRefID()" value="Update" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/myscripts/sweetalert.js"></script>
+
+    <script>
+        $(document).ready(loaddata());
+    </script>
+}
