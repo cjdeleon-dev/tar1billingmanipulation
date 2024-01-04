@@ -174,6 +174,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListForDisconnectionController.cs" />
     <Compile Include="Controllers\MemConsController.cs" />
+    <Compile Include="Controllers\NetMeteringController.cs" />
     <Compile Include="Controllers\PendingChangeNameListController.cs" />
     <Compile Include="Controllers\ProcessingController.cs" />
     <Compile Include="Controllers\SeniorCitizenController.cs" />
@@ -420,6 +421,7 @@
     <Content Include="lib\jquery-validation\dist\additional-methods.min.js" />
     <Content Include="lib\jquery-validation\dist\jquery.validate.js" />
     <Content Include="lib\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="lib\jquery\dist\jquery-3.6.0.min.js" />
     <Content Include="lib\jquery\dist\jquery.js" />
     <Content Include="lib\jquery\dist\jquery.min.js" />
     <Content Include="lib\jquery\LICENSE.txt" />
@@ -621,7 +623,7 @@
     <Content Include="Scripts\myscripts\changenamescript_v1.1.7.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
-    <Content Include="Scripts\myscripts\cnappliedlistscript_v1.1.1.js" />
+    <Content Include="Scripts\myscripts\cnappliedlistscript_v1.1.4.js" />
     <Content Include="Scripts\myscripts\cnlistforbodresscript.js" />
     <Content Include="Scripts\myscripts\cnpendinglistscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\dailychangedstat.js" />
@@ -630,6 +632,7 @@
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
     <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.4.js" />
     <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
+    <Content Include="Scripts\myscripts\nmconsledgerscript_v1.0.0.1.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
     <Content Include="Scripts\myscripts\summaryofdtdlist_v1.0.0.js" />
     <Content Include="Scripts\myscripts\sumofdtdrpt.js" />
@@ -704,6 +707,9 @@
     <Content Include="Views\ChangeNameListForBODRes\Index.cshtml" />
     <Content Include="Views\ChangeNameAppliedList\Index.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\NetMetering\NetMeteringList.cshtml" />
+    <Content Include="Scripts\myscripts\netmeteringscript_v1.0.0.1.js" />
+    <Content Include="Views\NetMetering\ViewConsumerLedger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,71 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "NetMeteringList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /*.dataTables tbody tr {
+        min-height: 30px;  or whatever height you need to make them all consistent
+        font-size: 9px !important;
+    }*/
+
+    /*#myTable1 {*/
+
+    /*}*/
+    .table.dataTable td, th {
+        font-size: 12px !important;
+    }
+</style>
+
+<h2><strong>NET METERING LIST</strong></h2>
+
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
+    </div>
+</div>
+
+<br />
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th scope="col" style="text-align:center;">AccountNo</th>
+                <th scope="col" style="text-align:center;">Name</th>
+                <th scope="col" style="text-align:center;">Address</th>
+                <th scope="col" style="text-align:center;">Type</th>
+                <th scope="col" style="text-align:center;">Status</th>
+                <th scope="col" style="text-align:center;">MeterNo</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    @*<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>*@
+    <script src="~/Scripts/myscripts/netmeteringscript_v1.0.0.1.js"></script>
+    <script>
+        $(document).ready(loaddata());
+    </script>
+}

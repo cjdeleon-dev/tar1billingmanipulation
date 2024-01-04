@@ -68,7 +68,7 @@ namespace TAR1ORMAN.Controllers
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "update tbl_changename set nw_memberid=@memberid, nw_memberdate=@memberdate, appstatus='FOR GM'S APPROVAL'," +
+                cmd.CommandText = "update tbl_changename set nw_memberid=@memberid, nw_memberdate=@memberdate, appstatus='FOR GM''S APPROVAL'," +
                                   "lastupdated=getdate(),updatedby=@updatedby where id=@refid;";
 
                 cmd.Parameters.Clear();

@@ -6,7 +6,7 @@
 
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 
-<script src="~/Scripts/myscripts/cnappliedlistscript_v1.1.1.js"></script>
+<script src="~/Scripts/myscripts/cnappliedlistscript_v1.1.4.js"></script>
 
 <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
 
@@ -49,6 +49,7 @@
                 <th scope="col" style="text-align:center;">Member Date</th>
                 <th scope="col" style="text-align:center;">NEW Name</th>
                 <th scope="col" style="text-align:center;">Status</th>
+                <th scope="col" style="text-align:center;">Remarks</th>
                 <th></th>
             </tr>
         </thead>
@@ -67,21 +68,37 @@
                     <div class="row">
                         <div class="form-group col-lg-2">
                             <label><strong></strong>Ref. ID:</label>
-                            <input type="text" class="form-control" id="txtRefID" disabled="disabled" style="width:100%;border-style:dashed;" />
+                            <input type="text" class="form-control" id="txtmodRefID" disabled="disabled" style="width:100%;border-style:dashed;" />
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label><strong><span style="color:red;">*</span></strong>Account Number:</label>
+                            <input type="text" class="form-control" id="txtmodAccountNo" disabled="disabled" style="width:100%;border-style:dashed;" />
                         </div>
                         <div class="form-group col-lg-6">
-                            <label><strong><span style="color:red;">*</span></strong>Account Number:</label>
-                            <input type="text" class="form-control" id="txtAccountNo" disabled="disabled" style="width:100%;border-style:dashed;" />
+                            <label><strong><span style="color:red;">*</span></strong>New Name:</label>
+                            <input type="text" class="form-control" id="txtmodNewName" style="width:100%;border-style:dashed;" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-6">
                             <label><strong><span style="color:red;">*</span></strong>Member OR Number:</label>
-                            <input type="text" class="form-control" id="txtMemberID" style="width:100%;border-style:dashed;" />
+                            <input type="text" class="form-control" id="txtmodMemberID" style="width:100%;border-style:dashed;" />
                         </div>
                         <div class="form-group col-lg-6">
                             <label><strong><span style="color:red;">*</span></strong>Member OR Date:</label>
-                            <input type="date" class="form-control" id="dtpMemberDate" style="width:100%;border-style:dashed;" />
+                            <input type="date" class="form-control" id="dtpmodMemberDate" style="width:100%;border-style:dashed;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label><strong><span style="color:red;">*</span></strong>Remark:</label>
+                            <select class="select form-control" id="cbomodRemarks">
+                                <option value="0" selected>--SELECT REMARK--</option> 
+                                <option value="1">WITH DEATH CERTIFICATE</option>
+                                <option value="2">WITH AUTHORIZATION LETTER</option>
+                                <option value="3">WITH DEED OF SALE</option>
+                                <option value="4">WITH LETTER OF REQUEST</option>
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -26,6 +26,17 @@ namespace TAR1ORMAN.Controllers
             return jsonResult;
         }
 
+        public JsonResult UpdateCNMember(AppCNMemModel acnm)
+        {
+            string userid = User.Identity.Name;
+            acnm.UpdatedBy = userid;
+
+            if (isSuccessUpdateCNMember(acnm))
+                return Json(new { message = "Success" }, JsonRequestBehavior.AllowGet);
+            else
+                return Json(new { message = "Fail To Update." }, JsonRequestBehavior.AllowGet);
+        }
+
         private List<ChangeNameAppliedModel> getAllAppliedChangeName()
         {
             List<ChangeNameAppliedModel> lstcnam = new List<ChangeNameAppliedModel>();
@@ -37,7 +48,7 @@ namespace TAR1ORMAN.Controllers
                 da.SelectCommand.Connection.Open();
 
                 da.SelectCommand.CommandType = CommandType.Text;
-                da.SelectCommand.CommandText = "select id,appdate,old_name,accountno,co.address,isnull(old_memberid,'')[old_memberid],old_memberdate," +
+                da.SelectCommand.CommandText = "select id,appdate,old_name,accountno,co.address,isnull(old_memberid,'')[old_memberid],old_memberdate[old_memberdate],remarks," +
                                                "nw_name,appstatus " +
                                                "from tbl_changename cn inner join arsconsumer co " +
                                                "on cn.accountno=co.consumerid " +
@@ -52,6 +63,8 @@ namespace TAR1ORMAN.Controllers
                     {
                         foreach (DataRow dr in dt.Rows)
                         {
+                            string oldmemdate = dr["old_memberdate"].ToString();
+
                             lstcnam.Add(new ChangeNameAppliedModel
                             {
                                 Id = Convert.ToInt32(dr["id"]),
@@ -60,9 +73,10 @@ namespace TAR1ORMAN.Controllers
                                 OldName = dr["old_name"].ToString(),
                                 Address = dr["address"].ToString(),
                                 OldMemberId = dr["old_memberid"].ToString(),
-                                OldMemberDate = dr["old_memberdate"].ToString(),
+                                OldMemberDate = oldmemdate==""?null:Convert.ToDateTime(dr["old_memberdate"]).ToString("yyyy-MM-dd"),
                                 NewName = dr["nw_name"].ToString(),
-                                Status = dr["appstatus"].ToString()
+                                Status = dr["appstatus"].ToString(),
+                                Remark = dr["remarks"].ToString()
                             });
                         }
                     }
@@ -82,6 +96,45 @@ namespace TAR1ORMAN.Controllers
             }
 
             return lstcnam;
+        }
+
+        private bool isSuccessUpdateCNMember(AppCNMemModel acnm)
+        {
+            bool result = true;
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand();
+                con.Open();
+
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "update tbl_changename set nw_name=@nw_name,old_memberid=@memberid, old_memberdate=@memberdate, remarks=@remarks," +
+                                  "lastupdated=getdate(),updatedby=@updatedby where id=@refid;";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@nw_name", acnm.NewName);
+                cmd.Parameters.AddWithValue("@memberid", acnm.OldMemberId);
+                cmd.Parameters.AddWithValue("@memberdate", acnm.OldMemDate);
+                cmd.Parameters.AddWithValue("@remarks", acnm.Remark);
+                cmd.Parameters.AddWithValue("@updatedby", acnm.UpdatedBy);
+                cmd.Parameters.AddWithValue("@refid", acnm.RefId);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                }
+            }
+
+            return result;
         }
     }
 }

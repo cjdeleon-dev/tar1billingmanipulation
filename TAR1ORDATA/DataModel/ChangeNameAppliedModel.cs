@@ -16,5 +16,6 @@ namespace TAR1ORDATA.DataModel
         public string OldMemberDate { get; set; }
         public string NewName { get; set; }
         public string Status { get; set; }
+        public string Remark { get; set; }
     }
 }

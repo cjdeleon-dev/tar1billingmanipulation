@@ -100,6 +100,7 @@
     <Compile Include="DataAccess\UserLoginAccess\IUserLoginAccess.cs" />
     <Compile Include="DataAccess\UserLoginAccess\UserLoginAccess.cs" />
     <Compile Include="DataModel\ActiveWithZeroConsModel.cs" />
+    <Compile Include="DataModel\AppCNMemModel.cs" />
     <Compile Include="DataModel\ApprovalChangeNameModel.cs" />
     <Compile Include="DataModel\AreaModel.cs" />
     <Compile Include="DataModel\ArsAreaModel.cs" />
@@ -112,7 +113,9 @@
     <Compile Include="DataModel\ChangeNameListForResoModel.cs" />
     <Compile Include="DataModel\ChangeNameModel.cs" />
     <Compile Include="DataModel\ClaimedBurialModel.cs" />
+    <Compile Include="DataModel\ConsLedgerDtlModel.cs" />
     <Compile Include="DataModel\ConsumerHighKwhModel.cs" />
+    <Compile Include="DataModel\ConsumerLedgerModel.cs" />
     <Compile Include="DataModel\ConsumerModel.cs" />
     <Compile Include="DataModel\ConsumerStatusLogModel.cs" />
     <Compile Include="DataModel\ConsumerStatusModel.cs" />
@@ -135,6 +138,7 @@
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />
     <Compile Include="DataModel\MemConsProfileModel.cs" />
+    <Compile Include="DataModel\NetMeteringModel.cs" />
     <Compile Include="DataModel\OfficeModel.cs" />
     <Compile Include="DataModel\PendingChangeNameModel.cs" />
     <Compile Include="DataModel\ProcessResultModel.cs" />
