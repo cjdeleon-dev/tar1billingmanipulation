@@ -16,7 +16,7 @@
 
     /*}*/
     .table.dataTable td, th {
-        font-size: 10px !important;
+        font-size: 12px !important;
     }
 </style>
 
@@ -56,7 +56,7 @@
 <hr />
 <div class="form-group" style="max-height:410px;">
     <div class="table-responsive-sm">
-        <table class="table table-hover table-bordered" id="myTable1">
+        <table class="table table-hover table-bordered table-responsive-sm" id="myTable1">
             <thead class="bg-primary">
                 <tr>
                     <th scope="col" style="text-align:center;">TrxSeqId</th>
@@ -74,7 +74,8 @@
                     <th scope="col" style="text-align:center;">TTB</th>
                     <th scope="col" style="text-align:center;">TVB</th>
                     <th scope="col" style="text-align:center;">MONTHS</th>
-                    <th  scope="col" style="text-align:center;">Action</th>
+                    <th scope="col" style="text-align:center;">IsBAL</th>
+                    <th scope="col" style="text-align:center;">Action</th>
                 </tr>
             </thead>
         </table>
@@ -82,17 +83,14 @@
 </div>
 <hr />
 <div class="row">
-    <div class="col-lg-offset-3 col-lg-2 text-right" style="padding:0;">
-        <label><strong>Total Balance: </strong></label>
+    <div class="col-lg-offset-5 col-lg-2 text-right">
+        <input type="text" id="txtTotalMonths" disabled="disabled" />
     </div>
     <div class="col-lg-2 text-right">
-        <input type="text" name="txtTotalMonths" disabled="disabled" />
+        <input type="text" id="txtTotalTrxBalance" style="text-align:right;" disabled="disabled" />
     </div>
     <div class="col-lg-2 text-right">
-        <input type="text" name="txtTotalTrxBalance" disabled="disabled" />
-    </div>
-    <div class="col-lg-2 text-right">
-        <input type="text" name="txtTotalVatBalance" disabled="disabled" />
+        <input type="text" id="txtTotalVatBalance" style="text-align:right;" disabled="disabled" />
     </div>
 </div>
 

@@ -60,6 +60,11 @@ namespace TAR1ORMAN.Controllers
             return View();
         }
 
+        public JsonResult GetAccountDetails(string accountNo)
+        {
+            return Json(new { data = getAccountDetails(accountNo) }, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult LoadLedgerByAccountNo(string actno)
         {
             var jsonResult = Json(new { data = loadLedgerByAccountNo(actno) }, JsonRequestBehavior.AllowGet);
@@ -68,6 +73,10 @@ namespace TAR1ORMAN.Controllers
             return jsonResult;
         }
 
+
+
+
+        //FUNCTIONS AND PROCEDURES
         private List<NetMeteringModel> loadData()
         {
             List<NetMeteringModel> lst = new List<NetMeteringModel>();
@@ -148,20 +157,29 @@ namespace TAR1ORMAN.Controllers
                 {
                     da.Fill(dt);
 
-                    //Type trxtype = dt.Columns["trxbalance"].DataType;
-
+                    //get the number of month arrear(s)
                     var query = (from result1
                                      in dt.AsEnumerable()
                                  where result1.Field<Decimal>("trxbalance") > 0
                                  select result1);
-
                     int moncnt = query.Count();
 
                     //datatable manipulation
+                    DataColumn ncol = new DataColumn("isBal", typeof(bool));
+                    ncol.DefaultValue = false;
+
+                    dt.Columns.Add(ncol);
+
                     if (dt.Rows.Count > 0)
                     {
                         for (int i=0; i<=dt.Rows.Count-1; i++)
                         {
+                            //to determine each billing period with trx balance as a reference to change font color in the jquery datatable.
+                            if (Convert.ToDouble(dt.Rows[i]["trxbalance"]) > 0 && dt.Rows[i]["trxid"].ToString().Equals("EB"))
+                            {
+                                dt.Rows[i]["isBal"] = true;
+                            }
+
                             if (dt.Rows[i]["trxid"].ToString().Equals("EB") || dt.Rows[i]["trxid"].ToString().Equals("DM"))
                             {
                                 lntrxamount = Math.Round(lntrxamount + Convert.ToDouble(dt.Rows[i]["trxamount"]),2);
@@ -201,7 +219,8 @@ namespace TAR1ORMAN.Controllers
                                 VATBalance = Convert.ToDouble(dr["vatbalance"]),
                                 TotalTrxBalance = lntrxamount,
                                 TotalVatBalance = lnvatamount,
-                                Months = Convert.ToInt32(moncnt)
+                                Months = Convert.ToInt32(moncnt),
+                                isBalance = Convert.ToBoolean(dr["isBal"])
                             });
                         }
                     }
@@ -221,6 +240,51 @@ namespace TAR1ORMAN.Controllers
             }
 
             return lst;
+        }
+
+        private ConsumerModel getAccountDetails(string actno)
+        {
+            ConsumerModel cm = new ConsumerModel();
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "select rtrim(name)[name], rtrim(address)[address], rtrim(description)[status] " +
+                                  "from arsconsumer cons inner join arstype typ " +
+                                  "on cons.consumertypeid=typ.consumertypeid " +
+                                  "where cons.consumerid=@consumerid;";
+
+                cmd.Parameters.AddWithValue("@consumerid", actno);
+
+                try
+                {
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            cm.AccountNo = actno;
+                            cm.AccountName = dr["name"].ToString();
+                            cm.Address = dr["address"].ToString();
+                            cm.Status = dr["status"].ToString();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    cm = null;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return cm;
         }
     }
 }

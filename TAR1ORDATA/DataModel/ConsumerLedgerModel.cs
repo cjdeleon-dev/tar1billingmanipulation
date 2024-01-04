@@ -22,5 +22,6 @@ namespace TAR1ORDATA.DataModel
         public double TotalTrxBalance { get; set; }
         public double TotalVatBalance { get; set; }
         public int Months { get; set; }
+        public bool isBalance { get; set; }
     }
 }
