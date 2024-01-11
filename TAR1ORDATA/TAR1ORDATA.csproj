@@ -138,7 +138,12 @@
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />
     <Compile Include="DataModel\MemConsProfileModel.cs" />
+    <Compile Include="DataModel\NetMeteringBillModel.cs" />
+    <Compile Include="DataModel\NetMeteringInReadModel.cs" />
     <Compile Include="DataModel\NetMeteringModel.cs" />
+    <Compile Include="DataModel\NetMeteringPostBillModel.cs" />
+    <Compile Include="DataModel\NetMeteringPrevReadModel.cs" />
+    <Compile Include="DataModel\NMSelAcctNoModel.cs" />
     <Compile Include="DataModel\OfficeModel.cs" />
     <Compile Include="DataModel\PendingChangeNameModel.cs" />
     <Compile Include="DataModel\ProcessResultModel.cs" />

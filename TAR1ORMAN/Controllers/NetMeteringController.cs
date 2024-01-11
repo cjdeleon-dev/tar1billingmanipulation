@@ -47,7 +47,10 @@ namespace TAR1ORMAN.Controllers
 
         public ActionResult ViewConsumerLedger()
         {
-            ViewBag.AccountNo = _selactno;
+            //ViewBag.AccountNo = _selactno;
+            NMSelAcctNoModel sanm = new NMSelAcctNoModel();
+            sanm.SelectedAcctNo = _selactno;
+            _selactno = string.Empty;
             
             if (User.IsInRole("SYSADMIN"))
             {
@@ -57,7 +60,7 @@ namespace TAR1ORMAN.Controllers
             {
                 ViewBag.Message = "NONADMIN";
             }
-            return View();
+            return View(sanm);
         }
 
         public JsonResult GetAccountDetails(string accountNo)
@@ -73,8 +76,36 @@ namespace TAR1ORMAN.Controllers
             return jsonResult;
         }
 
+        public JsonResult GetCurrentBillPeriod()
+        {
+            return Json(new { data = getCurrentBillPeriod() }, JsonRequestBehavior.AllowGet);
+        }
 
+        public JsonResult GetDemandByAccountNo(string acctno)
+        {
+            return Json(new { data = getDemandByAccountNo(acctno) }, JsonRequestBehavior.AllowGet);
+        }
 
+        public JsonResult GetPrevReadingByAccountNo(string acctno)
+        {
+            NetMeteringPrevReadModel nmprm = new NetMeteringPrevReadModel();
+            nmprm = getPrevReadingByAccountNo(acctno);
+
+            return Json(new { data=nmprm }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ProcessBill(NetMeteringInReadModel nmrm)
+        {
+            return Json(new { data = processNetMeteringBill(nmrm) }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult SaveNewNetMeteringBill(NetMeteringPostBillModel nmpbm)
+        {
+            nmpbm.EntryUser = User.Identity.Name;
+            return Json(new { data = saveNewNetMeteringBill(nmpbm) }, JsonRequestBehavior.AllowGet);
+        }
 
         //FUNCTIONS AND PROCEDURES
         private List<NetMeteringModel> loadData()
@@ -254,8 +285,8 @@ namespace TAR1ORMAN.Controllers
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "select rtrim(name)[name], rtrim(address)[address], rtrim(description)[status] " +
-                                  "from arsconsumer cons inner join arstype typ " +
-                                  "on cons.consumertypeid=typ.consumertypeid " +
+                                  "from arsconsumer cons inner join arsstatus stat " +
+                                  "on cons.statusid=stat.statusid " +
                                   "where cons.consumerid=@consumerid;";
 
                 cmd.Parameters.AddWithValue("@consumerid", actno);
@@ -285,6 +316,230 @@ namespace TAR1ORMAN.Controllers
             }
 
             return cm;
+        }
+
+        private string getCurrentBillPeriod()
+        {
+            string bp = string.Empty;
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "select top 1 billperiod " +
+                                  "from arsbillperiod " +
+                                  "order by billperiod desc;";
+
+                try
+                {
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            bp = dr["billperiod"].ToString();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    bp = string.Empty;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return bp;
+        }
+
+        private decimal getDemandByAccountNo(string actno)
+        {
+            decimal demand = 0;
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "select flatdemand " +
+                                  "from arsconsumer " +
+                                  "where consumerid=@consumerid;";
+
+                cmd.Parameters.AddWithValue("@consumerid", actno);
+
+                try
+                {
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            demand = Convert.ToDecimal(dr["flatdemand"]);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    demand = 0;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return demand;
+        }
+
+        private NetMeteringPrevReadModel getPrevReadingByAccountNo(string actno)
+        {
+            NetMeteringPrevReadModel nm = new NetMeteringPrevReadModel();
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "select max(billperiod)[billperiod],currimp[previmp],currexp[prevexp],currrec[prevrec] " +
+                                  "from tbl_netmeteringread " +
+                                  "where consumerid = @consumerid " +
+                                  "group by currimp,currexp,currrec,consumerid";
+
+                cmd.Parameters.AddWithValue("@consumerid", actno);
+
+                try
+                {
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            nm.BillPeriod = dr["billperiod"].ToString();
+                            nm.PrevImp = Convert.ToInt32(dr["previmp"]);
+                            nm.PrevExp = Convert.ToInt32(dr["prevexp"]);
+                            nm.PrevRec = Convert.ToInt32(dr["prevrec"]);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    nm = null;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return nm;
+        }
+
+        private NetMeteringBillModel processNetMeteringBill(NetMeteringInReadModel nmirm)
+        {
+            NetMeteringBillModel nmbm = new NetMeteringBillModel();
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_computeBillByNetMetering";
+
+                cmd.Parameters.AddWithValue("@consumerid", nmirm.ConsumerId);
+                cmd.Parameters.AddWithValue("@billperiod", nmirm.BillPeriod);
+                cmd.Parameters.AddWithValue("@energyused", nmirm.NetImport);
+                cmd.Parameters.AddWithValue("@netexport", nmirm.NetExport);
+                cmd.Parameters.AddWithValue("@demand", nmirm.ActualDemand);
+
+                try
+                {
+                    SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            nmbm.EnergyAmount = Convert.ToDecimal(dr["EnergyAmount"]);
+                            nmbm.DemandAmount = Convert.ToDecimal(dr["DemandAmount"]);
+                            nmbm.BillAmount = Convert.ToDecimal(dr["BillAmount"]);
+                            nmbm.VATAmount = Convert.ToDecimal(dr["VATAmount"]);
+                            nmbm.TotalAmount = Convert.ToDecimal(dr["Total"]);
+                            nmbm.NetBillAmount = Convert.ToDecimal(dr["NetBillAmount"]);
+                            nmbm.TotalCurrentBill = Convert.ToDecimal(dr["TotalCurrentBill"]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    nmbm = null;
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                return nmbm;
+            }
+        }
+
+        private bool saveNewNetMeteringBill(NetMeteringPostBillModel nmbm)
+        {
+            bool res = false;
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+            SqlTransaction trans;
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                trans = con.BeginTransaction();
+                cmd.Transaction = trans;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_postnetmeteringbill";
+
+                cmd.Parameters.AddWithValue("@consumerid", nmbm.ConsumerId);
+                cmd.Parameters.AddWithValue("@previmp", nmbm.PrevImp);
+                cmd.Parameters.AddWithValue("@currimp", nmbm.CurrImp);
+                cmd.Parameters.AddWithValue("@energyused", nmbm.NetImp);
+                cmd.Parameters.AddWithValue("@prevexp", nmbm.PrevExp);
+                cmd.Parameters.AddWithValue("@currexp", nmbm.CurrExp);
+                cmd.Parameters.AddWithValue("@netexport", nmbm.NetExp);
+                cmd.Parameters.AddWithValue("@prevrec", nmbm.PrevRec);
+                cmd.Parameters.AddWithValue("@currrec", nmbm.CurrRec);
+                cmd.Parameters.AddWithValue("@demand", nmbm.Demand);
+                cmd.Parameters.AddWithValue("@trxdate", nmbm.TrxDate);
+                cmd.Parameters.AddWithValue("@billperiod", nmbm.BillPeriod);
+                cmd.Parameters.AddWithValue("@entryuser", nmbm.EntryUser);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    res = true;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    res = false;
+                }
+                finally
+                {
+                    trans.Dispose();
+                    con.Close();
+                }
+            }
+            return res;
         }
     }
 }

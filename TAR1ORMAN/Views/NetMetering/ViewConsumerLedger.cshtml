@@ -1,4 +1,5 @@
-﻿
+﻿@model TAR1ORDATA.DataModel.NMSelAcctNoModel
+
 @{
                 /**/
 
@@ -16,7 +17,7 @@
 
     /*}*/
     .table.dataTable td, th {
-        font-size: 12px !important;
+        font-size: 10px !important;
     }
 </style>
 
@@ -35,7 +36,7 @@
     <div class="col-lg-2">
         @*accountno*@
         <label>ACCOUNT NUMBER: </label><br />
-        <input type="text" class="text-center" id="txtAccountNo" value=@ViewBag.AccountNo disabled="disabled" />
+        <input type="text" class="text-center" id="txtAccountNo" value=@Model.SelectedAcctNo disabled="disabled" />
     </div>
     <div class="col-lg-3">
         @*name*@
@@ -54,9 +55,9 @@
     </div>
 </div>
 <hr />
-<div class="form-group" style="max-height:410px;">
+@*<div class="form-group" style="max-height:410px;">*@
     <div class="table-responsive-sm">
-        <table class="table table-hover table-bordered table-responsive-sm" id="myTable1">
+        <table class="table table-hover table-bordered table-responsive-sm" id="myTable1" style="overflow-y:scroll;">
             <thead class="bg-primary">
                 <tr>
                     <th scope="col" style="text-align:center;">TrxSeqId</th>
@@ -80,16 +81,28 @@
             </thead>
         </table>
     </div>
-</div>
+@*</div>*@
 <hr />
 <div class="row">
-    <div class="col-lg-offset-5 col-lg-2 text-right">
-        <input type="text" id="txtTotalMonths" disabled="disabled" />
+    <div class="col-sm-1" style="padding:0;">
+        <input type="button" id="btnNewBill" style="text-align:center;min-width:100%;" onclick="showNewBill()" value="NEW BILL" />
     </div>
-    <div class="col-lg-2 text-right">
+    <div class="col-sm-1" style="padding:0;">
+        <input type="button" id="btnCR" style="text-align:center;min-width:100%;" value="CR MEMO" />
+    </div>
+    <div class="col-sm-1" style="padding:0;">
+        <input type="button" id="btnDR" style="text-align:center;min-width:100%;" value="DR MEMO" />
+    </div>
+    <div class="col-sm-1" style="padding:0;">
+        <input type="button" id="btnRB" style="text-align:center;min-width:100%;" value="REBUILD" />
+    </div>
+    <div class="col-lg-offset-2 col-sm-2 text-right" style="padding:0;">
+        <input type="text" id="txtTotalMonths" disabled="disabled" style="min-width:100%;" />
+    </div>
+    <div class="col-sm-2 text-right">
         <input type="text" id="txtTotalTrxBalance" style="text-align:right;" disabled="disabled" />
     </div>
-    <div class="col-lg-2 text-right">
+    <div class="col-sm-2 text-right">
         <input type="text" id="txtTotalVatBalance" style="text-align:right;" disabled="disabled" />
     </div>
 </div>
@@ -107,10 +120,131 @@
     </div>
 </div>
 
+<div class="modal fade" id="newTransactionModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="newTransactionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="newTransactionLabel">New Bill Entry</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="AcctNo">ACCOUNT NO.</label>
+                            <input class="form-control" type="text" id="txtNAcctNo" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="BillPeriod">BILL PERIOD</label>
+                            <input class="form-control" type="text" id="txtNBillPeriod" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="TrxDate">TRX DATE</label>
+                            <input class="form-control" type="date" id="txtNTrxDate" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-offset-3 col-sm-3">
+                            <label for="PrevImport">PREV. IMPORT</label>
+                            <input class="form-control text-right" type="text" id="txtNPrevImp" placeholder="0" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="CurrImport">CURR. IMPORT</label>
+                            <input class="form-control text-right" type="text" id="txtNCurrImp" placeholder="0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-3 col-sm-3">
+                            <label for="PrevExport">PREV. EXPORT</label>
+                            <input class="form-control text-right" type="text" id="txtNPrevExp" placeholder="0" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="CurrExport">CURR. EXPORT</label>
+                            <input class="form-control text-right" type="text" id="txtNCurrExp" placeholder="0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-3 col-sm-3">
+                            <label for="PrevRec">PREV. REC</label>
+                            <input class="form-control text-right" type="text" id="txtNPrevRec" placeholder="0" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="CurrRec">CURR. REC</label>
+                            <input class="form-control text-right" type="text" id="txtNCurrRec" placeholder="0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-offset-3 col-sm-3">
+                            <label for="Demand">DEMAND</label>
+                            <input class="form-control text-right" type="text" id="txtNDemand" placeholder="0.00" />
+                        </div>
+                        <div class="col-lg-4" style="padding-top:1.8em;">
+                            <input type="button" class="btn btn-danger" onclick="processBill()" value="CALCULATE" style="min-width:100%;" />
+                        </div>
+                        <div class="col-lg-2" style="padding-top:1.8em;padding-left:5px;padding-right:5px;margin:0;">
+                            <input type="button" class="btn btn-warning" onclick="resetEntry()" value="CLEAR" style="min-width:100%;" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <h4>COMPUTED CURRENT BILL AND VAT</h4>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="EnergyAmt">Energy Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNEnergyAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="DemandAmt">Demand Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNDemandAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="BillAmt">Bill Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNBillAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="VatAmt">VAT Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNBVatAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="Total">Total Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNTotalAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <h4>APPLIED NET METERING COMPUTATION</h4>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="NetBillAmount">Net Bill Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNNetBillAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="NVATAmt">VAT Amount:</label>
+                            <input class="form-control text-right" type="text" id="txtNNetVatAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="CurrBill">Total Current Bill:</label>
+                            <input class="form-control text-right" type="text" id="txtNCurrBillAmt" placeholder="0.00" disabled="disabled" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" id="btnNSave" class="btn btn-primary" onclick="saveNewBill()" value="Save" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     @*<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>*@
-    <script src="~/Scripts/myscripts/nmconsledgerscript_v1.0.0.1.js"></script>
+    <script src="~/Scripts/myscripts/nmconsledgerscript_v1.0.0.2.js"></script>
     <script>
         $(document).ready(loaddata());
     </script>

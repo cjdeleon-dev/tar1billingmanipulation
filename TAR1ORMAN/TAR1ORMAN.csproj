@@ -632,7 +632,7 @@
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
     <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.4.js" />
     <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
-    <Content Include="Scripts\myscripts\nmconsledgerscript_v1.0.0.1.js" />
+    <Content Include="Scripts\myscripts\nmconsledgerscript_v1.0.0.2.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
     <Content Include="Scripts\myscripts\summaryofdtdlist_v1.0.0.js" />
     <Content Include="Scripts\myscripts\sumofdtdrpt.js" />
