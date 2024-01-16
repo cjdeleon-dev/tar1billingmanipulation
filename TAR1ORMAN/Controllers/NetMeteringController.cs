@@ -107,6 +107,12 @@ namespace TAR1ORMAN.Controllers
             return Json(new { data = saveNewNetMeteringBill(nmpbm) }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult RebuildByAccountNo(string acctno)
+        {
+            return Json(new { data = rebuildByAccountNo(acctno) }, JsonRequestBehavior.AllowGet);
+        }
+
         //FUNCTIONS AND PROCEDURES
         private List<NetMeteringModel> loadData()
         {
@@ -540,6 +546,39 @@ namespace TAR1ORMAN.Controllers
                 }
             }
             return res;
+        }
+
+        private bool rebuildByAccountNo(string actno)
+        {
+            bool result = false;
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "cp_autoapply";
+
+                cmd.Parameters.AddWithValue("@consumerid",actno);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -146,8 +146,10 @@ function saveNewBill() {
         dataType: "json",
         success: function (result) {
             if (result.data != null) {
-                if (result.data == true)
+                if (result.data == true) {
                     alert("The bill has been successfully posted.");
+                    window.location = "/NetMetering/SetAccountLedger?accountNo=" + acctno;
+                }                    
                 else
                     alert("Unable to post the bill.");
             }
@@ -320,4 +322,32 @@ function resetEntry() {
     getDemandByAccountNo();
     getPrevReadingByAccountNo();
     $('#txtNTrxDate').val(today);
+}
+
+function rebuildAccount() {
+    var acctno = $('#txtAccountNo').val();
+
+    $.ajax({
+        url: "/NetMetering/RebuildByAccountNo/",
+        type: "POST",
+        contentType: "application/json;charset=UTF-8",
+        data: JSON.stringify({ acctno }),
+        dataType: "json",
+        success: function (result) {
+            if (result.data != null) {
+                if (result.data = true) {
+                    alert('Rebuilding account has been done.');
+                    window.location = "/NetMetering/SetAccountLedger?accountNo=" + acctno;
+                }
+                else
+                    alert('Rebuilding is not possible.');
+            }
+            else {
+                alert("Sorry unable to rebuild account's ledger.");
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
 }
