@@ -627,7 +627,7 @@
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
     <Content Include="Scripts\myscripts\cnappliedlistscript_v1.1.4.js" />
-    <Content Include="Scripts\myscripts\cnlistforbodresscript.js" />
+    <Content Include="Scripts\myscripts\cnlistforbodresscript_v1.0.0.1.js" />
     <Content Include="Scripts\myscripts\cnpendinglistscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\dailychangedstat.js" />
     <Content Include="Scripts\myscripts\disconlistscript.js" />
