@@ -7,7 +7,7 @@
 <script src="~/Scripts/myscripts/cnlistforbodresscript.js"></script>
 
 <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-
+<link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
 
 <style>
     .dataTables tbody tr {
@@ -24,19 +24,28 @@
 
 <div class="row">
     <div class="col-md-4">
-        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","ChangeNameApplication")'"><i class="glyphicon glyphicon-arrow-left"></i> Application for Change Name</button>
-        <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
-    </div>
-    @using (Html.BeginForm("ExportToExcel", "ChangeNameListForBODRes", FormMethod.Post))
-    {
-        <div class="col-lg-offset-4 col-lg-4">
-            <div class="row">
-                <div class="col-lg-offset-8 col-lg-4">
-                    <input type="submit" value="Export to Excel" class="btn btn-success" />
-                </div>
-            </div>
+        <div class="form-group">
+            <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","ChangeNameApplication")'"><i class="glyphicon glyphicon-arrow-left"></i> Application for Change Name</button>
+            <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
         </div>
-    }
+    </div>
+    <div class="col-md-3" style="padding:0;">
+        <div class="form-group">
+            <label for="DateFrom">Date From: </label>
+            <input type="date" id="dtpFrom" name="dtpFrom" />
+        </div>
+    </div>
+    <div class="col-md-3" style="padding:0;text-align:left;border:">
+        <div class="form-group">
+            <label for="DateTo">Date To: </label>
+            <input type="date" id="dtpTo" name="dtpTo" />
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <button class="btn btn-primary" id="btnBack" onclick="loaddata()"><i class="glyphicon glyphicon-retweet"></i> Process</button>
+        </div>
+    </div>
 </div>
 
 <br />
@@ -60,12 +69,26 @@
     </table>
 </div>
 
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>
+
 @section Scripts{
 
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(loaddata());
-    </script>
+    @*datatable buttons scripts in order (excel and csv button)*@
+    <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/DataTables/jszip.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+    @*end here*@
 }
 

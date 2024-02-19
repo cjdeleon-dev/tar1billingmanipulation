@@ -15,6 +15,7 @@ namespace TAR1ORMAN.Controllers
     public class DisconRptSummaryListController : Controller
     {
         // GET: DisconRptSummaryList
+        [Authorize(Roles = "AREAMNGR,IT,MDTO,SYSADMIN,FINHEAD,BILLING,MSERVE")]
         public ActionResult Index()
         {
             return View();
