@@ -24,6 +24,12 @@ namespace TAR1ORMAN.Controllers
             return View();
         }
 
+        public JsonResult checkifhasrecords(string daterange)
+        {
+            string[] dates = daterange.Split('~');
+            return Json(checkIfHasRecords(dates[0], dates[1]),  JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult loaddata(string daterange)
         {
             string[] dates = daterange.Split('~');
@@ -68,7 +74,7 @@ namespace TAR1ORMAN.Controllers
 
                 da.SelectCommand.CommandType = CommandType.Text;
                 da.SelectCommand.CommandText = "select id,appdate,old_name,co.address,isnull(old_memberid,'')[old_memberid],old_memberdate, " +
-                                               "nw_name,isnull(nw_memberid, '')[nw_memberid],nw_memberdate,accountno,isnull(remarks, '')[remarks] " +
+                                               "nw_name,isnull(nw_memberid, '')[nw_memberid],nw_memberdate,accountno,isnull(remarks, '')[remarks],rptremark " +
                                                "from tbl_changename cn inner join arsconsumer co " +
                                                "on cn.accountno = co.consumerid " +
                                                "where isnull(appstatus, '') = 'FOR BOARD RESOLUTION' " +
@@ -89,16 +95,17 @@ namespace TAR1ORMAN.Controllers
                             lstcnlfr.Add(new ChangeNameListForResoModel
                             {
                                Id = Convert.ToInt32(dr["id"]),
-                               ApplicationDate = dr["appdate"].ToString(),
+                               ApplicationDate = Convert.ToDateTime(dr["appdate"]).ToString("dd/MM/yyyy"),
                                NameOld = dr["old_name"].ToString(),
                                Address = dr["address"].ToString(),
                                ORNoOld = dr["old_memberid"].ToString(),
-                               ORDateOld = dr["old_memberdate"].ToString(),
+                               ORDateOld = Convert.ToDateTime(dr["old_memberdate"]).ToString("dd/MM/yyyy"),
                                NameNew = dr["nw_name"].ToString(),
                                ORNoNew = dr["nw_memberid"].ToString(),
-                               ORDateNew = dr["nw_memberdate"].ToString(),
+                               ORDateNew = Convert.ToDateTime(dr["nw_memberdate"]).ToString("dd/MM/yyyy"),
                                AccountNo = dr["accountno"].ToString(),
-                               Remarks = dr["remarks"].ToString()
+                               Remarks = dr["remarks"].ToString(),
+                               RptRemark = dr["rptremark"].ToString()
                             });
                         }
                     }
@@ -118,6 +125,54 @@ namespace TAR1ORMAN.Controllers
             }
 
             return lstcnlfr;
+        }
+
+        private bool checkIfHasRecords(string datefr, string dateto)
+        {
+            bool result = false;
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select id,appdate,old_name,co.address,isnull(old_memberid,'')[old_memberid],old_memberdate, " +
+                                               "nw_name,isnull(nw_memberid, '')[nw_memberid],nw_memberdate,accountno,isnull(remarks, '')[remarks] " +
+                                               "from tbl_changename cn inner join arsconsumer co " +
+                                               "on cn.accountno = co.consumerid " +
+                                               "where isnull(appstatus, '') = 'FOR BOARD RESOLUTION' " +
+                                               "and ISNULL(exported,0)= 0 and dateexported IS NULL and dateapproved between @datefr and @dateto; ";
+
+                da.SelectCommand.Parameters.AddWithValue("@datefr", datefr);
+                da.SelectCommand.Parameters.AddWithValue("@dateto", dateto);
+
+                DataTable dt = new DataTable();
+
+                try
+                {
+                    da.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return result;
         }
     }
 }

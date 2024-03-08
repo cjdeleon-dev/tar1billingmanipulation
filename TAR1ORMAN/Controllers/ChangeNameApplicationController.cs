@@ -47,13 +47,21 @@ namespace TAR1ORMAN.Controllers
             LocalReport lr = new LocalReport();
             string p = string.Empty;
             
-            if (tblSource.Rows[0]["ChangeType"].ToString() == "Retention")
-                p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameReten.rdlc");
+            if (Convert.ToInt32(tblSource.Rows[0]["ChangeType"]) == 1)
+                p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameWithNew.rdlc");
             else {
-                if (tblSource.Rows[0]["ChangeType"].ToString() == "Old")
-                    p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameWithOld.rdlc");
+                if (Convert.ToInt32(tblSource.Rows[0]["ChangeType"]) == 2)
+                    p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameWithOldNew.rdlc");
                 else
-                    p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameWithNew.rdlc");
+                {
+                    if (Convert.ToInt32(tblSource.Rows[0]["ChangeType"]) == 3)
+                        p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameReten.rdlc");
+                    else
+                    {
+                        p = Path.Combine(Server.MapPath("/Reports"), "rptChangeNameRetenNew.rdlc");
+                    }
+                }
+                    
             }
 
             lr.ReportPath = p;
@@ -74,8 +82,6 @@ namespace TAR1ORMAN.Controllers
 
         }
 
-
-
             //functions and procedures
         private ConsumerModel getAccountDetailsByAcctNum(string acctnum)
         {
@@ -89,7 +95,7 @@ namespace TAR1ORMAN.Controllers
                 cmd.Connection = con;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = "select consumerid, rtrim(name)[name], rtrim(address)[address], rtrim(isnull(memberid,''))[memberid], " +
-                                  "rtrim(mtrserialno)[mtrserialno], case when memberdate is null then '' else convert(varchar(10),memberdate,101) end [memberdate],seqno " +
+                                  "rtrim(mtrserialno)[mtrserialno], memberdate,seqno " +
                                   "from arsconsumer where consumerid=@consumerid";
 
                 cmd.Parameters.Clear();
@@ -116,7 +122,7 @@ namespace TAR1ORMAN.Controllers
                             if (rdr["memberdate"].ToString() == "")
                                 cm.ORDate = null;
                             else
-                                cm.ORDate = Convert.ToDateTime(rdr["memberdate"].ToString()).ToString("yyyy-MM-dd");
+                                cm.ORDate = Convert.ToDateTime(rdr["memberdate"]).ToString("yyyy-MM-dd");
                             cm.SeqNo = rdr["seqno"].ToString();
                         }
                     }
@@ -152,26 +158,26 @@ namespace TAR1ORMAN.Controllers
                     cmd.Connection = con;
                     cmd.Transaction = trans;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "declare @OLD_MEMBERID varchar(10), @OLD_MEMBERDATE datetime;" +
-                                      "insert into tbl_changename(appdate,accountno,old_name,old_memberid,old_memberdate,nw_name,nw_memberid," +
-                                      "nw_memberdate,nw_birthday,nw_contactnum,nw_relationship,nw_reason," +
-                                      "nw_forwithdrawold,nw_forwithdrawnew,nw_forretention,madeby,isdied,remarks,appstatus) " +
-                                      "values(getdate(),@accountno,@oldname,@oldmemberid,@oldmemberdate,@nw_name,null," +
-                                      "null,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason," +
-                                      "@nw_forwithdrawold,@nw_forwithdrawnew,@nw_forretention,@madeby,@isdied,@remarks,'FOR PAYMENT');" +
-                                      "SELECT @OLD_MEMBERID=RTRIM(memberid), @OLD_MEMBERDATE=memberdate FROM arsconsumer WHERE consumerid=@accountno; " +
-                                      "IF(@OLD_MEMBERID = '') " +
-                                      "BEGIN " +
-                                      "     UPDATE arsconsumer " +
-                                      "     SET memberid = @oldmemberid " +
-                                      "     WHERE consumerid = @accountno; " +
-                                      "END " +
-                                      "IF(@OLD_MEMBERDATE IS NULL) " +
-                                      "BEGIN " +
-                                      "     UPDATE arsconsumer " +
-                                      "     SET memberdate = @oldmemberdate " +
-                                      "     WHERE consumerid = @accountno " +
-                                      "END";
+                    cmd.CommandText = "declare @OLD_MEMBERID varchar(10), @OLD_MEMBERDATE datetime; " +
+                                      "insert into tbl_changename(appdate,accountno,old_name,old_memberid,old_memberdate,nw_name,nw_memberid,  " +
+                                      "nw_memberdate,nw_birthday,nw_contactnum,nw_relationship,nw_reason,changenametypeid,madeby,isdied,  " +
+                                      "isremdeathcert,isremauthletter,isremdeedofsale,isremletterofreq,isremother,remothertext,rptremark,appstatus)  " +
+                                      "values(getdate(),@accountno,@oldname,@oldmemberid,@oldmemberdate,@nw_name,null, " +
+                                      "null,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason,@changenametypeid, " +
+                                      "@madeby,@isdied,@isremdeathcert,@isremauthletter,@isremdeedofsale,@isremletterofreq,@isremother,@remothertext,@rptremark,'FOR PAYMENT'); " +
+                                      "SELECT @OLD_MEMBERID=RTRIM(memberid), @OLD_MEMBERDATE=memberdate FROM arsconsumer WHERE consumerid=@accountno;  " +
+                                      "IF(@OLD_MEMBERID = '')  " +
+                                      "BEGIN  " +
+                                      "     UPDATE arsconsumer  " +
+                                      "     SET memberid = @oldmemberid  " +
+                                      "     WHERE consumerid = @accountno;  " +
+                                      "END  " +
+                                      "IF(@OLD_MEMBERDATE IS NULL)  " +
+                                      "BEGIN  " +
+                                      "     UPDATE arsconsumer  " +
+                                      "     SET memberdate = @oldmemberdate  " +
+                                      "     WHERE consumerid = @accountno  " +
+                                      "END ";
 
                     cmd.Parameters.AddWithValue("@accountno", pcnm.AccountNo);
                     cmd.Parameters.AddWithValue("@oldname", pcnm.AccountName);
@@ -192,12 +198,24 @@ namespace TAR1ORMAN.Controllers
 
                     cmd.Parameters.AddWithValue("@nw_relationship", pcnm.Relationship);
                     cmd.Parameters.AddWithValue("@nw_reason", pcnm.Reason);
-                    cmd.Parameters.AddWithValue("@nw_forwithdrawold", pcnm.ForWithdrawOld);
-                    cmd.Parameters.AddWithValue("@nw_forwithdrawnew", pcnm.ForWithdrawNew);
-                    cmd.Parameters.AddWithValue("@nw_forretention", pcnm.ForRetention);
+                    //cmd.Parameters.AddWithValue("@nw_forwithdrawold", pcnm.ForWithdrawOld);
+                    //cmd.Parameters.AddWithValue("@nw_forwithdrawnew", pcnm.ForWithdrawNew);
+                    //cmd.Parameters.AddWithValue("@nw_forretention", pcnm.ForRetention);
+                    cmd.Parameters.AddWithValue("@changenametypeid", pcnm.ChangeNameTypeId);
                     cmd.Parameters.AddWithValue("@madeby", pcnm.MadeById);
                     cmd.Parameters.AddWithValue("@isdied", pcnm.IsDied);
-                    cmd.Parameters.AddWithValue("@remarks", pcnm.Remarks);
+                    //cmd.Parameters.AddWithValue("@remarks", pcnm.Remarks);
+                    //@isremdeathcert,@isremauthletter,@isremdeedofsale,@isremletterofreq,@isremother,@remothertext
+                    cmd.Parameters.AddWithValue("@isremdeathcert", pcnm.IsRemDeathCert);
+                    cmd.Parameters.AddWithValue("@isremauthletter", pcnm.IsRemAuthLetter);
+                    cmd.Parameters.AddWithValue("@isremdeedofsale", pcnm.IsRemDeedOfSale);
+                    cmd.Parameters.AddWithValue("@isremletterofreq", pcnm.IsRemLetterOfReq);
+                    cmd.Parameters.AddWithValue("@isremother", pcnm.IsRemOther);
+                    if(pcnm.RemOtherText==null)
+                        cmd.Parameters.AddWithValue("@remothertext", DBNull.Value);
+                    else
+                        cmd.Parameters.AddWithValue("@remothertext", pcnm.RemOtherText);
+                    cmd.Parameters.AddWithValue("@rptremark", pcnm.RptRemark);
 
                     cmd.ExecuteNonQuery();
                     trans.Commit();
@@ -278,16 +296,7 @@ namespace TAR1ORMAN.Controllers
                 cmd.CommandText = "select id[Id],appdate[ApplicationDate],accountno[AccountNo],UPPER(rtrim(b.name))[AccountName]," +
                                   "UPPER(rtrim(address))[AccountAddress],memberid[MemberId],memberdate[MemberDate],mtrserialno[MeterNo],seqno[SequenceNo]," +
                                   "nw_name[NewName],nw_memberid[NewMemberId],nw_memberdate[NewMemberDate],nw_birthday[Birthday],nw_contactnum[ContactNo]," +
-                                  "nw_relationship[Relationship],nw_reason[Reason]," +
-                                  "case when isnull(nw_forwithdrawold,0)= 0 then " +
-                                  "     case when isnull(nw_forwithdrawnew,0)= 0 then " +
-                                  "             'Retention' " +
-                                  "     else " +
-                                  "             'New' " +
-                                  "     end " +
-                                  "else " +
-                                  "     'Old' " +
-                                  "end[ChangeType] " +
+                                  "nw_relationship[Relationship],nw_reason[Reason],changenametypeid[ChangeType] " +
                                   "from tbl_changename a inner join arsconsumer b " +
                                   "on a.accountno = b.consumerid " +
                                   "where a.id = @id";

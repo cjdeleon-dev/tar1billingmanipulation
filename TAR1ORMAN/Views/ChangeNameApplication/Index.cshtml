@@ -7,7 +7,7 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
 
-<script src="~/Scripts/myscripts/changenamescript_v1.1.7.js"></script>
+<script src="~/Scripts/myscripts/changenamescript_v1.1.8.js"></script>
 
 <style>
     .dataTables tbody tr {
@@ -65,8 +65,123 @@
 </div>
 
 <br />
-<div class="container" id="divExistingAcctDetails">
+<div class="container form-group" id="divExistingAcctDetails">
     @*AutoGenerate view at runtime*@
+    <!--<div class="row">
+        <div style="background-color:darkgrey;text-align:center;"><strong>TYPE OF CHANGE NAME</strong></div>
+        <div class="col-lg-6" style="padding:0;margin:7px;">
+            <input type="radio" id="optradio_withdraw" name="changenametype" onchange="optwithdrawonchange()" />
+            <label for="optradio_withdraw" id="withdraw">FOR FULL WITHDRAWAL OF MEMBERSHIP</label>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="radio" id="optdeath" name="withdrawtype" style="margin-left:2em;" disabled="disabled" onchange="optdeathonchange()" />&nbsp;<label for="optdeath">DEATH OF MEMBER</label><br />
+                    <input type="radio" id="optwaive" name="withdrawtype" style="margin-left:2em;" disabled="disabled" onchange="optwaiveonchange()" />&nbsp;<label for="optwaver">WAIVE OF MEMBERSHIP</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5" style="padding:0;margin:7px;">
+            <input type="radio" id="optradio_retention" name="changenametype" onchange="optretentiononchange()" />
+            <label for="optradio_retention" id="retention">FOR RETENTION OF MEMBERSHIP</label>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="radio" id="optjoint" name="retentiontype" style="margin-left:2em;" disabled="disabled" />&nbsp;<label for="optdeath">JOINT ACCOUNT</label><br />
+                    <input type="radio" id="optexist" name="retentiontype" style="margin-left:2em;" disabled="disabled" />&nbsp;<label for="optwaver">WITH DIFF. EXISTING ACCOUNT</label>
+                </div>
+            </div>
+        </div>-->
+        @*<div class="form-group col-sm-3" style="padding:0;margin:7px;">
+                <input type="radio" id="optradio_ret" name="changenametype" /><br />
+                <label for="optradio_ret" id="newmem">For Retention Of Membership</label>
+            </div>*@
+    <!--</div>
+    <hr />-->
+    @*<hr id="topHLine" />*@
+    <!--<div class="row">
+        <div style="background-color:darkgrey;text-align:center;"><strong>EXISTING MEMBER-CONSUMER\'S INFORMATION</strong></div>
+        <div class="form-group col-sm-5" style="padding:0;margin:7px;">
+            <label for="txtAcctName">Account Name:</label>
+            <input type="text" class="form-control" id="txtAcctName" readonly="readonly" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-6" style="padding:0;margin:7px;">
+            <label for="txtAddress">Address:</label>
+            <input type="text" class="form-control" id="txtAddress" readonly="readonly" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-4" style="padding:0;margin:7px;">
+            <label for="txtMemberId">Member OR #:</label>
+            <input type="text" class="form-control" id="txtMemberORNo" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="txtORDate">OR DATE:</label>
+            <input type="date" class="form-control" id="txtORDate" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="txtMeterNo">Meter S/N:</label>
+            <input type="text" class="form-control" id="txtMeterNo" readonly="readonly" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="txtSeqNo">Seq. No.:</label>
+            <input type="text" class="form-control" id="txtSeqNo" readonly="readonly" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="form-group col-sm-6" style="padding:0;margin:7px;">
+            <label for="txtNewName">New Name:</label>
+            <input type="text" class="form-control" id="txtNewName" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="dtpBirthday">Birthday:</label>
+            <input type="date" class="form-control" id="dtpBirthday" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="txtContactNo">Contact No.:</label>
+            <input type="text" class="form-control" id="txtContactNo" placeholder="09XXXXXXXXX" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" onkeypress="isNumber(event)" maxlength="11" />
+        </div>
+        <div class="form-group col-sm-2" style="padding:0;margin:7px;">
+            <label for="txtRelationship">Relationship to the Owner:</label>
+            <input type="text" class="form-control" id="txtRelationship" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+        <div class="form-group col-sm-3" style="padding:0;margin:7px;">
+            <label for="txtReason">Reason For Change Name:</label>
+            <input type="text" class="form-control" id="txtReason" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" />
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <strong>SUBMITTED DOCUMENT(S):</strong>
+            <div>
+                <input type="checkbox" id="chkdeathcert" name="docsub" style="margin-left:2em;" />&nbsp;<label for="chkdeathcert">DEATH CERTIFICATE</label>
+                <input type="checkbox" id="chkauthletter" name="docsub" style="margin-left:2em;" />&nbsp;<label for="chkauthletter">AUTHORIZATION LETTER</label>
+                <input type="checkbox" id="chkdos" name="docsub" style="margin-left:2em;" />&nbsp;<label for="chkdos">DEED OF SALE</label>
+                <input type="checkbox" id="chklor" name="docsub" style="margin-left:2em;" />&nbsp;<label for="chklor">LETTER OF REQUEST</label>
+                <input type="checkbox" id="chkother" name="docsub" style="margin-left:2em;" onchange="chkotheronchange()" />&nbsp;<label for="chkother">OTHER: </label>
+                <input type="text" id="txtOther" name="docsub" disabled="disabled" />
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-12">
+            <strong>REPORT REMARK:</strong>
+            <div>
+                <input type="radio" id="optretention" name="remarkstype" style="margin-left:2em;" />&nbsp;<label for="optretention">FOR RETENTION</label>
+                <input type="radio" id="optdeletion" name="remarkstype" style="margin-left:2em;" />&nbsp;<label for="optdeletion">FOR DELETION</label>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="form-group" style="padding:0;margin:7px;">
+            <div class="col-sm-offset-4 col-sm-4">
+                <input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="SAVE AND PREVIEW" onclick="saveAndPrev()" />
+            </div>
+        </div>
+    </div>-->
 </div>
 
 @*Modal for Report*@

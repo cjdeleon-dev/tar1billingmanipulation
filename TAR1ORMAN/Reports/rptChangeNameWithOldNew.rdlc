@@ -781,7 +781,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>          That beacause of the above-stated purpose, I am giving my full authority to </Value>
+                <Value>          That because of the above-stated purpose, I am giving my full authority to </Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontWeight>Normal</FontWeight>
@@ -888,7 +888,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>AccountName1</rd:DefaultName>
-        <Top>4.93in</Top>
+        <Top>6.35917in</Top>
         <Left>4.48611in</Left>
         <Height>0.25in</Height>
         <Width>2.01389in</Width>
@@ -946,7 +946,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>5.38542in</Top>
+        <Top>6.69792in</Top>
         <Height>0.78125in</Height>
         <Width>6.5in</Width>
         <ZIndex>20</ZIndex>
@@ -990,7 +990,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>7.34375in</Top>
+        <Top>8.65625in</Top>
         <Height>0.44792in</Height>
         <Width>2.97097in</Width>
         <ZIndex>21</ZIndex>
@@ -1022,7 +1022,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>7.11458in</Top>
+        <Top>8.42708in</Top>
         <Left>4.32986in</Left>
         <Height>0.25in</Height>
         <Width>1.50222in</Width>
@@ -1067,7 +1067,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>7.54167in</Top>
+        <Top>8.85417in</Top>
         <Left>4.32986in</Left>
         <Height>0.42708in</Height>
         <Width>1.91194in</Width>
@@ -1136,7 +1136,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox8</rd:DefaultName>
-        <Top>6.32639in</Top>
+        <Top>7.63889in</Top>
         <Left>0.00001in</Left>
         <Height>0.72917in</Height>
         <Width>2.97097in</Width>
@@ -1173,7 +1173,7 @@
         </Paragraphs>
         <rd:DefaultName>AccountName1</rd:DefaultName>
         <Top>4.93in</Top>
-        <Left>0.00001in</Left>
+        <Left>4.4861in</Left>
         <Height>0.25in</Height>
         <Width>2.01389in</Width>
         <ZIndex>25</ZIndex>
@@ -1188,8 +1188,103 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox30">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>NEW MEMBER</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox8</rd:DefaultName>
+        <Top>5.07813in</Top>
+        <Height>0.25in</Height>
+        <Width>2.1168in</Width>
+        <ZIndex>26</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox31">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>          That I, </Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!NewName.Value</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>, a resident of </Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!AccountAddress.Value</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>, do hereby agree that as a new Member of the Tarlac I Electric Cooperative, Inc. (TARELCO I), I will comply with the obligations and responsibilities of a member-consumer and be bound by the provisions of the by-laws and rules and regulations of the Coop.</Value>
+                <Style>
+                  <FontFamily>Calibri</FontFamily>
+                  <FontWeight>Normal</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox8</rd:DefaultName>
+        <Top>5.36979in</Top>
+        <Height>0.68521in</Height>
+        <Width>6.49999in</Width>
+        <ZIndex>27</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>7.96875in</Height>
+    <Height>9.28125in</Height>
     <Style />
   </Body>
   <Width>6.5in</Width>
@@ -1446,12 +1541,12 @@
         </Field>
         <Field Name="ChangeType">
           <DataField>ChangeType</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>dsChangeName</rd:DataSetName>
-        <rd:SchemaPath>E:\SourceCodes\WebApps\TARELCOIORMAN\TAR1ORMAN\TAR1ORMAN\Datasets\dsChangeName.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\SourceCodes\tar1billingmanipulation\TAR1ORMAN\Datasets\dsChangeName.xsd</rd:SchemaPath>
         <rd:TableName>dtChangeName</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

@@ -623,11 +623,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\myscripts\bavscriptv1.3.2.js" />
-    <Content Include="Scripts\myscripts\changenamescript_v1.1.7.js" />
+    <Content Include="Scripts\myscripts\changenamescript_v1.1.8.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
     <Content Include="Scripts\myscripts\cnappliedlistscript_v1.1.4.js" />
-    <Content Include="Scripts\myscripts\cnlistforbodresscript_v1.0.0.1.js" />
+    <Content Include="Scripts\myscripts\cnlistforbodresscript_v1.0.0.2.js" />
     <Content Include="Scripts\myscripts\cnpendinglistscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\dailychangedstat.js" />
     <Content Include="Scripts\myscripts\disconlistscript.js" />
@@ -743,9 +743,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Reports\rptBurialVerificationResult.rdlc" />
     <EmbeddedResource Include="Reports\rptChangedStatus.rdlc" />
+    <EmbeddedResource Include="Reports\rptChangeNameRetenNew.rdlc" />
     <EmbeddedResource Include="Reports\rptChangeNameReten.rdlc" />
     <EmbeddedResource Include="Reports\rptChangeNameWithNew.rdlc" />
-    <EmbeddedResource Include="Reports\rptChangeNameWithOld.rdlc" />
+    <EmbeddedResource Include="Reports\rptChangeNameWithOldNew.rdlc" />
     <EmbeddedResource Include="Reports\rptFourPsForm.rdlc" />
     <EmbeddedResource Include="Reports\rptMarginalizedForm.rdlc" />
     <EmbeddedResource Include="Reports\rptQMEForm.rdlc" />

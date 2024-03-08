@@ -1397,12 +1397,12 @@
         </Field>
         <Field Name="ChangeType">
           <DataField>ChangeType</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>dsChangeName</rd:DataSetName>
-        <rd:SchemaPath>E:\SourceCodes\WebApps\TARELCOIORMAN\TAR1ORMAN\TAR1ORMAN\Datasets\dsChangeName.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\SourceCodes\tar1billingmanipulation\TAR1ORMAN\Datasets\dsChangeName.xsd</rd:SchemaPath>
         <rd:TableName>dtChangeName</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

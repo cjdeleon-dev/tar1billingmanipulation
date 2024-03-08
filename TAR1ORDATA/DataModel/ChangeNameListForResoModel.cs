@@ -18,5 +18,6 @@ namespace TAR1ORDATA.DataModel
         public string ORDateNew { get; set; }
         public string AccountNo { get; set; }
         public string Remarks { get; set; }
+        public string RptRemark { get; set; }
     }
 }

@@ -536,7 +536,7 @@ namespace TAR1ORMAN.Datasets {
                         string ContactNo, 
                         string Relationship, 
                         string Reason, 
-                        string ChangeType) {
+                        int ChangeType) {
                 dtChangeNameRow rowdtChangeNameRow = ((dtChangeNameRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
@@ -632,7 +632,7 @@ namespace TAR1ORMAN.Datasets {
                 base.Columns.Add(this.columnRelationship);
                 this.columnReason = new global::System.Data.DataColumn("Reason", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReason);
-                this.columnChangeType = new global::System.Data.DataColumn("ChangeType", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnChangeType = new global::System.Data.DataColumn("ChangeType", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChangeType);
             }
             
@@ -1032,10 +1032,10 @@ namespace TAR1ORMAN.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string ChangeType {
+            public int ChangeType {
                 get {
                     try {
-                        return ((string)(this[this.tabledtChangeName.ChangeTypeColumn]));
+                        return ((int)(this[this.tabledtChangeName.ChangeTypeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ChangeType\' in table \'dtChangeName\' is DBNull.", e);

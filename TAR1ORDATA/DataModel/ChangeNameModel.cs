@@ -23,10 +23,19 @@ namespace TAR1ORDATA.DataModel
         public string ContactNo { get; set; }
         public string Relationship { get; set; }
         public string Reason { get; set; }
-        public bool ForWithdrawOld { get; set; }
-        public bool ForWithdrawNew { get; set; }
-        public bool ForRetention { get; set; }
-        public string Remarks { get; set; }
+        //public bool ForWithdrawOld { get; set; }
+        //public bool ForWithdrawNew { get; set; }
+        //public bool ForRetention { get; set; }
+        public int ChangeNameTypeId { get; set; }
+        public string ChangeNameDesc { get; set; }
+        //public string Remarks { get; set; }
+        public bool IsRemDeathCert { get; set; }
+        public bool IsRemAuthLetter { get; set; }
+        public bool IsRemDeedOfSale { get; set; }
+        public bool IsRemLetterOfReq { get; set; }
+        public bool IsRemOther { get; set; }
+        public string RemOtherText { get; set; }
+        public string RptRemark { get; set; }
         public string MadeById { get; set; }
     }
 }
