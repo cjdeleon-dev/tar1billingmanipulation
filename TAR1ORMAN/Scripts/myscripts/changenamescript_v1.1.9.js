@@ -24,7 +24,7 @@ function checkAcct() {
                     html += '        <div class="row">';
                     html += '            <div class="col-sm-12">';
                     html += '                <input type="radio" id="optdeath" name="withdrawtype" style="margin-left:2em;" disabled="disabled" onchange="optdeathonchange()" />&nbsp;<label for="optdeath">DEATH OF MEMBER</label><br />';
-                    html += '                <input type="radio" id="optwaive" name="withdrawtype" style="margin-left:2em;" disabled="disabled" onchange="optwaiveonchange()" />&nbsp;<label for="optwaver">WAIVE OF MEMBERSHIP</label>';
+                    html += '                <input type="radio" id="optwaive" name="withdrawtype" style="margin-left:2em;" disabled="disabled" onchange="optwaiveonchange()" />&nbsp;<label for="optwaver">WAIVER OF MEMBERSHIP</label>';
                     html += '            </div>';
                     html += '        </div>';
                     html += '    </div>';
