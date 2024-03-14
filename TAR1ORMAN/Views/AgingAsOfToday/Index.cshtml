@@ -1,47 +1,38 @@
 ﻿
 @{
-    ViewBag.Title = "Top Consumers By Town";
+    ViewBag.Title = "Aging as of Today";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/Scripts/myscripts/topactivedisconbytown1.1.4.js"></script>
-<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+@*<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
 <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
 
 <style>
-    .dataTables tbody tr {
-        min-height: 30px; /* or whatever height you need to make them all consistent */
-    }
+    /*.dataTables tbody tr {
+        min-height: 30px;*/ /* or whatever height you need to make them all consistent */
+    /*}
 
     #myTable1 {
         font-size: 12px;
+    }*/
+    .table.dataTable td, th {
+        font-size: 12px !important;
     }
 </style>
 
-<h2>Top 300 Active / Disconnected High Arrears</h2>
-
+<h2>Generation of Aging as of Today</h2>
 
 <div class="row">
     <div class="col-lg-1">
         <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
         <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
-        <input type="hidden" id="txtStatus" name="cstatus" class="form-control" />
+        <input type="hidden" id="txtType" name="cstatus" class="form-control" />
         <input type="hidden" id="txtTown" name="ctown" class="form-control" />
-        <input type="hidden" id="txtTop" name="ctop" class="form-control" />
+        <input type="hidden" id="txtCurrDate" name="currdate" class="form-control" />
     </div>
     <div class="col-lg-2">
-        <select class="form-control select2 select2-hidden-accessible" id="cboTop" onchange="return cboTopOnChange();">
-            <option selected>Select Top</option>
-            <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="300">300</option>
-            <option value="400">400</option>
-            <option value="500">500</option>
-            <option value="1">ALL</option>
-        </select>
-    </div>
-    <div class="col-lg-2">
-        <select id="cboStatus" class="form-control select2 select2-hidden-accessible" onchange="return cboStatusOnChange();" style="min-width: 100%"></select>
+        <select id="cboType" class="form-control select2 select2-hidden-accessible" onchange="return cboTypeOnChange();" style="min-width: 100%"></select>
     </div>
     <div class="col-lg-3">
         <select id="cboTown" class="form-control select2 select2-hidden-accessible" onchange="return cboTownOnChange();" style="min-width: 100%"></select>
@@ -57,27 +48,25 @@
 </div>
 <br />
 
-
 <br />
 <div class="table-responsive-sm">
     <table class="table table-hover table-bordered" id="myTable1">
         <thead class="bg-primary">
             <tr>
-                <th scope="col" style="text-align:center;">Account No</th>
-                <th scope="col" style="text-align:center;">Amount</th>
-                <th scope="col" style="text-align:center;">VAT</th>
-                <th scope="col" style="text-align:center;"># Months</th>
-                <th scope="col" style="text-align:center;">Consumer Type</th>
-                <th scope="col" style="text-align:center;">Account Name</th>
-                <th scope="col" style="text-align:center;">Address</th>
-                <th scope="col" style="text-align:center;">Meter #</th>
-                <th scope="col" style="text-align:center;">Pole #</th>
-                <th scope="col" style="text-align:center;">Town</th>
+                <th scope="col" style="text-align:center;">TOWN ID</th>
+                <th scope="col" style="text-align:center;">ACCOUNT NO</th>
+                <th scope="col" style="text-align:center;">NAME</th>
+                <th scope="col" style="text-align:center;">ADDRESS</th>
+                <th scope="col" style="text-align:center;">STATUS</th>
+                <th scope="col" style="text-align:center;">00 - 30 DAYS</th>
+                <th scope="col" style="text-align:center;">31 - 60 DAYS</th>
+                <th scope="col" style="text-align:center;">61 - 90 DAYS</th>
+                <th scope="col" style="text-align:center;">91 - 120 DAYS</th>
+                <th scope="col" style="text-align:center;">121 AND ABOVE</th>
             </tr>
         </thead>
     </table>
 </div>
-
 
 <div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
@@ -100,6 +89,8 @@
     <script src="~/Scripts/DataTables/jszip.min.js"></script>
     <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
     @*end here*@
+
+    <script src="~/Scripts/myscripts/agingasoftodayscript_v1.0.0.2.js"></script>
 
     <script>
         $(document).ready(loadPage());

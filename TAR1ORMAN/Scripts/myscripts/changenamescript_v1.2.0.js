@@ -208,7 +208,7 @@ function validateinputs() {
 function saveAndPrev() {
     //VALIDATION FIRST
 
-    if (!validateinputs) {
+    if (validateinputs()==false) {
         alert("Please fill up all required fields.");
         return;
     }

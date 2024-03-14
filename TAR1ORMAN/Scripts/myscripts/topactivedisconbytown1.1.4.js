@@ -7,33 +7,79 @@
 
 }
 
+function emptyTable() {
+    var table = $('#myTable1').DataTable();
+
+    //clear datatable
+    table.clear().draw();
+
+    //destroy datatable
+    table.destroy();
+}
+
 function loadDataTable1() {
 
     var stat = $("#txtStatus").val();
     var town = $("#txtTown").val();
     var top = $("#txtTop").val();
 
-    $('#myTable1').DataTable().destroy();
+    document.body.style.cursor = 'progress';
+    $('#modalLoading').modal('show');
+    document.getElementById("spintext").innerHTML = "LOADING...";
 
-    $('#myTable1').DataTable({
-        "ajax": {
-            "url": "/TopActiveDisconByTown/loadfordata?stattowntop=" + stat + "_" + town + "_" + top,
-            "type": "GET",
-            "datatype": "json"
+    emptyTable();
+
+    $.ajax({
+        url: "/TopActiveDisconByTown/HasRecordsToDisplay?stattowntop=" + stat + "_" + town + "_" + top,
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) { //check first if it has atleast one record.
+            if (result) {
+                var fileName = "TopHundredHighArrears";
+
+                $('#myTable1').DataTable({
+                    ajax: {
+                        "url": "/TopActiveDisconByTown/loadfordata?stattowntop=" + stat + "_" + town + "_" + top,
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    pageLength: 25,
+                    dom: "Bfrtip",
+                    buttons: [{
+                        extend: "excel",
+                        filename: fileName,
+                        text: "EXPORT TO EXCEL",
+
+                    }],
+                    initComplete: function (settings, json) {
+                        document.body.style.cursor = 'default';
+                        $('#modalLoading').modal('hide');
+                    },
+                    "columns": [
+                        { "data": "AccountNumber", "autoWidth": true },
+                        { "data": "Amount", "autoWidth": true },
+                        { "data": "VAT", "autoWidth": true },
+                        { "data": "NumOfMonths", "autoWidth": true },
+                        { "data": "ConsumerType", "autoWidth": true },
+                        { "data": "AccountName", "autoWidth": true },
+                        { "data": "Address", "autoWidth": true },
+                        { "data": "MeterNumber", "autoWidth": true },
+                        { "data": "PoleNumber", "autoWidth": true },
+                        { "data": "Town", "autoWidth": true }
+
+                    ]
+                });
+
+            } else {
+                document.body.style.cursor = 'default';
+                $('#modalLoading').modal('hide');
+                alert('There are no data to load.');
+            }
         },
-        "columns": [
-            { "data": "AccountNumber", "autoWidth": true },
-            { "data": "Amount", "autoWidth": true },
-            { "data": "VAT", "autoWidth": true },
-            { "data": "NumOfMonths", "autoWidth": true },
-            { "data": "ConsumerType", "autoWidth": true },
-            { "data": "AccountName", "autoWidth": true },
-            { "data": "Address", "autoWidth": true },
-            { "data": "MeterNumber", "autoWidth": true },
-            { "data": "PoleNumber", "autoWidth": true },
-            { "data": "Town", "autoWidth": true }
-            
-        ]
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
     });
 }
 

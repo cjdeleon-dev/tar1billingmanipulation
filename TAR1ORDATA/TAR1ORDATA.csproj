@@ -134,6 +134,7 @@
     <Compile Include="DataAccess\UserLoginAccess\IUserLoginAccess.cs" />
     <Compile Include="DataAccess\UserLoginAccess\UserLoginAccess.cs" />
     <Compile Include="DataModel\ActiveWithZeroConsModel.cs" />
+    <Compile Include="DataModel\AgingModel.cs" />
     <Compile Include="DataModel\AppCNMemModel.cs" />
     <Compile Include="DataModel\ApprovalChangeNameModel.cs" />
     <Compile Include="DataModel\AreaModel.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="DataModel\SumDTDRptCrewModel.cs" />
     <Compile Include="DataModel\SumDTDRptDetailModel.cs" />
     <Compile Include="DataModel\SumDTDRptHeaderModel.cs" />
+    <Compile Include="DataModel\TownModel.cs" />
     <Compile Include="DataModel\TransactionHeaderModel.cs" />
     <Compile Include="DataModel\TransactionSearchModel.cs" />
     <Compile Include="DataModel\UserLoginModel.cs" />

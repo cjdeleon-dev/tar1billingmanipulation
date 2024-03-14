@@ -156,6 +156,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActiveWithZeroConsumptionController.cs" />
+    <Compile Include="Controllers\AgingAsOfTodayController.cs" />
     <Compile Include="Controllers\ApprovalChangeNameListController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BurialApplicationValidationController.cs" />
@@ -623,7 +624,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\myscripts\bavscriptv1.3.2.js" />
-    <Content Include="Scripts\myscripts\changenamescript_v1.1.9.js" />
+    <Content Include="Scripts\myscripts\changenamescript_v1.2.0.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
     <Content Include="Scripts\myscripts\cnappliedlistscript_v1.1.4.js" />
@@ -641,7 +642,7 @@
     <Content Include="Scripts\myscripts\sumofdtdrpt.js" />
     <Content Include="Scripts\myscripts\sweetalert.js" />
     <Content Include="Scripts\myscripts\tophighkwhperbillperiod1.1.3.js" />
-    <Content Include="Scripts\myscripts\topactivedisconbytown1.1.3.js" />
+    <Content Include="Scripts\myscripts\topactivedisconbytown1.1.4.js" />
     <Content Include="Scripts\myscripts\forwriteoffscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\homescriptv1.1.9.js" />
     <Content Include="Scripts\myscripts\orInSubtraction.js" />
@@ -713,6 +714,8 @@
     <Content Include="Views\NetMetering\NetMeteringList.cshtml" />
     <Content Include="Scripts\myscripts\netmeteringscript_v1.0.0.1.js" />
     <Content Include="Views\NetMetering\ViewConsumerLedger.cshtml" />
+    <Content Include="Views\AgingAsOfToday\Index.cshtml" />
+    <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.2.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

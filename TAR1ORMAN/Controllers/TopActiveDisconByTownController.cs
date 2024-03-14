@@ -14,7 +14,6 @@ namespace TAR1ORMAN.Controllers
     public class TopActiveDisconByTownController : Controller
     {
         ITopActiveDisconService itads;
-        private static GridView gv = new GridView();
 
         [Authorize(Roles = "AUDIT,FINHEAD,IT,SYSADMIN,AREAMNGR")]
         // GET: TopActiveDisconByTown
@@ -35,8 +34,27 @@ namespace TAR1ORMAN.Controllers
             return Json(itads.GetAllTown(), JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public ActionResult loadfordata(string stattowntop)
+        public JsonResult HasRecordsToDisplay(string stattowntop)
+        {
+            bool result = false;
+
+            string[] _stattowntop = stattowntop.Split('_');
+            string stat = _stattowntop[0];
+            string town = _stattowntop[1];
+            string top = _stattowntop[2];
+
+            itads = new TopActiveDisconService();
+            List<HighArrearsConsumerModel> data = itads.GetTopHundred(stat, town, top);
+
+            if (data.Count > 0)
+            {
+                result = true;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult loadfordata(string stattowntop)
         {
             string[] _stattowntop = stattowntop.Split('_');
             string stat = _stattowntop[0];
@@ -45,29 +63,27 @@ namespace TAR1ORMAN.Controllers
 
             itads = new TopActiveDisconService();
             List<HighArrearsConsumerModel> data = itads.GetTopHundred(stat, town, top);
-            if (gv.DataSource != null)
-                gv.DataSource = null;
-            gv.DataSource = data;
+
             return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public ActionResult ExportToExcel()
-        {
-            gv.DataBind();
-            Response.ClearContent();
-            Response.Buffer = true;
-            string datenow = DateTime.Now.ToShortDateString();
-            Response.AddHeader("content-disposition", "attachment; filename=Top100High_" + datenow + ".xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "";
-            StringWriter objStringWriter = new StringWriter();
-            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
-            gv.RenderControl(objHtmlTextWriter);
-            Response.Output.Write(objStringWriter.ToString());
-            Response.Flush();
-            Response.End();
-            return View("Index");
-        }
+        //[HttpPost]
+        //public ActionResult ExportToExcel()
+        //{
+        //    gv.DataBind();
+        //    Response.ClearContent();
+        //    Response.Buffer = true;
+        //    string datenow = DateTime.Now.ToShortDateString();
+        //    Response.AddHeader("content-disposition", "attachment; filename=Top100High_" + datenow + ".xls");
+        //    Response.ContentType = "application/ms-excel";
+        //    Response.Charset = "";
+        //    StringWriter objStringWriter = new StringWriter();
+        //    HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+        //    gv.RenderControl(objHtmlTextWriter);
+        //    Response.Output.Write(objStringWriter.ToString());
+        //    Response.Flush();
+        //    Response.End();
+        //    return View("Index");
+        //}
     }
 }
