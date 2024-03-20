@@ -957,3 +957,8 @@ function isValidEntry() {
 
     return true;
 }
+
+function gotoAppliedList() {
+    window.location = "/FourPsAppliedList/Index";
+    return;
+}
