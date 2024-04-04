@@ -183,3 +183,6 @@ function processdata() {
 
 }
 
+function gotoAcctngFormat() {
+    window.location = "/AgingByDate/Index";
+}

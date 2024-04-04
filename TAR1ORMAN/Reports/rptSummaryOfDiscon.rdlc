@@ -906,7 +906,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Finance Head</Value>
+                <Value>=IIF(RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="OIC", "OIC Finance Head","Finance Head")</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>9pt</FontSize>
@@ -1011,7 +1011,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=IIF(First(Fields!NotedBy.Value, "dsSummaryOfDisconRptHdr")="FRANCIS OWEN D. DIZON","Finance Manager",IIF(First(Fields!NotedBy.Value, "dsSummaryOfDisconRptHdr")="ENGR. JESUS B. ABOGADO","OIC Moncada Area Office","Area Manager"))</Value>
+                <Value>=IIF(First(Fields!NotedBy.Value, "dsSummaryOfDisconRptHdr")="FRANCIS OWEN D. DIZON","Finance Manager","Area Manager")</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>9pt</FontSize>

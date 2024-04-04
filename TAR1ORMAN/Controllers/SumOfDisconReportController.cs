@@ -299,13 +299,9 @@ namespace TAR1ORMAN.Controllers
                 da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
                 da.SelectCommand.Connection.Open();
 
-                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
 
-                da.SelectCommand.CommandText = "select userid,UPPER(name)[finhead] from secuser " +
-                                               "where workgroupid = 'FINHEAD' " +
-                                               "and right(rtrim(name),3)<> 'MRB' " +
-                                               "and rtrim(defrevcenterid)<> '' " +
-                                               "and userid not in ('0906', '0601', '0521')";
+                da.SelectCommand.CommandText = "sp_getAllFinanceHeads";
 
                 DataTable dt = new DataTable();
 

@@ -134,6 +134,7 @@
     <Compile Include="DataAccess\UserLoginAccess\IUserLoginAccess.cs" />
     <Compile Include="DataAccess\UserLoginAccess\UserLoginAccess.cs" />
     <Compile Include="DataModel\ActiveWithZeroConsModel.cs" />
+    <Compile Include="DataModel\AgingAcctModel.cs" />
     <Compile Include="DataModel\AgingModel.cs" />
     <Compile Include="DataModel\AppCNMemModel.cs" />
     <Compile Include="DataModel\ApprovalChangeNameModel.cs" />

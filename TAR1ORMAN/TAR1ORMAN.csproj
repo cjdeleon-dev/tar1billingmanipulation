@@ -157,6 +157,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActiveWithZeroConsumptionController.cs" />
     <Compile Include="Controllers\AgingAsOfTodayController.cs" />
+    <Compile Include="Controllers\AgingByDateController.cs" />
     <Compile Include="Controllers\ApprovalChangeNameListController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BurialApplicationValidationController.cs" />
@@ -624,6 +625,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\myscripts\agingasacctgscript_v1.0.0.2.js" />
     <Content Include="Scripts\myscripts\bavscriptv1.3.2.js" />
     <Content Include="Scripts\myscripts\changenamescript_v1.2.0.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
@@ -717,8 +719,9 @@
     <Content Include="Scripts\myscripts\netmeteringscript_v1.0.0.1.js" />
     <Content Include="Views\NetMetering\ViewConsumerLedger.cshtml" />
     <Content Include="Views\AgingAsOfToday\Index.cshtml" />
-    <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.2.js" />
+    <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.3.js" />
     <Content Include="Views\FourPsAppliedList\Index.cshtml" />
+    <Content Include="Views\AgingByDate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

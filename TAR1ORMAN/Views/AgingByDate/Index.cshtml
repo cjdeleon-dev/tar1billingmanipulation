@@ -1,11 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Aging as of Today";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-@*<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
 <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
 
 <style>
@@ -21,33 +19,31 @@
     }
 </style>
 
-<h2>Generation of Aging as of Today</h2>
+<h2>Generation of Aging</h2>
 
 <div class="row">
     <div class="col-lg-1">
-        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
         <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
-        <input type="hidden" id="txtType" name="cstatus" class="form-control" />
-        <input type="hidden" id="txtTown" name="ctown" class="form-control" />
-        <input type="hidden" id="txtCurrDate" name="currdate" class="form-control" />
+
     </div>
-    <div class="col-lg-3">
-        Accounting format? <button class="btn btn-link" onclick="gotoAcctngFormat()">Click here >></button>
-    </div>
-    <div class="col-lg-2">
-        <select id="cboType" class="form-control select2 select2-hidden-accessible" onchange="return cboTypeOnChange();" style="min-width: 100%"></select>
-    </div>
-    <div class="col-lg-3">
-        <select id="cboTown" class="form-control select2 select2-hidden-accessible" onchange="return cboTownOnChange();" style="min-width: 100%"></select>
-    </div>
-    <div class="col-lg-offset-1 col-lg-2">
-        <div class="row">
-            <div class="col-lg-offset-2 col-lg-2">
-                <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
-            </div>
+    <div class="col-lg-offset-2 col-lg-5">
+        <div class="input-group">
+            Please select Date:
+            <input type="date" id="dtpDateEnd" class="form-control" />
         </div>
 
     </div>
+    <div class="col-lg-2">
+        <br />
+        <input type="checkbox" id="chkIsEB" checked="checked" /><strong> Is TRXAMOUNT?</strong>
+    </div>
+    <div class="col-lg-2">
+        <br />
+        <button class="btn btn-danger" id="btnProcess" onclick="return processdata()"><i class="glyphicon glyphicon-exclamation-sign"></i> Process</button>
+    </div>
+
+
 </div>
 <br />
 
@@ -56,16 +52,18 @@
     <table class="table table-hover table-bordered" id="myTable1">
         <thead class="bg-primary">
             <tr>
-                <th scope="col" style="text-align:center;">TOWN ID</th>
                 <th scope="col" style="text-align:center;">ACCOUNT NO</th>
                 <th scope="col" style="text-align:center;">NAME</th>
                 <th scope="col" style="text-align:center;">ADDRESS</th>
+                <th scope="col" style="text-align:center;">TYPE</th>
                 <th scope="col" style="text-align:center;">STATUS</th>
                 <th scope="col" style="text-align:center;">00 - 30 DAYS</th>
                 <th scope="col" style="text-align:center;">31 - 60 DAYS</th>
                 <th scope="col" style="text-align:center;">61 - 90 DAYS</th>
-                <th scope="col" style="text-align:center;">91 - 120 DAYS</th>
-                <th scope="col" style="text-align:center;">121 AND ABOVE</th>
+                <th scope="col" style="text-align:center;">91 - 180 DAYS</th>
+                <th scope="col" style="text-align:center;">181 - 240 DAYS</th>
+                <th scope="col" style="text-align:center;">241 - 360 DAYS</th>
+                <th scope="col" style="text-align:center;">1 YEAR AND ABOVE</th>
             </tr>
         </thead>
     </table>
@@ -93,9 +91,9 @@
     <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
     @*end here*@
 
-    <script src="~/Scripts/myscripts/agingasoftodayscript_v1.0.0.3.js"></script>
+    <script src="~/Scripts/myscripts/agingasacctgscript_v1.0.0.2.js"></script>
 
     <script>
-        $(document).ready(loadPage());
+        $(document).ready(hideunneccessaryoptions());
     </script>
 }

@@ -415,10 +415,12 @@ namespace TAR1ORMAN.Controllers
                 con.Open();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "select max(billperiod)[billperiod],currimp[previmp],currexp[prevexp],currrec[prevrec] " +
+                cmd.CommandText = "declare @prevbp as varchar(6);" +
+                                  "select @prevbp = max(billperiod) from tbl_netmeteringread where consumerid=@consumerid;" +
+                                  "select @prevbp [billperiod],currimp[previmp],currexp[prevexp],currrec[prevrec] " +
                                   "from tbl_netmeteringread " +
                                   "where consumerid = @consumerid " +
-                                  "group by currimp,currexp,currrec,consumerid";
+                                  "and billperiod=@prevbp;";
 
                 cmd.Parameters.AddWithValue("@consumerid", actno);
 
