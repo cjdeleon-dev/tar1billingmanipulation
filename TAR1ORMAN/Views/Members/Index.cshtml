@@ -1,0 +1,237 @@
+﻿@*  MODULE NAME: MEMBER LIST (MASTER)
+    CREATED BY: CJ DE LEON
+    DATE CREATED: 06/21/2024
+    UPDATED BY: NONE
+    LAST UPDATED: MM/dd/YYYY
+*@
+
+@{
+    ViewBag.Title = "MemberConsumer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/myscripts/sweetalert.js"></script>
+<script src="~/Scripts/myscripts/members_v1.1.2.js"></script>
+
+<style>
+    .table.dataTable td, th {
+        font-size: 11px !important;
+    }
+</style>
+
+<h2><strong>MEMBERS (MASTER LIST)</strong></h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Home</button>
+    </div>
+    <div class="col-lg-4" style="padding:0;">
+        <select class="form-control select2 select2-hidden-accessible" id="cboTown" style="max-width:100%;">
+            <option value="0">Please Select Town</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <div class="input-group">
+            <input type="button" class="btn btn-success" value="Display" onclick="getAllMembers()" />
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-lg-offset-8 col-lg-4 text-right">
+        <input type="button" class="btn btn-success" value="ADD NEW MEMBER" onclick="addNewMember()" />
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive-sm">
+            <table class="table table-hover table-bordered" id="myTable1">
+                <thead class="bg-primary">
+                    <tr>
+                        <th scope="col" style="text-align:center;">ID</th>
+                        <th scope="col" style="text-align:center;">NAME / BUSINESS NAME</th>
+                        <th scope="col" style="text-align:center;">TYPE</th>
+                        <th scope="col" style="text-align:center;">MEMBER ID</th>
+                        <th scope="col" style="text-align:center;">MEMBER DATE</th>
+                        <th scope="col" style="text-align:center;">BARANGAY</th>
+                        <th scope="col" style="text-align:center;">TOWN</th>
+                        <th scope="col" style="text-align:center;">VIEW</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="modal fade" id="myViewDetailsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myViewDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center" id="myViewDetailsModalLabel"><strong>MEMBER'S DETAILS</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-offset-7 col-sm-5" style="min-width:100%;margin-left:auto;margin-right:0;">
+                                <input type="button" class="btn btn-success" id="btnEdit" value="EDIT" onclick="editDetails()" />
+                                <input type="button" class="btn btn-success" id="btnCancel" value="CANCEL" onclick="cancelChanges()" />
+                                <input type="button" class="btn btn-success" id="btnUpdate" data-dismiss="modal" value="UPDATE" onclick="updateDetails()" />
+                                <input type="button" class="btn btn-success" id="btnClose" data-dismiss="modal" value="CLOSE" />
+                            </div>
+
+                        </div>
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="txtId">ID:</label>
+                                <input class="form-control" type="text" id="txtId" disabled="disabled" style="text-align: center; min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-8">
+                                <label>TYPE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboType" disabled="disabled" style="min-width: 100%;" onchange="cboTypeOnChange()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="txtBName">BUSINESS NAME:</label>
+                                <input class="form-control" type="text" id="txtBName" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <label for="txtLName">LAST NAME:</label>
+                                <input class="form-control" type="text" id="txtLName" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                            <div class="col-lg-7">
+                                <label for="txtFName">FIRST NAME(S):<i style="font-size:10px !important;color:red">separated by hypen (-) if joint account.</i></label>
+                                <input class="form-control" type="text" id="txtFName" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="txtMName">MIDDLE NAME:</label>
+                                <input class="form-control" type="text" id="txtMName" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                            <div class="col-lg-offset-3 col-lg-3">
+                                <label for="txtSuffix">SUFFIX:</label>
+                                <input class="form-control" type="text" id="txtSuffix" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>MEMBER ID:</label>
+                                <input class="form-control" type="text" id="txtMemberId" disabled="disabled" style="min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="txtMemberDate">MEMBER DATE:</label>
+                                <input class="form-control" type="date" id="dtpMemberDate" disabled="disabled" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="txtBarangay">BARANGAY:</label>
+                                <input class="form-control" type="text" id="txtBarangay" disabled="disabled" style="min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="txtTown">TOWN:</label>
+                                <input class="form-control" type="text" id="txtTown" disabled="disabled" style="min-width: 100%;" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-offset-8 col-lg-4" style="margin-right:auto;margin-left:0;">
+                                <input type="button" class="btn btn-success" id="btnAddAccount" value="ADD ACCOUNT" onclick="showAddAccountModal()" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table-responsive-sm">
+                                    <table class="table table-hover table-bordered" id="myTableAccts">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="hidden">OLDNEWDEL</th>
+                                                <th scope="col" style="text-align:center;">ACCOUNT NO</th>
+                                                <th scope="col" style="text-align:center;">ADDRESS</th>
+                                                <th scope="col" style="text-align:center;">IS PRIMARY</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyAccts">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="modal fade" id="myAddAccountModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myAddAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                        <h4 class="modal-title" id="myAddAccountModalLabel"><strong>ADD ACCOUNT</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-offset-3 col-lg-3">
+                                <input class="form-control" type="text" id="txtsrcAcctNo" placeholder="Account No." maxlength="10" style="min-width:100%;" />
+                            </div>
+                            <div class="col-lg-2 text-right">
+                                <button class="btn btn-primary" id="btnSearchAcctNo" onclick="searchAccount()"><span class="glyphicon glyphicon-search"></span> SEARCH</button>
+                            </div>
+                        </div><hr />
+                        <h4>RESULT:</h4>
+                        <hr />
+                        <div class="text-center">
+                            <h1><strong id="hAcctNo"></strong></h1>
+                            <p><strong id="pName"></strong></p>
+                            <p><strong id="pAddress"></strong></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-success" id="btnAddAcct" data-dismiss="modal" onclick="addAccount()" value="ADD" disabled="disabled" />
+                        <input type="button" class="btn btn-warning" data-dismiss="modal" value="CANCEL" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*SPINNER*@
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(
+            loadTowns()
+        );
+    </script>
+}

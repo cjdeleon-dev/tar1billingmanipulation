@@ -168,8 +168,11 @@
     <Compile Include="DataModel\ForWriteOffModel.cs" />
     <Compile Include="DataModel\FourPsModel.cs" />
     <Compile Include="DataModel\HighArrearsConsumerModel.cs" />
+    <Compile Include="DataModel\MemberAccountModel.cs" />
     <Compile Include="DataModel\MemberConsumerModel.cs" />
     <Compile Include="DataModel\MemberORModel.cs" />
+    <Compile Include="DataModel\MembersModel.cs" />
+    <Compile Include="DataModel\MemberTypeModel.cs" />
     <Compile Include="DataModel\MemConsBalanceModel.cs" />
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />

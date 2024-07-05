@@ -178,6 +178,7 @@
     <Compile Include="Controllers\FourPsAppliedListController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListForDisconnectionController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MemConsController.cs" />
     <Compile Include="Controllers\NetMeteringController.cs" />
     <Compile Include="Controllers\PendingChangeNameListController.cs" />
@@ -638,7 +639,8 @@
     <Content Include="Scripts\myscripts\empcareoffscript.js" />
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
     <Content Include="Scripts\myscripts\fourpslistscript_v1.0.0.1.js" />
-    <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.5.js" />
+    <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.6.js" />
+    <Content Include="Scripts\myscripts\members_v1.1.2.js" />
     <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
     <Content Include="Scripts\myscripts\nmconsledgerscript_v1.0.0.3.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
@@ -722,6 +724,7 @@
     <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.3.js" />
     <Content Include="Views\FourPsAppliedList\Index.cshtml" />
     <Content Include="Views\AgingByDate\Index.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

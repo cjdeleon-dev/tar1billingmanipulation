@@ -593,16 +593,8 @@ namespace TAR1ORMAN.Controllers
                 con.Open();
 
                 cmd.Connection = con;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "select hdr.id[Id],gendatetime[DateTimeGenerated],UPPER(RTRIM(genusr.name))[GeneratedBy],UPPER(RTRIM(chk.name))[CheckedBy],UPPER(ofc.manager)[NotedBy],Routeid " +
-                                  "from tbl_sumdtdrpthdr hdr " +
-                                  "inner join secuser genusr " +
-                                  "on hdr.genuserid = genusr.userid " +
-                                  "inner join secuser chk " +
-                                  "on hdr.checkbyid = chk.userid " +
-                                  "inner join tbloffices ofc " +
-                                  "on hdr.officeid=ofc.id " +
-                                  "where hdr.id = @hdrid;";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "sp_getsummofdtdrpthdr";
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@hdrid", hdrid);

@@ -691,8 +691,10 @@ function setThisAccount(acctnumber) {
     var stractno = ("0" + acctnumber).substr(-10);
     $('#txtaccountno').val(stractno);
 
-    if ($('#txtLLType').val() == "QME")
+    if ($('#txtLLType').val() == "QME") {
         displaySelectedAccount();
+        swal('Please!', 'The name of the QME applicant may differ from the name of the set account.\nPlease check it before saving this application.', 'warning');
+    }
 
     $('#txtsrcacctno').val("");
     $('#txtsrcacctname').val("");
@@ -709,7 +711,13 @@ function displaySelectedAccount() {
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
+
+            $('#txtsurname').val('');
+            $('#txtfirstname').val('');
+            $('#txtmiddlename').val('');
+
             if (result.data.AccountName != "" || result.data.AccountName != null) {
+
                 if (result.data.AccountName.includes(",")) {
                     var splittedName = result.data.AccountName.split(',');
                     if (splittedName.length > 1) {

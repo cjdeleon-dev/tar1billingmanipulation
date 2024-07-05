@@ -30,7 +30,7 @@ function processdata() {
 
     $('#myTable1').DataTable({
         ajax: {
-            "url": "/AgingByDate/GetData?sdate=" + enddate + "&isEB=" + isEB,
+            "url": "/ProcessJ/GetData?sdate=" + enddate + "&isEB=" + isEB,
             "type": "GET",
             "contentType": "application/json;charset=UTF-8",
             "datatype": "json"
