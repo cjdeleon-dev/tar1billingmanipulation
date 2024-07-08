@@ -1,4 +1,4 @@
-﻿let lname, fname, mname, suffix;
+﻿let lname="", fname="", mname="", suffix="";
 function invisibleModalButtons(optproc) {
     switch (optproc) {
         case 'view','update','cancel':
@@ -12,10 +12,12 @@ function invisibleModalButtons(optproc) {
             $('#txtLName').removeAttr('disabled');
             $('#txtFName').removeAttr('disabled');
             $('#txtMName').removeAttr('disabled');
+            $('#txtSuffix').removeAttr('disabled');
             $('#txtBName').prop('disabled', true);
             $('#txtLName').prop('disabled', true);
             $('#txtFName').prop('disabled', true);
             $('#txtMName').prop('disabled', true);
+            $('#txtSuffix').prop('disabled', true);
 
             $('#cboType').removeAttr('disabled');
             $('#cboType').prop('disabled', true);
@@ -25,6 +27,8 @@ function invisibleModalButtons(optproc) {
             $('#dtpMemberDate').prop('disabled', true);
 
             $('#tbodyAccts').empty();
+
+            displayDetailsById($('#txtId').val());
 
             break;
         case 'edit':
@@ -39,6 +43,7 @@ function invisibleModalButtons(optproc) {
                 $('#txtLName').removeAttr('disabled');
                 $('#txtFName').removeAttr('disabled');
                 $('#txtMName').removeAttr('disabled');
+                $('#txtSuffix').removeAttr('disabled');
 
                 $('#txtBName').removeAttr('disabled');
                 $('#txtBName').prop('disabled', true);
@@ -49,9 +54,11 @@ function invisibleModalButtons(optproc) {
                 $('#txtLName').removeAttr('disabled');
                 $('#txtFName').removeAttr('disabled');
                 $('#txtMName').removeAttr('disabled');
+                $('#txtSuffix').removeAttr('disabled');
                 $('#txtLName').prop('disabled', true);
                 $('#txtFName').prop('disabled', true);
                 $('#txtMName').prop('disabled', true);
+                $('#txtSuffix').prop('disabled', true);
             }
             
             $('#cboType').removeAttr('disabled');
@@ -70,10 +77,13 @@ function invisibleModalButtons(optproc) {
             $('#txtLName').removeAttr('disabled');
             $('#txtFName').removeAttr('disabled');
             $('#txtMName').removeAttr('disabled');
+            $('#txtSuffix').removeAttr('disabled');
             $('#txtBName').prop('disabled', true);
             $('#txtLName').prop('disabled', true);
             $('#txtFName').prop('disabled', true);
             $('#txtMName').prop('disabled', true);
+            $('#txtSuffix').prop('disabled', true);
+
             $('#cboType').removeAttr('disabled');
             $('#cboType').prop('disabled', true);
             $('#txtMemberId').removeAttr('disabled');
@@ -151,6 +161,12 @@ function loadClasses() {
 
 
 function getAllMembers() {
+
+    //invisibleModalButtons
+    invisibleModalButtons('view');
+    //load Member Types
+    loadTypes();
+
     document.body.style.cursor = 'progress';
     $('#modalLoading').modal('show');
     document.getElementById("spintext").innerHTML = "LOADING...";
@@ -207,13 +223,12 @@ function emptyTable() {
 }
 
 function showDetailsById(id) {
-    //invisibleModalButtons
-    invisibleModalButtons('view');
-    //load Member Types
-    loadTypes();
-
     $('#myViewDetailsModal').modal('show');
 
+    displayDetailsById(id);
+}
+
+function displayDetailsById(id) {
     $.ajax({
         url: "/Members/GetMemberById?id=" + id,
         type: "GET",
@@ -250,6 +265,7 @@ function showAccountsById(memid) {
         contentType: "application/json;charset=UTF-8",
         dataType: "json",
         success: function (result) {
+            $('#tbodyAccts').empty();
             var data = result.data;
 
             if (data.length > 0) {
@@ -554,27 +570,26 @@ function cboTypeOnChange() {
     if ($('#cboType').val() == 3) {
         $('#txtBName').removeAttr('disabled');
 
-        lname = $('#txtLName').val();
-        fname = $('#txtFName').val();
-        mname = $('#txtMName').val();
-        suffix = $('#txtSuffix').val();
-
-        $('#txtLName').val("");
-        $('#txtFName').val("");
-        $('#txtMName').val("");
-        $('#txtSuffix').val("");
+        $('#txtLName').removeAttr('disabled');
+        $('#txtLName').prop('disabled', true);
+        $('#txtFName').removeAttr('disabled');
+        $('#txtFName').prop('disabled', true);
+        $('#txtMName').removeAttr('disabled');
+        $('#txtMName').prop('disabled', true);
+        $('#txtSuffix').removeAttr('disabled');
+        $('#txtSuffix').prop('disabled', true);
 
     } else {
+        //disable businessname field.
+        $('#txtBName').removeAttr('disabled');
+        $('#txtBName').prop('disabled', true);
+
+        //enable Name Fields.
         $('#txtLName').removeAttr('disabled');
         $('#txtFName').removeAttr('disabled');
         $('#txtMName').removeAttr('disabled');
         $('#txtSuffix').removeAttr('disabled');
-        if ($('#cboType').val() <= 2 && $('#cboType').val() > 0) {
-            $('#txtLName').val(lname);
-            $('#txtFName').val(fname);
-            $('#txtMName').val(mname);
-            $('#txtSuffix').val(suffix);
-        }
+
     }
 }
 
