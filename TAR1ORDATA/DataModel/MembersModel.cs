@@ -19,6 +19,6 @@ namespace TAR1ORDATA.DataModel
         public string MemberId { get; set; }
         public string MemberDate { get; set; }
         public string Barangay { get; set; }
-        public string Town { get; set; }
+        public string Municipality { get; set; }
     }
 }

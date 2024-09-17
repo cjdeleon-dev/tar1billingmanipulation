@@ -56,12 +56,12 @@
 @*<div class="container">*@
 <div class="row">
     <div class="col-sm-2" style="padding:5px;">
-        <button class="btn btn-info" id="btnCS" style="width:100%;margin-bottom:5px;" onclick="showChangeStatModal()">Change Status</button>
-        <button class="btn btn-info" id="btnUP" style="width:100%;margin-bottom:5px;" onclick="showUpdateProfileModal()">Update Profile</button>
-        <button class="btn btn-info" id="btnUL" style="width:100%;margin-bottom:5px;" onclick="swal('Sorry', 'You are not allowed to update load information.', 'warning');">Update Load Info.</button>
-        <button class="btn btn-info" id="btnMS" style="width:100%;margin-bottom:5px;" onclick="swal('Sorry', 'You are not allowed to update meter specifications.', 'warning');">Update Meter Specs.</button>
-        <button class="btn btn-info" id="btnHS" style="width:100%;margin-bottom:5px;" onclick="viewStatusByAcctno()">View Status History</button>
-        <button class="btn btn-info" id="btnBL" style="width:100%;margin-bottom:5px;" onclick="viewBalance()">View Balance</button>
+        <button class="btn btn-info" id="btnCS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="showChangeStatModal()">Change Status</button>
+        <button class="btn btn-info" id="btnUP" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="showUpdateProfileModal()">Update Profile</button>
+        <button class="btn btn-info" id="btnUL" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="swal('Sorry', 'You are not allowed to update load information.', 'warning');">Update Load Info.</button>
+        <button class="btn btn-info" id="btnMS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="swal('Sorry', 'You are not allowed to update meter specifications.', 'warning');">Update Meter Specs.</button>
+        <button class="btn btn-info" id="btnHS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="viewStatusByAcctno()">View Status History</button>
+        <button class="btn btn-info" id="btnBL" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="viewBalance()">View Balance</button>
     </div>
     <div class="col-sm-10" style="border:solid;">
         <div class="divAccnts" style="overflow:auto;">
@@ -341,7 +341,7 @@
                 <button type="button" class="close" data-dismiss="modal">X</button>
                 <h4 class="modal-title" id="myViewBalModalLabel">Consumer's Balance(s)</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow:scroll;">
                 <div class="table-responsive-sm">
                     <table class="table table-hover table-bordered" id="statusTable">
                         <thead class="bg-primary">

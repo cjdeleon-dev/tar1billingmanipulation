@@ -19,6 +19,7 @@ namespace TAR1ORDATA.DataAccess.DisconListAccess
                 da.SelectCommand = new SqlCommand();
                 da.SelectCommand.Connection = new SqlConnection(this.ConnectionString);
                 da.SelectCommand.Connection.Open();
+                da.SelectCommand.CommandTimeout = 100000000;
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.CommandText = "sp_GenerateSubjForDisconV2";

@@ -1,4 +1,12 @@
-﻿let lname="", fname="", mname="", suffix="";
+﻿
+var isMemberWithNonExistAcct = false;
+
+function initializeData() {
+    loadTowns();
+    loadTypes();
+    loadMunicipalities();
+    loadConsumerTypes();
+}
 function invisibleModalButtons(optproc) {
     switch (optproc) {
         case 'view','update','cancel':
@@ -103,7 +111,7 @@ function loadTowns() {
         dataType: "json",
         success: function (result) {
             $('#cboTown').empty();
-            $('#cboTown').append("<option value=0>PLEASE SELECT TOWN</option>");
+            $('#cboTown').append("<option value=0>PLEASE SELECT MUNICIPALITY</option>");
             for (var i = 0; i < result.data.length; i++) {
                 var Desc = '(' + result.data[i].Id + ') - ' +result.data[i].Town;
                 var opt = new Option(Desc, result.data[i].Id);
@@ -125,12 +133,36 @@ function loadTypes() {
         dataType: "json",
         success: function (result) {
             $('#cboType').empty();
+            $('#cboNewType').empty();
+            $('#cboENewType').empty();
+
             $('#cboType').append("<option value=0>PLEASE SELECT TYPE</option>");
+            $('#cboNewType').append("<option value=0>PLEASE SELECT TYPE</option>");
+            $('#cboENewType').append("<option value=0>PLEASE SELECT TYPE</option>");
+
             for (var i = 0; i < result.data.length; i++) {
-                var Desc = result.data[i].MemberType;
-                var opt = new Option(Desc, result.data[i].Id);
+                let Desc = result.data[i].MemberType;
+                let opt = new Option(Desc, result.data[i].Id);
+
                 $('#cboType').append(opt);
+                
             }
+
+            for (var j = 0; j < result.data.length; j++) {
+                let Desc = result.data[j].MemberType;
+                let opt = new Option(Desc, result.data[j].Id);
+
+                $('#cboNewType').append(opt);
+            }
+
+            for (var j = 0; j < result.data.length; j++) {
+                let Desc = result.data[j].MemberType;
+                let opt = new Option(Desc, result.data[j].Id);
+
+                $('#cboENewType').append(opt);
+            }
+
+
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
@@ -159,6 +191,90 @@ function loadClasses() {
     });
 }
 
+function loadMunicipalities() {
+    $.ajax({
+        url: "/Members/GetAllMunicipalities/",
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            $('#cboNewMunicipality').empty();
+            $('#cboENewMunicipality').empty();
+
+            $('#cboNewMunicipality').append("<option value=0>SELECT MUNICIPALITY</option>");
+            $('#cboENewMunicipality').append("<option value=0>SELECT MUNICIPALITY</option>");
+
+            for (var i = 0; i < result.data.length; i++) {
+                let Desc = result.data[i].Municipality + ", " + result.data[i].Province;
+                let opt = new Option(Desc, result.data[i].Id);
+
+                $('#cboNewMunicipality').append(opt);
+            }
+            for (var j = 0; j < result.data.length; j++) {
+                let Desc = result.data[j].Municipality + ", " + result.data[j].Province;
+                let opt = new Option(Desc, result.data[j].Id);
+
+                $('#cboENewMunicipality').append(opt);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function loadBarangays(municipalityid, elmnt) {
+    $.ajax({
+        url: "/Members/GetAllBarangaysByMunicipalityId?id=" + municipalityid,
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            if (elmnt === "N") {
+                $('#cboNewBarangay').empty();
+                $('#cboNewBarangay').append("<option value=0>SELECT BARANGAY</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    let Desc = result.data[i].Barangay;
+                    let opt = new Option(Desc, result.data[i].Id);
+                    $('#cboNewBarangay').append(opt);
+                }
+            } else {
+                $('#cboENewBarangay').empty();
+                $('#cboENewBarangay').append("<option value=0>SELECT BARANGAY</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    let Desc = result.data[i].Barangay;
+                    let opt = new Option(Desc, result.data[i].Id);
+                    $('#cboENewBarangay').append(opt);
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function loadConsumerTypes(){
+    $.ajax({
+        url: "/Members/GetAllConsumerTypes/",
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            $('#cboNewMemberConsType').empty();
+            $('#cboNewMemberConsType').append("<option value=0>SELECT CONSUMER TYPE</option>");
+            for (var i = 0; i < result.data.length; i++) {
+                var Desc = result.data[i].ConsumerType;
+                var opt = new Option(Desc, result.data[i].Id);
+                $('#cboNewMemberConsType').append(opt);
+            }
+
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
 
 function getAllMembers() {
 
@@ -193,7 +309,7 @@ function getAllMembers() {
             { "data": "MemberId", "autoWidth": true },
             { "data": "MemberDate", "autoWidth": true },
             { "data": "Barangay", "autoWidth": true },
-            { "data": "Town", "autoWidth": true }
+            { "data": "Municipality", "autoWidth": true }
         ],
         aoColumnDefs: [
             {
@@ -246,7 +362,7 @@ function displayDetailsById(id) {
             $('#txtMemberId').val(data.MemberId.toString());
             $('#dtpMemberDate').val(data.MemberDate);
             $('#txtBarangay').val(data.Barangay);
-            $('#txtTown').val(data.Town);
+            $('#txtTown').val(data.Municipality);
 
             $('#tbodyAccts').empty();
             //load all accounts of member to table
@@ -270,9 +386,9 @@ function showAccountsById(memid) {
 
             if (data.length > 0) {
                 for (var i = 0; i <= data.length - 1; i++){
-                    var acctno = data[i].AccountNo;
-                    var address = data[i].Address;
-                    var isprimary = data[i].IsPrimary;
+                    let acctno = data[i].AccountNo.toString();
+                    let address = data[i].Address;
+                    let isprimary = data[i].IsPrimary;
 
                     var html = '';
                     html += '<tr id="mytr_' + acctno + '">';
@@ -396,6 +512,9 @@ function addAccount() {
 }
 
 function deleteAccount(acctno) {
+
+    if (acctno.toString().length == 9)
+        acctno = "0" + acctno.toString();
 
     var Row = document.getElementById("mytr_" + acctno);
     var Cells = Row.getElementsByTagName("td");
@@ -544,7 +663,7 @@ function saveMemberDetails() {
             MemberId: $('#txtMemberId').val(),
             MemberDate: $('#dtpMemberDate').val(),
             Barangay: $('#txtBarangay').val(),
-            Town: $('#txtTown').val()
+            Municipality: $('#txtTown').val()
         }
 
         $.ajax({
@@ -593,6 +712,66 @@ function cboTypeOnChange() {
     }
 }
 
+function cboNewTypeOnChange() {
+
+    var ebn = document.getElementById("divNewBName");
+    var enn = document.getElementById("divNewName");
+
+    $('#txtNewId').val("AUTONUMBER");
+
+    if (parseInt($('#cboNewType').val()) > 0) {
+
+        var typeid = parseInt($('#cboNewType').val());
+
+        switch (typeid) {
+            case 1:
+            case 2:
+                ebn.classList.add("hidden");
+                enn.classList.remove("hidden");
+                break;
+            case 3:
+                ebn.classList.remove("hidden");
+                enn.classList.add("hidden");
+                break;
+            default:
+                ebn.classList.remove("hidden");
+                enn.classList.remove("hidden");
+                break;
+        }
+    }
+    
+}
+
+function cboENewTypeOnChange() {
+
+    var ebn = document.getElementById("divENewBName");
+    var enn = document.getElementById("divENewName");
+
+    $('#txtENewId').val("AUTONUMBER");
+
+    if (parseInt($('#cboENewType').val()) > 0) {
+
+        var typeid = parseInt($('#cboENewType').val());
+
+        switch (typeid) {
+            case 1:
+            case 2:
+                ebn.classList.add("hidden");
+                enn.classList.remove("hidden");
+                break;
+            case 3:
+                ebn.classList.remove("hidden");
+                enn.classList.add("hidden");
+                break;
+            default:
+                ebn.classList.remove("hidden");
+                enn.classList.remove("hidden");
+                break;
+        }
+    }
+
+}
+
 function isValidDetails() {
     if ($('#cboType').val() == 1 || $('#cboType').val() == 2) {
         if ($('#txtLName').val().trim() == "" || $('#txtFName').val().trim() == "" || $('#txtMName').val().trim() == "") {
@@ -611,5 +790,168 @@ function isValidDetails() {
     }
 }
 function addNewMember() {
-    swal('Ooopss!', 'This function is not working right now.\nPlease try again later.', 'warning');
+
+    isMemberWithNonExistAcct = true;
+
+    $('#myNewMemberModal').modal("show");
+}
+
+function addNewMemberAcctExist() {
+
+    isMemberWithNonExistAcct = false;
+
+    $('#myENewMemberModal').modal("show");
+}
+
+function cboNewMunicipalityOnChange() {
+    var muniid = $('#cboNewMunicipality').val();
+
+    loadBarangays(muniid, "N");
+}
+
+function cboENewMunicipalityOnChange() {
+    var muniid = $('#cboENewMunicipality').val();
+
+    loadBarangays(muniid,"E");
+}
+
+function saveMemberAndAccount() {
+
+    var memtypeid = 0;
+    var isbn = false;
+    var businessname, firstname, lastname, middlename, suffix, brgy, muni, ofcid, memid, memdate, acctno, constype;
+
+    if (isMemberWithNonExistAcct)
+        memtypeid = $('#cboNewType').val()
+    else
+        memtypeid = $('#cboENewType').val();
+
+    if (memtypeid == 0) {
+        swal('Invalid', 'There are no selected member type.', 'warning');
+        return;
+    }
+
+    var nbrgy = document.getElementById("cboNewBarangay");
+    var ebrgy = document.getElementById("cboENewBarangay");
+
+    var nmuni = document.getElementById("cboNewMunicipality");
+    var emuni = document.getElementById("cboENewMunicipality");
+
+    if (memtypeid > 2)
+        isbn = true;
+
+    if (isMemberWithNonExistAcct) {
+        if (isbn) {
+            businessname = $('#txtNewBName').val();
+            firstname = "";
+            lastname = "";
+            middlename = "";
+            suffix = "";
+        } else {
+            businessname = "";
+            firstname = $('#txtNewFName').val();
+            lastname = $('#txtNewLName').val();
+            middlename = $('#txtNewMName').val();
+            suffix = $('#txtNewSuffix').val();
+        }
+        brgy = nbrgy.options[nbrgy.selectedIndex].text;
+        muni = nmuni.options[nmuni.selectedIndex].text;
+        ofcid = getOfficeId(muni);
+        memid = $('#txtNewMemberId').val();
+        memdate = $('#dtpNewMemberDate').val();
+        acctno = $('#txtNewMemberAcctNo').val();
+        constype = $('#cboNewMemberConsType').val();
+    }
+    else {
+        if (isbn) {
+            businessname = $('#txtENewBName').val();
+            firstname = "";
+            lastname = "";
+            middlename = "";
+            suffix = "";
+        } else {
+            businessname = "";
+            firstname = $('#txtENewFName').val();
+            lastname = $('#txtENewLName').val();
+            middlename = $('#txtENewMName').val();
+            suffix = $('#txtENewSuffix').val();
+        }
+        brgy = ebrgy.options[ebrgy.selectedIndex].text;
+        muni = emuni.options[emuni.selectedIndex].text;
+        ofcid = getOfficeId(muni);
+        memid = $('#txtENewMemberId').val();
+        memdate = $('#dtpENewMemberDate').val();
+        acctno = $('#txtENewMemberAccount').val();
+        constype = ""
+    }
+        
+    var objModel = {
+        IsBusiness:isbn,
+        LName:lastname,
+        FName:firstname,
+        MName:middlename,
+        Suffix:suffix,
+        BusinessName:businessname,
+        MemberTypeId:memtypeid,
+        Barangay:brgy,
+        Municipality:muni,
+        OfficeId:ofcid,
+        MemberId:memid,
+        MemberDate:memdate,
+        MadeBy:"",
+        AccountNo:acctno,
+        ConsumerType:constype,
+        IsExistAccount: !isMemberWithNonExistAcct
+    }
+
+    $.ajax({
+        url: "/Members/SaveNewMemberWithAccount/",
+        type: "POST",
+        contentType: "application/json;charset=UTF-8",
+        data: JSON.stringify(objModel),
+        dataType: "json",
+        success: function (result) {
+            if (result) {
+                window.location = "/Members/Index/";
+            }
+        },
+        error: function (errormessage) {
+            swal('Error', 'Something went wrong.', 'error');
+        }
+    });
+}
+
+function getOfficeId(muniprov) {
+    var officeid = 0;
+    var mp = muniprov.split(",");
+
+    if (mp[0].trim() == "CAMILING" || mp[0].trim() == "MAYANTOC" || mp[0].trim() == "SAN CLEMENTE") {
+        officeid = 1;
+    }
+
+    if (mp[0].trim() == "CUYAPO" || mp[0].trim() == "NAMPICUAN" || mp[0].trim() == "ANAO") {
+        officeid = 2;
+    }
+
+    if (mp[0].trim() == "GERONA") {
+        officeid = 3;
+    }
+
+    if (mp[0].trim() == "MONCADA" || mp[0].trim() == "SAN MANUEL") {
+        officeid = 4;
+    }
+
+    if (mp[0].trim() == "PANIQUI" || mp[0].trim() == "RAMOS") {
+        officeid = 5;
+    }
+
+    if (mp[0].trim() == "SANTA IGNACIA" || mp[0].trim() == "SAN JOSE") {
+        officeid = 6;
+    }
+
+    if (mp[0].trim() == "VICTORIA" || mp[0].trim() == "PURA") {
+        officeid = 7;
+    }
+
+    return officeid;
 }

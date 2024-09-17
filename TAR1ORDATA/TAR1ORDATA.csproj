@@ -142,6 +142,7 @@
     <Compile Include="DataModel\ArsAreaModel.cs" />
     <Compile Include="DataModel\ArsSubOfficeModel.cs" />
     <Compile Include="DataModel\AuditTrailModel.cs" />
+    <Compile Include="DataModel\BarangayModel.cs" />
     <Compile Include="DataModel\BillPeriodModel.cs" />
     <Compile Include="DataModel\BurialClaimantModel.cs" />
     <Compile Include="DataModel\ChangedStatusModel.cs" />
@@ -173,10 +174,12 @@
     <Compile Include="DataModel\MemberORModel.cs" />
     <Compile Include="DataModel\MembersModel.cs" />
     <Compile Include="DataModel\MemberTypeModel.cs" />
+    <Compile Include="DataModel\MemberWithAccountModel.cs" />
     <Compile Include="DataModel\MemConsBalanceModel.cs" />
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />
     <Compile Include="DataModel\MemConsProfileModel.cs" />
+    <Compile Include="DataModel\MunicipalityProvinceModel.cs" />
     <Compile Include="DataModel\NetMeteringBillModel.cs" />
     <Compile Include="DataModel\NetMeteringInReadModel.cs" />
     <Compile Include="DataModel\NetMeteringModel.cs" />

@@ -51,5 +51,11 @@ namespace TAR1ORDATA.DataModel
         public string WOFlag { get; set; }
         public string PNFlag { get; set; }
         public string CLRSR { get; set; }
+
+        //OTHERS
+        public string TIN { get; set; }
+        public string SCID { get; set; }
+        public string PayeeName { get; set; }
+        public string PayeeAddress { get; set; }
     }
 }

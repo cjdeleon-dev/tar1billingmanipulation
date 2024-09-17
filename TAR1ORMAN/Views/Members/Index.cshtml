@@ -12,7 +12,7 @@
 
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
-<script src="~/Scripts/myscripts/members_v1.1.2.js"></script>
+<script src="~/Scripts/myscripts/members_v1.1.3.js"></script>
 
 <style>
     .table.dataTable td, th {
@@ -39,8 +39,11 @@
 </div>
 <br />
 <div class="row">
-    <div class="col-lg-offset-8 col-lg-4 text-right">
-        <input type="button" class="btn btn-success" value="ADD NEW MEMBER" onclick="addNewMember()" />
+    <div class="col-lg-offset-6 col-lg-3 text-right">
+        <input type="button" class="btn btn-info" style="white-space:normal;" value="ADD NEW MEMBER WITH NOT EXISTING ACCOUNT" onclick="addNewMember()" />
+    </div>
+    <div class="col-lg-3 text-right">
+        <input type="button" class="btn btn-info" style="white-space:normal;" value="ADD NEW MEMBER WITH EXISTING ACCOUNT" onclick="addNewMemberAcctExist()" />
     </div>
 </div>
 <hr />
@@ -56,7 +59,7 @@
                         <th scope="col" style="text-align:center;">MEMBER ID</th>
                         <th scope="col" style="text-align:center;">MEMBER DATE</th>
                         <th scope="col" style="text-align:center;">BARANGAY</th>
-                        <th scope="col" style="text-align:center;">TOWN</th>
+                        <th scope="col" style="text-align:center;">MUNICIPALITY</th>
                         <th scope="col" style="text-align:center;">VIEW</th>
                     </tr>
                 </thead>
@@ -138,7 +141,7 @@
                                 <input class="form-control" type="text" id="txtBarangay" disabled="disabled" style="min-width: 100%;" />
                             </div>
                             <div class="col-lg-6">
-                                <label for="txtTown">TOWN:</label>
+                                <label for="txtTown">MUNICIPALITY:</label>
                                 <input class="form-control" type="text" id="txtTown" disabled="disabled" style="min-width: 100%;" />
                             </div>
                         </div>
@@ -210,6 +213,188 @@
         </div>
     </div>
 </div>
+@*NEW MEMBER WITH NON EXISTING ACCOUNT*@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="modal fade" id="myNewMemberModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myNewMemberModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                        <h4 class="modal-title" id="myNewMemberModalLabel"><strong>NEW MEMBER WITHOUT EXISTING ACCOUNT</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="txtNewId">ID:</label>
+                                <input class="form-control" type="text" id="txtNewId" disabled="disabled" style="text-align: center; min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-8">
+                                <label>TYPE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboNewType" style="min-width: 100%;" onchange="cboNewTypeOnChange()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="divNewBName">
+                            <div class="col-lg-12">
+                                <label for="txtNewBName">BUSINESS NAME:</label>
+                                <input class="form-control" type="text" id="txtNewBName" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div id="divNewName">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <label for="txtNewLName">LAST NAME:</label>
+                                    <input class="form-control" type="text" id="txtNewLName" style="min-width:100%;" />
+                                </div>
+                                <div class="col-lg-7">
+                                    <label for="txtNewFName">FIRST NAME(S):<i style="font-size:10px !important;color:red">separated by hypen (-) if joint account.</i></label>
+                                    <input class="form-control" type="text" id="txtNewFName" style="min-width:100%;" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="txtNewMName">MIDDLE NAME:</label>
+                                    <input class="form-control" type="text" id="txtNewMName" style="min-width:100%;" />
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-3">
+                                    <label for="txtNewSuffix">SUFFIX:</label>
+                                    <input class="form-control" type="text" id="txtNewSuffix" style="min-width:100%;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>MEMBER ID:</label>
+                                <input class="form-control" type="text" id="txtNewMemberId" style="min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="txtNewMemberDate">MEMBER DATE:</label>
+                                <input class="form-control" type="date" id="dtpNewMemberDate" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="cboNewMunicipality">MUNICIPALITY - PROVINCE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboNewMunicipality" onchange="cboNewMunicipalityOnChange()" style="min-width: 100%;">
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="cboNewBarangay">BARANGAY:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboNewBarangay" style="min-width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="txtNewMemberAcctNo">ACCOUNT NUMBER:</label>
+                                <input class="form-control" type="text" id="txtNewMemberAcctNo" style="min-width:100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="cboNewMemberConsType">CONSUMER TYPE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboNewMemberConsType" style="min-width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-success" id="btnNewMember" data-dismiss="modal" onclick="saveMemberAndAccount()" value="ADD" />
+                        <input type="button" class="btn btn-warning" data-dismiss="modal" value="CANCEL" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*NEW MEMBER WITH EXISTING ACCOUNT*@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="modal fade" id="myENewMemberModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myENewMemberModallLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                        <h4 class="modal-title" id="myENewMemberModalLabel"><strong>NEW MEMBER WITH EXISTING ACCOUNT</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="txtENewId">ID:</label>
+                                <input class="form-control" type="text" id="txtENewId" disabled="disabled" style="text-align: center; min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-8">
+                                <label>TYPE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboENewType" style="min-width: 100%;" onchange="cboENewTypeOnChange()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="divENewBName">
+                            <div class="col-lg-12">
+                                <label for="txtENewBName">BUSINESS NAME:</label>
+                                <input class="form-control" type="text" id="txtENewBName" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div id="divENewName">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <label for="txtENewLName">LAST NAME:</label>
+                                    <input class="form-control" type="text" id="txtENewLName" style="min-width:100%;" />
+                                </div>
+                                <div class="col-lg-7">
+                                    <label for="txtENewFName">FIRST NAME(S):<i style="font-size:10px !important;color:red">separated by hypen (-) if joint account.</i></label>
+                                    <input class="form-control" type="text" id="txtENewFName" style="min-width:100%;" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="txtENewMName">MIDDLE NAME:</label>
+                                    <input class="form-control" type="text" id="txtENewMName" style="min-width:100%;" />
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-3">
+                                    <label for="txtENewSuffix">SUFFIX:</label>
+                                    <input class="form-control" type="text" id="txtENewSuffix" style="min-width:100%;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>MEMBER ID:</label>
+                                <input class="form-control" type="text" id="txtENewMemberId" style="min-width: 100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="txtENewMemberDate">MEMBER DATE:</label>
+                                <input class="form-control" type="date" id="dtpENewMemberDate" style="min-width:100%;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="cboENewMunicipality">MUNICIPALITY - PROVINCE:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboENewMunicipality" onchange="cboENewMunicipalityOnChange()" style="min-width: 100%;">
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="cboENewBarangay">BARANGAY:</label>
+                                <select class="form-control select2 select2-hidden-accessible" id="cboENewBarangay" style="min-width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="txtENewMemberAccount">EXISTING ACCOUNT NUMBER</label>
+                                <input type="text" id="txtENewMemberAccount" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-success" id="btnENewMember" data-dismiss="modal" onclick="saveMemberAndAccount()" value="ADD" />
+                        <input type="button" class="btn btn-warning" data-dismiss="modal" value="CANCEL" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @*SPINNER*@
 <div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
@@ -231,7 +416,7 @@
 @section Scripts{
     <script>
         $(document).ready(
-            loadTowns()
+            initializeData()
         );
     </script>
 }

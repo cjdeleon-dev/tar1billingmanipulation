@@ -160,6 +160,7 @@ function processdata() {
                         { "data": "Address", "autoWidth": true },
                         { "data": "Status", "autoWidth": true },
                         { "data": "Days30", "autoWidth": true },
+                        { "data": "Days30V", "autoWidth": true },
                         { "data": "Days60", "autoWidth": true },
                         { "data": "Days90", "autoWidth": true },
                         { "data": "Days120", "autoWidth": true },

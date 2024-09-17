@@ -14,6 +14,7 @@ using System.Web.Management;
 using System.Security.Cryptography;
 using Microsoft.Ajax.Utilities;
 using PagedList;
+using System.Reflection;
 
 namespace TAR1ORMAN.Controllers
 {
@@ -92,6 +93,29 @@ namespace TAR1ORMAN.Controllers
             string result = string.Empty;
             return Json(result = updateMemberDetails(mem), JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetAllMunicipalities()
+        {
+            return Json(new { data =getAllMunicipalities() }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAllBarangaysByMunicipalityId(int id)
+        {
+            return Json(new { data = getAllBarangaysByMunicipalityId(id) }, JsonRequestBehavior.AllowGet);;
+        }
+
+        public JsonResult GetAllConsumerTypes()
+        {
+            return Json(new { data = getAllConsumerTypes() }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult SaveNewMemberWithAccount(MemberWithAccountModel memacctm)
+        {
+            bool result = saveNewMemberAndAccount(memacctm);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
 
         //PROCEDURES AND FUNCTIONS
         private List<TownModel> getAllTowns()
@@ -200,7 +224,7 @@ namespace TAR1ORMAN.Controllers
                 if (tid < 8)
                 {
                     da.SelectCommand.CommandText = "select mem.id, case when isbusiness=1 then [businessname] else rtrim(lname) + ', ' + rtrim(fname) + ' ' + rtrim(isnull(mname,'')) + ' ' + rtrim(isnull(suffix,'')) end [name]," +
-                                               "typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,town " +
+                                               "typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,municipality " +
                                                "from b_members mem inner join b_membertypes typ " +
                                                "on mem.membertypeid=typ.id " +
                                                "where officeid=@officeid";
@@ -208,7 +232,7 @@ namespace TAR1ORMAN.Controllers
                 else
                 {
                     da.SelectCommand.CommandText = "select mem.id, case when isbusiness=1 then [businessname] else rtrim(lname) + ', ' + rtrim(fname) + ' ' + rtrim(isnull(mname,'')) + ' ' + rtrim(isnull(suffix,'')) end [name]," +
-                                               "typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,town " +
+                                               "typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,municipality " +
                                                "from b_members mem inner join b_membertypes typ " +
                                                "on mem.membertypeid=typ.id;";
                 }
@@ -233,7 +257,7 @@ namespace TAR1ORMAN.Controllers
                                 MemberId = dr["memberid"].ToString(),
                                 MemberDate = Convert.ToDateTime(dr["memberdate"]).ToShortDateString(),
                                 Barangay = dr["barangay"].ToString(),
-                                Town = dr["town"].ToString()
+                                Municipality = dr["municipality"].ToString()
                             });
                         }
 
@@ -267,7 +291,7 @@ namespace TAR1ORMAN.Controllers
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "select mem.id, isbusiness,isnull(businessname,'')businessname, " + 
                                       "isnull(lname,'')lname,isnull(fname,'')fname,isnull(mname,'')mname,isnull(suffix,'')suffix, " +
-                                      "mem.membertypeid,typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,town " +
+                                      "mem.membertypeid,typ.type,isnull(memberid,'')memberid,isnull(memberdate,'')memberdate,barangay,municipality " +
                                       "from b_members mem inner join b_membertypes typ " +
                                       "on mem.membertypeid=typ.id where mem.id=@id;";
 
@@ -291,7 +315,7 @@ namespace TAR1ORMAN.Controllers
                             mm.MemberId = rdr["memberid"].ToString();
                             mm.MemberDate = Convert.ToDateTime(rdr["memberdate"]).ToString("yyyy-MM-dd");
                             mm.Barangay = rdr["barangay"].ToString();
-                            mm.Town = rdr["town"].ToString();
+                            mm.Municipality = rdr["municipality"].ToString();
                         }
                     }
                     else
@@ -545,12 +569,12 @@ namespace TAR1ORMAN.Controllers
                 cmd.CommandType = System.Data.CommandType.Text;
                 if(mm.MemberTypeId==1 || mm.MemberTypeId==2)
                     cmd.CommandText = "update b_members set isbusiness=0,lname=@lname,fname=@fname,mname=@mi,suffix=@suffix," +
-                                      "businessname=NULL,membertypeid=@membertypeid,barangay=@barangay,town=@town," +
+                                      "businessname=NULL,membertypeid=@membertypeid,barangay=@barangay,municipality=@municipality," +
                                       "memberid=@memberid,memberdate=@memberdate,lastupdated=getdate(),updatedby=@updatedby " +
                                       "where id=@memid";
                 else // JURIDICAL
                     cmd.CommandText = "update b_members set isbusiness=1,lname=NULL,fname=NULL,mname=NULL,suffix=NULL," +
-                                      "businessname=@businessname,membertypeid=@membertypeid,barangay=@barangay,town=@town," +
+                                      "businessname=@businessname,membertypeid=@membertypeid,barangay=@barangay,municipality=@municipality," +
                                       "memberid=@memberid,memberdate=@memberdate,lastupdated=getdate(),updatedby=@updatedby " +
                                       "where id=@memid";
 
@@ -562,7 +586,7 @@ namespace TAR1ORMAN.Controllers
                 cmd.Parameters.AddWithValue("@suffix", mm.Suffix is null ? string.Empty : mm.Suffix);
                 cmd.Parameters.AddWithValue("@membertypeid", mm.MemberTypeId);
                 cmd.Parameters.AddWithValue("@barangay", mm.Barangay);
-                cmd.Parameters.AddWithValue("@town", mm.Town);
+                cmd.Parameters.AddWithValue("@municipality", mm.Municipality);
                 cmd.Parameters.AddWithValue("@memberid", mm.MemberId);
                 cmd.Parameters.AddWithValue("@memberdate", mm.MemberDate);
                 cmd.Parameters.AddWithValue("@updatedby", User.Identity.Name);
@@ -586,5 +610,220 @@ namespace TAR1ORMAN.Controllers
 
             return msgresult;
         }
+
+        private List<MunicipalityProvinceModel> getAllMunicipalities()
+        {
+            List<MunicipalityProvinceModel> lstmpm = new List<MunicipalityProvinceModel>();
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select id,municipality, province from b_municipalities;";
+
+                try
+                {
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            lstmpm.Add(new MunicipalityProvinceModel
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                Municipality = dr["municipality"].ToString(),
+                                Province = dr["province"].ToString()
+                            });
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lstmpm = null;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return lstmpm;
+        }
+
+        private List<BarangayModel> getAllBarangaysByMunicipalityId(int id)
+        {
+            List<BarangayModel> lstbm = new List<BarangayModel>();
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select id,UPPER(barangay) barangay from b_barangays where municipalityid=@munid;";
+
+                da.SelectCommand.Parameters.AddWithValue("@munid", id);
+                try
+                {
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            lstbm.Add(new BarangayModel
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                Barangay = dr["barangay"].ToString()
+                            });
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lstbm = null;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return lstbm;
+        }
+
+        private List<ConsumerTypeModel> getAllConsumerTypes()
+        {
+            List<ConsumerTypeModel> lstctm = new List<ConsumerTypeModel>();
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select RTRIM(consumertypeid)[code],upper(RTRIM(description))[description] from arstype;";
+
+                try
+                {
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            lstctm.Add(new ConsumerTypeModel
+                            {
+                                Id = dr["code"].ToString(),
+                                ConsumerType = dr["description"].ToString()
+                            });
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lstctm = null;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return lstctm;
+        }
+
+        //private bool addMemberWithNonExistAccount(MembersModel member, MemberAccountModel macct)
+        //{
+
+        //}
+
+        private bool saveNewMemberAndAccount(MemberWithAccountModel mwam)
+        {
+            bool result = true;
+
+            string usr = User.Identity.Name.ToString();
+
+            string[] municipal = mwam.Municipality.Split(',');
+            mwam.Municipality = municipal[0];
+
+            if (mwam.FName == null)
+                mwam.FName = "";
+
+            if (mwam.LName == null)
+                mwam.LName = "";
+
+            if (mwam.MName == null)
+                mwam.MName = "";
+
+            if (mwam.Suffix == null)
+                mwam.Suffix = "";
+
+            if (mwam.BusinessName == null)
+                mwam.BusinessName = "";
+
+            if (mwam.ConsumerType == null)
+                mwam.ConsumerType = "";
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                con.Open();
+
+                cmd.Connection = con;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "sp_NewMemWithAcct";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@isbusiness", mwam.IsBusiness);
+                cmd.Parameters.AddWithValue("@lname", mwam.LName.ToUpper());
+                cmd.Parameters.AddWithValue("@fname", mwam.FName.ToUpper());
+                cmd.Parameters.AddWithValue("@mname", mwam.MName.ToUpper());
+                cmd.Parameters.AddWithValue("@suffix", mwam.Suffix);
+                cmd.Parameters.AddWithValue("@businessname", mwam.BusinessName.ToUpper());
+                cmd.Parameters.AddWithValue("@membertypeid", mwam.MemberTypeId);
+                cmd.Parameters.AddWithValue("@barangay", mwam.Barangay.ToUpper());
+                cmd.Parameters.AddWithValue("@municipality", mwam.Municipality.ToUpper());
+                cmd.Parameters.AddWithValue("@officeid", mwam.OfficeId);
+                cmd.Parameters.AddWithValue("@memberid", mwam.MemberId);
+                cmd.Parameters.AddWithValue("@memberdate", mwam.MemberDate);
+                cmd.Parameters.AddWithValue("@madeby", usr);
+                cmd.Parameters.AddWithValue("@accountno", mwam.AccountNo);
+                cmd.Parameters.AddWithValue("@consumertype", mwam.ConsumerType);
+                cmd.Parameters.AddWithValue("@isexistacct", mwam.IsExistAccount);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    con.Close();
+                }
+            }
+
+            return result;
+        }
+
     }
 }

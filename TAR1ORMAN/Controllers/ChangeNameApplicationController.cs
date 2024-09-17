@@ -165,32 +165,37 @@ namespace TAR1ORMAN.Controllers
                                       "values(getdate(),@accountno,@oldname,@oldmemberid,@oldmemberdate,@nw_name,null, " +
                                       "null,@nw_birthday,@nw_contactnum,@nw_relationship,@nw_reason,@changenametypeid, " +
                                       "@madeby,@isdied,@isremdeathcert,@isremauthletter,@isremdeedofsale,@isremletterofreq,@isremother,@remothertext,@rptremark,'FOR PAYMENT'); " +
-                                      "SELECT @OLD_MEMBERID=RTRIM(memberid), @OLD_MEMBERDATE=memberdate FROM arsconsumer WHERE consumerid=@accountno;  " +
-                                      "IF(@OLD_MEMBERID = '')  " +
+                                      "SELECT @OLD_MEMBERID=RTRIM(memberid), @OLD_MEMBERDATE=CASE WHEN ISDATE(CAST(memberdate AS VARCHAR))=1 THEN memberdate ELSE NULL END FROM arsconsumer WHERE consumerid=@accountno;  " +
+                                      "IF @OLD_MEMBERID = ''  " +
                                       "BEGIN  " +
                                       "     UPDATE arsconsumer  " +
                                       "     SET memberid = @oldmemberid  " +
                                       "     WHERE consumerid = @accountno;  " +
                                       "END  " +
-                                      "IF(@OLD_MEMBERDATE IS NULL)  " +
+                                      "IF @OLD_MEMBERDATE IS NULL  " +
                                       "BEGIN  " +
                                       "     UPDATE arsconsumer  " +
                                       "     SET memberdate = @oldmemberdate  " +
-                                      "     WHERE consumerid = @accountno  " +
+                                      "     WHERE consumerid = @accountno;  " +
                                       "END ";
 
                     cmd.Parameters.AddWithValue("@accountno", pcnm.AccountNo);
                     cmd.Parameters.AddWithValue("@oldname", pcnm.AccountName);
+
                     if (pcnm.MadeById == null)
                         cmd.Parameters.AddWithValue("@oldmemberid", DBNull.Value);
                     else
                         cmd.Parameters.AddWithValue("@oldmemberid", pcnm.MemberId);
+
                     if (pcnm.MemberDate == null)
                         cmd.Parameters.AddWithValue("@oldmemberdate", DBNull.Value);
                     else
                         cmd.Parameters.AddWithValue("@oldmemberdate", pcnm.MemberDate);
+
                     cmd.Parameters.AddWithValue("@nw_name", pcnm.NewName);
+
                     cmd.Parameters.AddWithValue("@nw_birthday", pcnm.Birthday);
+
                     if(pcnm.ContactNo==null)
                         cmd.Parameters.AddWithValue("@nw_contactnum", DBNull.Value);
                     else
