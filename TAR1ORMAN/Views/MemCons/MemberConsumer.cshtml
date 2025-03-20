@@ -9,7 +9,7 @@
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
 
-<script src="~/Scripts/myscripts/memconsumer_v1.1.9.js"></script>
+<script src="~/Scripts/myscripts/memconsumer_v1.2.1.js"></script>
 
 <h2><strong>Member Consumer's Information</strong></h2>
 
@@ -60,6 +60,7 @@
         <button class="btn btn-info" id="btnUP" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="showUpdateProfileModal()">Update Profile</button>
         <button class="btn btn-info" id="btnUL" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="swal('Sorry', 'You are not allowed to update load information.', 'warning');">Update Load Info.</button>
         <button class="btn btn-info" id="btnMS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="swal('Sorry', 'You are not allowed to update meter specifications.', 'warning');">Update Meter Specs.</button>
+        <button class="btn btn-info" id="btnAS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="showUpdateAddSpecModal()">Update Additional Specs.</button>
         <button class="btn btn-info" id="btnHS" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="viewStatusByAcctno()">View Status History</button>
         <button class="btn btn-info" id="btnBL" style="width:100%;margin-bottom:5px;white-space:normal;" onclick="viewBalance()">View Balance</button>
     </div>
@@ -135,14 +136,14 @@
                     <td style="width:180px;padding:2px;"><input type="text" id="txtSN" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
                     <td style="padding:5px;text-align:right;width:120px;"><strong>Prev SN:</strong></td>
                     <td style="width:150px;padding:2px;"><input type="text" id="txtPrevSN" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
-                    <td style="padding:5px;text-align:right;width:200px;"><strong>Brand:</strong></td>
-                    <td style="width:80px;padding:2px;"><input type="text" id="txtMtrBrand" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    @*<td style="padding:5px;text-align:right;width:200px;"><strong>Brand:</strong></td>
+                    <td style="width:80px;padding:2px;"><input type="text" id="txtMtrBrand" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>*@
                     <td style="padding:5px;text-align:right;width:200px;"><strong>Ampere:</strong></td>
                     <td style="width:80px;padding:2px;"><input type="text" id="txtMtrAmp" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
                 </tr>
                 <tr>
-                    <td style="padding:5px;text-align:right;width:190px;"><strong>Meter Type:</strong></td>
-                    <td style="width:180px;padding:2px;"><input type="text" id="txtMtrType" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    @*<td style="padding:5px;text-align:right;width:190px;"><strong>Meter Type:</strong></td>
+                    <td style="width:180px;padding:2px;"><input type="text" id="txtMtrType" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>*@
                     <td style="padding:5px;text-align:right;width:120px;"><strong>Cal. Seal:</strong></td>
                     <td style="width:150px;padding:2px;"><input type="text" id="txtCalSeal" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
                     <td style="padding:5px;text-align:right;width:200px;"><strong>Terminal Seal:</strong></td>
@@ -169,7 +170,15 @@
                         </select>
                     </td>
                 </tr>
-
+                <tr>
+                    <td colspan="8" style="text-align:center;"><strong class="bg-info">== ADDITIONAL METER SPECIFICATION ==</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding:5px;text-align:right;width:190px;"><strong>METER BRAND:</strong></td>
+                    <td colspan="2" style="width:180px;padding:2px;"><input type="text" class="form-control" id="cboMeterBrand" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                    <td colspan="2" style="padding:5px;text-align:right;width:120px;"><strong>METER TYPE:</strong></td>
+                    <td colspan="2" style="width:150px;padding:2px;"><input type="text" class="form-control" id="cboMeterType" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
+                </tr>
             </table>
         </div>
 
@@ -320,7 +329,7 @@
                             <td colspan="2"></td>
                             <td style="padding:5px;text-align:right;width:150px;"><strong>Is Claimed Burial?</strong> <input type="checkbox" id="chkIsClaimed" onchange="chkBurialOnChange()" /></td>
                             <td style="width:150px;padding:2px;"><input type="date" id="dtpModBurialDate" class="form-control" style="max-width:inherit;border-style:dashed;border-color:#9b9b9b;background-color:transparent;" disabled="disabled" /></td>
-                            
+
                         </tr>
                     </table>
                 </div>
@@ -341,7 +350,7 @@
                 <button type="button" class="close" data-dismiss="modal">X</button>
                 <h4 class="modal-title" id="myViewBalModalLabel">Consumer's Balance(s)</h4>
             </div>
-            <div class="modal-body" style="overflow:scroll;">
+            <div class="modal-body" style="max-height:580px;overflow-y:scroll;">
                 <div class="table-responsive-sm">
                     <table class="table table-hover table-bordered" id="statusTable">
                         <thead class="bg-primary">
@@ -354,15 +363,46 @@
                                 <th scope="col" style="text-align:center;">Month(s)</th>
                                 <th scope="col" style="text-align:center;">PayAmount</th>
                             </tr>
-                            <tbody id="tbodybal">
-
-                            </tbody>
                         </thead>
+                        <tbody id="tbodybal" style="min-height:500px;">
+                        </tbody>
                     </table>
                 </div>
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-warning" data-dismiss="modal" value="Close" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@*ADDITIONAL SPECS MODAL*@
+<div class="modal fade" id="myAddSpecsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myAddSpecsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myAddSpecsModalLabel">Update Additional Meter Specs.</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="form-group col-lg-offset-3 col-lg-6">
+                            <label>PLEASE SELECT METER BRAND:</label>
+                            <select class="form-control select2 select2-hidden-accessible" id="cboUpdMeterBrand" onchange="cboUpdMBrandOnChange()" style="max-width:inherit;"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-offset-3 col-lg-6">
+                            <label>PLEASE SELECT METER TYPE:</label>
+                            <select class="form-control select2 select2-hidden-accessible" id="cboUpdMeterType" style="max-width:inherit;"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" onclick="setMeterSpecsByAcctno()" value="Save" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Cancel" />
             </div>
         </div>
     </div>

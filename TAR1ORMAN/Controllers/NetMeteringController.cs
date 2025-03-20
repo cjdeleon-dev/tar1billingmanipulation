@@ -113,6 +113,12 @@ namespace TAR1ORMAN.Controllers
             return Json(new { data = rebuildByAccountNo(acctno) }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult AddAccountAsNetMetering(ConsumerModel cm)
+        {
+            return Json(addAccountAsNetMetering(cm.AccountNo), JsonRequestBehavior.AllowGet);
+        }
+
         //FUNCTIONS AND PROCEDURES
         private List<NetMeteringModel> loadData()
         {
@@ -290,7 +296,7 @@ namespace TAR1ORMAN.Controllers
                 con.Open();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "select rtrim(name)[name], rtrim(address)[address], rtrim(description)[status] " +
+                cmd.CommandText = "select rtrim(name)[name], rtrim(address)[address],poleid,mtrserialno,rtrim(description)[status] " +
                                   "from arsconsumer cons inner join arsstatus stat " +
                                   "on cons.statusid=stat.statusid " +
                                   "where cons.consumerid=@consumerid;";
@@ -308,6 +314,8 @@ namespace TAR1ORMAN.Controllers
                             cm.AccountName = dr["name"].ToString();
                             cm.Address = dr["address"].ToString();
                             cm.Status = dr["status"].ToString();
+                            cm.PoleId = dr["poleid"].ToString();
+                            cm.MeterNo = dr["mtrserialno"].ToString();
                         }
                     }
                 }
@@ -581,6 +589,49 @@ namespace TAR1ORMAN.Controllers
             }
 
             return result;
+        }
+
+
+        private bool addAccountAsNetMetering(string consumerid)
+        {
+            bool res = false;
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+            SqlTransaction trans;
+
+            string userid = User.Identity.Name;
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.Connection = con;
+                trans = con.BeginTransaction();
+                cmd.Transaction = trans;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "update arsconsumer set isnetmtr=1 where consumerid=@consumerid; " +
+                                  "insert into tblAuditTrail values(3, 'arsconsumer', 'Update account as new net metering consumer.', @userid, getdate());";
+
+                cmd.Parameters.AddWithValue("@consumerid", consumerid);
+                cmd.Parameters.AddWithValue("@userid", userid);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    res = true;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    res = false;
+                }
+                finally
+                {
+                    trans.Dispose();
+                    con.Close();
+                }
+            }
+            return res;
         }
     }
 }

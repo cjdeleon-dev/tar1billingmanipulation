@@ -28,6 +28,9 @@
         <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
         <input type="hidden" id="txtCurrentRole" class="form-control" value=@ViewBag.Message />
     </div>
+    <div class="col-lg-offset-7 col-lg-3">
+        <button class="btn btn-info" style="align-content:end;" id="btnAdd" onclick="showAddModal()"><i class="glyphicon glyphicon-plus-sign"></i> ADD NET METERING</button>
+    </div>
 </div>
 
 <br />
@@ -58,6 +61,51 @@
             <span id="spintext">LOADING...</span>
         </div>
 
+    </div>
+</div>
+
+<div class="modal fade" id="addNetMeteringModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addNetMeteringLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="addNetMeteringLabel">ADD ACCOUNT AS NET METERING</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" id="txtAcctNo" placeholder="ACCOUNT NO" maxlength="10" />
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-info" style="align-content:end;" id="btnSearchAcct" onclick="displayDetails()"><i class="glyphicon glyphicon-search"></i> SEARCH ACCOUNT</button>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="txtName" placeholder="ACCOUNT NAME" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="txtAddress" placeholder="ADDRESS" disabled="disabled" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="txtPoleId" placeholder="POLE ID" disabled="disabled" />
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="txtMeterNo" placeholder="METER NO" disabled="disabled" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" style="align-content:end;" id="btnAddNow" onclick="addAccountAsNetMetering()" disabled="disabled"><i class="glyphicon glyphicon-plus"></i> ADD</button>
+                <button class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-export"></i> CLOSE</button>
+            </div>
+        </div>
     </div>
 </div>
 

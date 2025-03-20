@@ -1,0 +1,211 @@
+﻿
+@{
+    ViewBag.Title = "VIEW TOR";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<style>
+    * {
+        font-size: 11px !important;
+    }
+
+    .body-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+</style>*@
+
+<script src="~/Scripts/myscripts/torscript_v1.0.0.3.js"></script>
+
+<h2><strong>TELLER'S OFFICIAL RECEIPT VIEWER</strong></h2>
+
+<hr />
+<input type="hidden" id="txtUserIdLogged" class="form-control" value=@ViewBag.UserId />
+<button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+<br />
+@*OR NUMBER, TRANSSTATUS, OFFICE*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 form-group">
+        <div class="row">
+            <div class="col-sm-4">
+                <label id="lblORNumber">OR NUMBER:</label>
+                <input class="form-control" type="text" id="txtORNumber" autofocus placeholder="OR NUMBER" style="min-width:100%;font-weight:bold;" maxlength="8" @*onkeypress="return txtORNumberKeyPress(event)"*@ onkeydown="return txtORNumberKeyDown(event)" />
+            </div>
+            <div class="col-sm-4">
+                <label id="lblTrxStatus"><br /></label>
+                <input class="form-control text-center" style="color:red;font-weight:bold;" type="text" id="txtTrxStatus" placeholder="TRX STATUS" disabled="disabled" style="min-width:100%;" />
+            </div>
+            <div class="col-sm-4">
+                <label>OFFICE / AREA:</label>
+                <input class="form-control text-center" type="text" id="txtOffice" placeholder="AREA/OFFICE" disabled="disabled" style="min-width: 100%; font-weight: bold;" />
+            </div>
+        </div>
+    </div>
+</div>
+@*CONSUMER ID, CONSUMER TYPE, CONSUMER STATUS*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 form-group">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>CONSUMER ID:</label>
+                <input class="form-control" type="text" id="txtConsumerId" disabled="disabled" placeholder="XX-XXXX-XXXX" style="min-width: 100%; font-weight: bold;" />
+            </div>
+            <div class="col-sm-4">
+                <label>CONSUMER TYPE:</label>
+                <input class="form-control" type="text" id="txtConsType" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="TYPE" disabled="disabled" />
+            </div>
+            <div class="col-sm-4">
+                <label>STATUS:</label>
+                <input class="form-control" type="text" id="txtConsStatus" style="padding: 0.6em 0.7em; min-width: 100%; font-weight: bold;" placeholder="STATUS" disabled="disabled" />
+            </div>
+        </div>
+
+    </div>
+</div>
+@*PAYEE, TIN*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>PAYEE:</label>
+                <input class="form-control" type="text" id="txtPayee" disabled="disabled" placeholder="PAYEE" style="min-width: 100%; font-weight: bold;" />
+            </div>
+            <div class="col-sm-offset-2 col-sm-4">
+                <label>TAX ID NUMBER:</label>
+                <input class="form-control" type="text" id="txtTIN" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="TIN" disabled="disabled" />
+            </div>
+        </div>
+
+    </div>
+</div>
+@*ADDDRESS, CHECK, BANK*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>CONSUMER ADDRESS:</label>
+                <input class="form-control" type="text" id="txtAddress" disabled="disabled" placeholder="ADDRESS" style="min-width: 100%; font-weight: bold;" />
+            </div>
+            <div class="col-sm-3">
+                <label>CHECK NUMBER:</label>
+                <input class="form-control" type="text" id="txtCheckNo" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="CHECK NO." disabled="disabled" />
+            </div>
+            <div class="col-sm-3">
+                <label>BANK:</label>
+                <input class="form-control" type="text" id="txtBank" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="BANK" disabled="disabled" />
+            </div>
+        </div>
+    </div>
+</div>
+@*DATE,MODE,CHECK NAME*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10 form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label>TRX DATE:</label>
+                <input class="form-control" type="date" id="txtTrxDate" disabled="disabled" style="min-width: 100%; font-weight: bold;" />
+            </div>
+            <div class="col-sm-4">
+                <label>MODE OF PAYMENT:</label>
+                <input class="form-control" type="text" id="txtMode" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="MODE" disabled="disabled" />
+            </div>
+            <div class="col-sm-5">
+                <label>CHECK NAME:</label>
+                <input class="form-control" type="text" id="txtCheckName" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" placeholder="CNAME" disabled="disabled" />
+            </div>
+        </div>
+    </div>
+</div>
+@*TRANSACTION DETAILS (TABLE)*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <label><u>TRANSACTION DETAILS:</u></label>
+        <br />
+        <table id="tblTrxDetail" class="table table-responsive table-bordered table-striped">
+            <thead class="bg-primary">
+                <tr>
+                    <th>TRX ID</th>
+                    <th>DESCRIPTION</th>
+                    <th>AMOUNT</th>
+                    <th>VAT</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="tblBodyDetails"></tbody>
+        </table>
+    </div>
+</div>
+@*AMOUNT*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-3">
+                <label>AMOUNT DUE:</label>
+                <input class="form-control text-right" type="text" id="txtAmountDue" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" value="0.00" disabled="disabled" />
+            </div>
+            <div class="col-sm-3">
+                <label>TENDERED:</label>
+                <input class="form-control text-right" type="text" id="txtAmountTendered" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" value="0.00" disabled="disabled" />
+            </div>
+            <div class="col-sm-3">
+                <label>CHANGE:</label>
+                <input class="form-control text-right" type="text" id="txtChange" style="padding: 0.6em 0.7em; min-width: 100%; margin: 0; font-weight: bold;" value="0.00" disabled="disabled" />
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+@*CHARGE SELECTION*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="text-center">
+            <label><u>CHARGE SELECTION:</u></label>
+        </div>
+        <br />
+        <table id="tblCharge" class="table table-responsive table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>BILLING DATE</th>
+                    <th>REMARKS</th>
+                    <th>DUE DATE</th>
+                    <th>AMOUNT</th>
+                    <th>VAT</th>
+                    <th>SURCHARGE</th>
+                    <th>TOTAL</th>
+                    <th>SC DISC.</th>
+                </tr>
+            </thead>
+            <tbody id="myTblChargeBody"></tbody>
+        </table>
+    </div>
+</div>
+@*POSTED BY*@
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+        <div class="row">
+            <div class="col-sm-offset-6 col-lg-6 text-right">
+                <label id="lblPostedBy"><i>POSTED BY:</i></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script type="text/JavaScript">
+        $(document).ready(hidecontrols);
+    </script>
+}

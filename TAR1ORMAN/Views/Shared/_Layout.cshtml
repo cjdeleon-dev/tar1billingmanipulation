@@ -5,32 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - TARELCO I Application</title>
 
-    @*<script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
-
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jquerydt")
-    @*@Scripts.Render("~/bundles/bootstrapdt")*@
-    @Scripts.Render("~/bundles/bootstrap")
 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-3.6.0.js"></script>
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    @* CSS FILES FOR JQUERY DATATABLE*@
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+    @*sweet alert*@
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+    @*end of sweet alert*@
 
     <style type="text/css">
         a {
             text-decoration: none !important;
         }
     </style>
-    @*sweet alert*@
-    <link href="~/Content/sweetalert.css" rel="stylesheet" />
-    @*end of sweet alert*@
-    @*jquery datatable*@
-    @*<script src="~/Scripts/jquery-3.6.0.min.js"></script>
-        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>*@
-    @*<link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" />
-        <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
-    @*end of jquery datatable*@
+
 </head>
 
 <body>
@@ -50,13 +44,25 @@
         </div>
     </div>
     <div class="container body-content">
-        <link href="/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+        
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Tarelco I Billing Application</p>
         </footer>
     </div>
+
+    @*//JavaScript Files*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquerydt")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/DataTables/jszip.min.js"></script>
+    <script src="~/Scripts/DataTables/buttons.html5.min.js"></script>
+
+    <script src="~/Scripts/sweetalert.min.js"></script>
 
 
     @RenderSection("scripts", required: false)

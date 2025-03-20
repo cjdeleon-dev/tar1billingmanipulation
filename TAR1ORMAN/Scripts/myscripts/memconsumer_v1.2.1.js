@@ -52,9 +52,9 @@ function checkAcct() {
                     $('#txtTSFCount').val(result.TSFCount);
                     $('#txtSN').val(result.MeterSerialNo);
                     $('#txtPrevSN').val(result.PrevMeterSerialNo);
-                    $('#txtMtrBrand').val(result.MeterBrand);
+                    $('#cboMeterBrand').val(result.MeterBrand);
                     $('#txtMtrAmp').val(result.MeterAmp);
-                    $('#txtMtrType').val(result.MeterType);
+                    $('#cboMeterType').val(result.MeterType);
                     $('#txtCalSeal').val(result.MeterSealNo);
                     $('#txtTermSeal').val(result.MeterSideSealNo);
                     $('#txtDial').val(result.MeterDial);
@@ -66,6 +66,7 @@ function checkAcct() {
                     $('#btnUP').removeAttr('disabled');
                     $('#btnUL').removeAttr('disabled');
                     $('#btnMS').removeAttr('disabled');
+                    $('#btnAS').removeAttr('disabled');
                     $('#btnHS').removeAttr('disabled');
                     $('#btnBL').removeAttr('disabled');
                 }
@@ -86,6 +87,7 @@ function loadAllCbos() {
     $('#btnUP').attr('disabled', 'disabled');
     $('#btnUL').attr('disabled', 'disabled');
     $('#btnMS').attr('disabled', 'disabled');
+    $('#btnAS').attr('disabled', 'disabled');
     $('#btnHS').attr('disabled', 'disabled');
     $('#btnBL').attr('disabled', 'disabled');
 
@@ -494,15 +496,27 @@ function viewBalance() {
                 } else {
                     var html = '';
                     $.each(result.data, function (key, item) {
-                        html += '<tr class="" id="' + item.BillPeriod + '">';
-                        html += '<td>' + item.BillPeriod + '</td>';
-                        html += '<td style="text-align:right;">' + item.TrxBalance + '</td>';
-                        html += '<td style="text-align:right;">' + item.VATBalance + '</td>';
-                        html += '<td style="text-align:right;">' + item.Surcharge + '</td>';
-                        html += '<td style="text-align:right;">' + item.TotalAmount + '</td>';
-                        html += '<td style="text-align:center;">' + item.Months + '</td>';
-                        html += '<td style="text-align:right;">' + item.PayAmount + '</td>';
-                        html += '</tr>';
+                        if (item.BillPeriod == "TOTAL") {
+                            html += '<tr class="" id="' + item.BillPeriod + '">';
+                            html += '<td style="color:red;"><strong>' + item.BillPeriod + '</strong></td>';
+                            html += '<td style="text-align:right;color:blue;"><strong>' + item.TrxBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</strong></td>';
+                            html += '<td style="text-align:right;color:blue;"><strong>' + item.VATBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</strong></td>';
+                            html += '<td style="text-align:right;color:blue;"><strong>' + item.Surcharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</strong></td>';
+                            html += '<td style="text-align:right;color:blue;"><strong>' + item.TotalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</strong></td>';
+                            html += '<td style="text-align:center;color:blue;"><strong>' + item.Months + '</strong></td>';
+                            html += '<td style="text-align:right;color:red;"><strong>' + item.PayAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</strong></td>';
+                            html += '</tr>';
+                        } else {
+                            html += '<tr class="" id="' + item.BillPeriod + '">';
+                            html += '<td>' + item.BillPeriod + '</td>';
+                            html += '<td style="text-align:right;">' + item.TrxBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>';
+                            html += '<td style="text-align:right;">' + item.VATBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>';
+                            html += '<td style="text-align:right;">' + item.Surcharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>';
+                            html += '<td style="text-align:right;">' + item.TotalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>';
+                            html += '<td style="text-align:center;">' + item.Months + '</td>';
+                            html += '<td style="text-align:right;">' + item.PayAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>';
+                            html += '</tr>';
+                        }
                     });
                     $('#tbodybal').html(html);
 
@@ -536,4 +550,103 @@ function chkBurialOnChange() {
         $('#dtpModBurialDate').val("");
     }
 
+}
+
+
+function showUpdateAddSpecModal() {
+
+    $('#cboUpdMBrand').empty();
+    $('#cboUpdMeterType').empty();
+
+    getAllMeterBrands();
+    $('#myAddSpecsModal').modal('show');
+}
+
+
+function getAllMeterBrands() {
+    $.ajax({
+        url: "/MemCons/GetAllMeterBrands/",
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            $('#cboUpdMeterBrand').empty();
+            if (result.data != null) {
+                $('#cboUpdMeterBrand').val(0);
+                $('#cboUpdMeterBrand').append("<option value=0>Select</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    var Desc = result.data[i].MeterBrand;
+                    var opt = new Option(Desc, result.data[i].Id);
+                    $('#cboUpdMeterBrand').append(opt);
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+} 
+
+function cboUpdMBrandOnChange() {
+    var brandid = $('#cboUpdMeterBrand').val();
+    $.ajax({
+        url: "/MemCons/GetAllMeterTypesByBrandId?brandid=" + brandid,
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            $('#cboUpdMeterType').empty();
+            if (result.data != null) {
+                $('#cboUpdMeterType').val(0);
+                $('#cboUpdMeterType').append("<option value=0>Select</option>");
+                for (var i = 0; i < result.data.length; i++) {
+                    var Desc = result.data[i].MeterType;
+                    var opt = new Option(Desc, result.data[i].Id);
+                    $('#cboUpdMeterType').append(opt);
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+
+function setMeterSpecsByAcctno() {
+    if ($('#cboUpdMeterBrand').val() == 0) {
+        alert('Invalid Meter Brand. Please select Meter Brand.');
+    } else {
+        if ($('#cboUpdMeterType').val() == 0) {
+            alert('Invalid Meter Type. Plase select Meter Type.');
+        } else {
+            //UPDATE CONSUMER WITH METER BRAND AND METER TYPE.
+            var obj = {
+                ConsumerId: $('#txtAccountNo').val(),
+                MeterBrand: $('#cboUpdMeterBrand option:selected').text(),
+                MeterType: $('#cboUpdMeterType option:selected').text()
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/MemCons/UpdateMeterSpecsByConsumerId",
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (result) {
+                    if (result) {
+                        swal('\nSuccess', 'Successfully Updated.', 'success');
+                        checkAcct();
+                        $('#myAddSpecsModal').modal('hide');
+                    } else
+                        swal("\nFailed", "Failed to update member consumer meter specification.", "error");
+                },
+                error: function (errormessage) {
+                    swal('Error', 'Something went wrong.', 'error');
+                }
+            });
+
+            
+        }
+    }
 }

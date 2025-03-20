@@ -450,6 +450,10 @@ if (objdata != null) {
 }
 }
 
+function gotoAppliedList() {
+    window.location = "/AppliedBurial/Index";
+}
+
 
     var waitingDialog = waitingDialog || (function ($) {
         'use strict';

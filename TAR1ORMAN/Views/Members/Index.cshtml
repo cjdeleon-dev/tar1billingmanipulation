@@ -12,7 +12,7 @@
 
 <link href="~/Content/sweetalert.css" rel="stylesheet" />
 <script src="~/Scripts/myscripts/sweetalert.js"></script>
-<script src="~/Scripts/myscripts/members_v1.1.3.js"></script>
+<script src="~/Scripts/myscripts/members_v1.1.4.js"></script>
 
 <style>
     .table.dataTable td, th {
@@ -40,7 +40,7 @@
 <br />
 <div class="row">
     <div class="col-lg-offset-6 col-lg-3 text-right">
-        <input type="button" class="btn btn-info" style="white-space:normal;" value="ADD NEW MEMBER WITH NOT EXISTING ACCOUNT" onclick="addNewMember()" />
+        <input type="button" class="btn btn-info" style="white-space:normal;" value="ADD NEW MEMBER WITHOUT EXISTING ACCOUNT" onclick="addNewMember()" />
     </div>
     <div class="col-lg-3 text-right">
         <input type="button" class="btn btn-info" style="white-space:normal;" value="ADD NEW MEMBER WITH EXISTING ACCOUNT" onclick="addNewMemberAcctExist()" />
@@ -289,7 +289,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="txtNewMemberAcctNo">ACCOUNT NUMBER:</label>
-                                <input class="form-control" type="text" id="txtNewMemberAcctNo" style="min-width:100%;" />
+                                <input class="form-control" type="text" id="txtNewMemberAcctNo" maxlength="10" onkeypress="numericOnly(event)" style="min-width:100%;" />
                             </div>
                             <div class="col-lg-6">
                                 <label for="cboNewMemberConsType">CONSUMER TYPE:</label>
@@ -382,7 +382,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="txtENewMemberAccount">EXISTING ACCOUNT NUMBER</label>
-                                <input type="text" id="txtENewMemberAccount" class="form-control" />
+                                <input type="text" id="txtENewMemberAccount" maxlength="10" class="form-control" onkeypress="numericOnly(event)" />
                             </div>
                         </div>
                     </div>

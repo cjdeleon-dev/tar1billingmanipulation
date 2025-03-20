@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "MRB Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/mrbscript_v1.0.0.1.js"></script>
+
+<style>
+    * {
+        font-size: 12px !important;
+    }
+
+</style>
+
+<h2><strong>MRB LOGS</strong></h2>
+
+<hr />
+
+<button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+<br />
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label>SELECT DATE:</label>
+                <input class="form-control" type="date" id="dtpDate" style="min-width:100%;" />
+            </div>
+            <div class="col-sm-3">
+                <label>  </label>
+                <button class="form-control btn btn-primary" onclick="getLogsByDate()"><span class="glyphicon glyphicon-play"></span> PROCESS</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
+        <label><strong>MRB LOGS</strong></label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
+        <table id="tblMRBLogs" class="table table-responsive table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>ROUTE ID</th>
+                    <th>START</th>
+                    <th>END</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>

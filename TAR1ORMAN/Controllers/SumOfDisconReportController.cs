@@ -175,7 +175,7 @@ namespace TAR1ORMAN.Controllers
                 da.SelectCommand.Connection.Open();
 
                 da.SelectCommand.CommandType = CommandType.Text;
-                da.SelectCommand.CommandText = "select id,crewname from tbl_disconcrews where officeid=@ofid;";
+                da.SelectCommand.CommandText = "select id,crewname from tbl_disconcrews where officeid=@ofid and isactive=1;";
                 da.SelectCommand.Parameters.AddWithValue("@ofid", id);
 
                 DataTable dt = new DataTable();

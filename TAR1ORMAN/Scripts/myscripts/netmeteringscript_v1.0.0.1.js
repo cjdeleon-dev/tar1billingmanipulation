@@ -50,3 +50,83 @@
 function showLedgerByAcctNo(actno) {
     window.location = "/NetMetering/SetAccountLedger?accountNo=" + actno;
 }
+
+function showAddModal() {
+    $('#txtAcctNo').val('');
+    $('#txtName').val('');
+    $('#txtAddress').val('');
+    $('#txtPoleId').val('');
+    $('#txtMeterNo').val('');
+
+    $('#btnAddNow').attr('disabled', 'disabled');
+
+    $('#addNetMeteringModal').modal('show');
+}
+
+function displayDetails() {
+
+    var acctno = $('#txtAcctNo').val();
+
+    if (acctno.trim() == "") {
+        alert('Please specify ACCOUNT NO to be searched.');
+        return false;
+    }
+
+    $.ajax({
+        url: "/NetMetering/GetAccountDetails?accountNo=" + acctno,
+        type: "GET",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        success: function (result) {
+            if (result.data != null) {
+                $('#txtName').val(result.data.AccountName);
+                $('#txtAddress').val(result.data.Address);
+                $('#txtPoleId').val(result.data.PoleId);
+                $('#txtMeterNo').val(result.data.MeterNo);
+
+                $('#btnAddNow').removeAttr('disabled');
+            } else {
+                alert('Account Number is not exist.');
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function addAccountAsNetMetering() {
+
+    var objData = {
+        Id: 0,
+        AccountNo: $('#txtAcctNo').val(),
+        AccountName: null,
+        Address: null,
+        MeterNo: null,
+        SeqNo: null,
+        PoleId: null,
+        Status: null,
+        MemberId: null,
+        ORDate: null,
+    }
+
+    $.ajax({
+        url: "/NetMetering/AddAccountAsNetMetering/",
+        type: "POST",
+        contentType: "application/json;charset=UTF-8",
+        dataType: "json",
+        data: JSON.stringify(objData),
+        success: function (result) {
+            if (result) {
+                alert('The account has been added to Net Metering List.');
+                $('#addNetMeteringModal').modal('hide');
+                window.location = "/NetMetering/NetMeteringList";
+            }
+            else
+                alert('An error occured. Cannot be added.');
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}

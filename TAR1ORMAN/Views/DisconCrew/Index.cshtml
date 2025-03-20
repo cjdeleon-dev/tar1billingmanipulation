@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Disconnection Crew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/disconcrewscript_v0.0.0.1.js"></script>
+
+<h2>Disconnection Crews</h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+    </div>
+    <div class="col-lg-offset-6 col-lg-3" style="text-align:right;padding:0;">
+        <button class="btn btn-primary" id="btnAddNewCrew" onclick="showModal()"><i class="glyphicon glyphicon-plus-sign"></i> ADD NEW CREW</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+    <br />
+        <div class="table-responsive-sm">
+            <table class="table table-hover table-bordered" id="myTable1">
+                <thead class="bg-primary">
+                    <tr>
+                        <th>Id</th>
+                        <th>Crew Name</th>
+                        <th>Area Office</th>
+                        <th class="text-center">Is Active</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myAddNewCrewModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myAddNewCrewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xs">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:coral;">
+                <button type="button" class="close" data-dismiss="modal">X</button>
+                <h4 class="modal-title" id="myAddNewCrewModalLabel"><strong>ADD NEW DISCONNECTION CREW</strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label>ID: </label>
+                        <input type="text" class="form-control" readonly="readonly" id="txtId" placeholder="AUTONUMBER" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label>CREW NAME: </label>
+                        <input type="text" class="form-control" id="txtCrewName" placeholder="NAME" style="max-width:100%;" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-8">
+                        <label>SELECT OFFICE: </label>
+                        <select class="form-control select2 select2-hidden-accessible" id="cboOffice" style="max-width:100%;"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary" onclick="addNewDisconCrew()" value="Save" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(loadAllData());
+    </script>
+}

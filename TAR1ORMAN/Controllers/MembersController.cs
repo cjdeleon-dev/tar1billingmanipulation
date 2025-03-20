@@ -117,6 +117,7 @@ namespace TAR1ORMAN.Controllers
         }
 
 
+
         //PROCEDURES AND FUNCTIONS
         private List<TownModel> getAllTowns()
         {
@@ -825,5 +826,6 @@ namespace TAR1ORMAN.Controllers
             return result;
         }
 
+       
     }
 }

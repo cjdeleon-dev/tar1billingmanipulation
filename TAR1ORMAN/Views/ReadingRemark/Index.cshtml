@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/readingremarkscript_v0.0.1.js"></script>
+
+<h2>Fetching All Reading Remarks (Current Billing Period)</h2>
+
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+    </div>
+</div>
+
+<br />
+
+<div class="table-responsive-sm">
+    <table class="table table-hover table-bordered" id="myTable1">
+        <thead class="bg-primary">
+            <tr>
+                <th>ConsumerId</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Meter No.</th>
+                <th>Error Text</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(loadAllData());
+    </script>
+}

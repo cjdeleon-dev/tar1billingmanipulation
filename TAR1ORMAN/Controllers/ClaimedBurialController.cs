@@ -7,6 +7,11 @@ using TAR1ORDATA.DataModel;
 using TAR1ORDATA.DataService.ClaimedBurialService;
 using PagedList;
 using TAR1ORDATA.Filters;
+using Microsoft.Reporting.WebForms;
+using System.Data;
+using System.IO;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace TAR1ORMAN.Controllers
 {
@@ -36,5 +41,7 @@ namespace TAR1ORMAN.Controllers
             var data = icbs.GetAllClaimedBurialConsumers();
             return Json(new { data = data }, JsonRequestBehavior.AllowGet);
         }
+
+        
     }
 }

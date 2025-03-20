@@ -31,7 +31,7 @@
                     <p>@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })</p>
                     <p>@Html.ValidationMessage("CredentialError", new { style = "color:red;" })</p>
                     <br />
-                    <p><input type="submit" class="btn btn-primary" value="Sign In" /></p>
+                    <p><input type="submit" class="btn btn-primary" onclick="SubmitLogin()" value="Sign In" /></p>
                 </div>
             </div>
         </div>

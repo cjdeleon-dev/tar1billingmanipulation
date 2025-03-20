@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/myscripts/polerentpayscript_v1.0.0.0.js"></script>
+
+<h2><strong>POLE RENTAL PAYMENT LIST</strong></h2>
+
+<hr />
+
+<button class="btn btn-warning" id="btnBack" onclick="location.href='@Url.Action("Index","Home")'"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+
+<br />
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8 form-group">
+        <div class="row">
+            <div class="col-sm-3">
+                <label>SELECT DATE FROM:</label>
+                <input class="form-control" type="date" id="dtpDateFr" style="min-width:100%;" />
+            </div>
+            <div class="col-sm-3">
+                <label>SELECT DATE TO:</label>
+                <input class="form-control" type="date" id="dtpDateTo" style="min-width:100%;" />
+            </div>
+            <div class="col-sm-3">
+                <label>  </label>
+                <button class="form-control btn btn-primary" onclick="getPoleRentalPayments()"><span class="glyphicon glyphicon-play"></span> PROCESS</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table id="tblPoleRentPayment" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>OR NUMBER</th>
+                        <th>PAYEE</th>
+                        <th>ADDRESS</th>
+                        <th>TRX DATE</th>
+                        <th>AMOUNT</th>
+                        <th>VAT</th>
+                        <th>TOTAL AMOUNT</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modalLoading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+        <div class="spin-container">
+            <div class="spin" id="loader"></div>
+            <div class="spin" id="loader2"></div>
+            <div class="spin" id="loader3"></div>
+            <div class="spin" id="loader4"></div>
+            <span id="spintext">LOADING...</span>
+        </div>
+
+    </div>
+</div>

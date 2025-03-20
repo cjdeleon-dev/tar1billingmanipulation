@@ -5,9 +5,18 @@
         $('#orprefdiv').hide();
         $('#lstburial').show();
         $('#lstsc').show();
-        $('#writeoff').hide();
-        $('#empco').hide();
+        $('#writeoff').show();
+        if ($('#txtUserIdLogged').val() == '3333')
+            $('#empco').show();
+        else
+            $('#empco').hide();
         $('#mnudbsettings').hide();
+        if ($('#txtUserIdLogged').val() == '1172') {
+            $('#mrblog').show();
+            $('#readrem').show();
+        }
+        else
+            $('#mrblog').hide();
         if ($('#txtUserIdLogged').val() == '0340' || $('#txtUserIdLogged').val() == '0304' || $('#txtUserIdLogged').val() == '8001'
             || $('#txtUserIdLogged').val() == '0907' || $('#txtUserIdLogged').val() == '2323' || $('#txtUserIdLogged').val() == '0810'
             || $('#txtUserIdLogged').val() == '0313' || $('#txtUserIdLogged').val() == '1521' || $('#txtUserIdLogged').val() == '0335'

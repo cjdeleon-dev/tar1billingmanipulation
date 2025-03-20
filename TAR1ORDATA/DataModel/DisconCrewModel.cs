@@ -9,5 +9,8 @@ namespace TAR1ORDATA.DataModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int OfficeId { get; set; }
+        public string Office { get; set; }
+        public bool IsActive { get; set; }
     }
 }

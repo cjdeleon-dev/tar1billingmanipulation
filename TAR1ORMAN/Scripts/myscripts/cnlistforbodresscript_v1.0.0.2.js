@@ -59,7 +59,8 @@ function loaddata() {
                         { "data": "ORDateNew", "autoWidth": true },
                         { "data": "AccountNo", "autoWidth": true },
                         { "data": "Remarks", "autoWidth": true },
-                        { "data": "RptRemark", "autoWidth": true }
+                        { "data": "RptRemark", "autoWidth": true },
+                        { "data": "DateApproved", "autoWidth": true }
                     ]
                 });
             } else {

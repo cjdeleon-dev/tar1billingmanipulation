@@ -74,7 +74,7 @@ namespace TAR1ORMAN.Controllers
 
                 da.SelectCommand.CommandType = CommandType.Text;
                 da.SelectCommand.CommandText = "select id,appdate,old_name,co.address,isnull(old_memberid,'')[old_memberid],old_memberdate, " +
-                                               "nw_name,isnull(nw_memberid, '')[nw_memberid],nw_memberdate,accountno,isnull(remarks, '')[remarks],rptremark " +
+                                               "nw_name,isnull(nw_memberid, '')[nw_memberid],nw_memberdate,accountno,isnull(remarks, '')[remarks],rptremark,dateapproved " +
                                                "from tbl_changename cn inner join arsconsumer co " +
                                                "on cn.accountno = co.consumerid " +
                                                "where isnull(appstatus, '') = 'FOR BOARD RESOLUTION' " +
@@ -105,7 +105,8 @@ namespace TAR1ORMAN.Controllers
                                ORDateNew = Convert.ToDateTime(dr["nw_memberdate"]).ToString("dd/MM/yyyy"),
                                AccountNo = dr["accountno"].ToString(),
                                Remarks = dr["remarks"].ToString(),
-                               RptRemark = dr["rptremark"].ToString()
+                               RptRemark = dr["rptremark"].ToString(),
+                               DateApproved = Convert.ToDateTime(dr["dateapproved"]).ToShortDateString()
                             });
                         }
                     }

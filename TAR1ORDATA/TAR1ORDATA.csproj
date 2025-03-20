@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TAR1ORDATA</RootNamespace>
     <AssemblyName>TAR1ORDATA</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
@@ -144,12 +144,15 @@
     <Compile Include="DataModel\AuditTrailModel.cs" />
     <Compile Include="DataModel\BarangayModel.cs" />
     <Compile Include="DataModel\BillPeriodModel.cs" />
+    <Compile Include="DataModel\BurialAppValModel.cs" />
     <Compile Include="DataModel\BurialClaimantModel.cs" />
     <Compile Include="DataModel\ChangedStatusModel.cs" />
     <Compile Include="DataModel\ChangeNameAppliedModel.cs" />
     <Compile Include="DataModel\ChangeNameListForResoModel.cs" />
     <Compile Include="DataModel\ChangeNameModel.cs" />
     <Compile Include="DataModel\ClaimedBurialModel.cs" />
+    <Compile Include="DataModel\CMeterBrandTypeModel.cs" />
+    <Compile Include="DataModel\CompareMasterPaymentModel.cs" />
     <Compile Include="DataModel\ConsLedgerDtlModel.cs" />
     <Compile Include="DataModel\ConsumerHighKwhModel.cs" />
     <Compile Include="DataModel\ConsumerLedgerModel.cs" />
@@ -179,6 +182,9 @@
     <Compile Include="DataModel\MemConsLoadInfoModel.cs" />
     <Compile Include="DataModel\MemConsMeterSpecModel.cs" />
     <Compile Include="DataModel\MemConsProfileModel.cs" />
+    <Compile Include="DataModel\MeterBrandModel.cs" />
+    <Compile Include="DataModel\MeterTypeModel.cs" />
+    <Compile Include="DataModel\MRBLogModel.cs" />
     <Compile Include="DataModel\MunicipalityProvinceModel.cs" />
     <Compile Include="DataModel\NetMeteringBillModel.cs" />
     <Compile Include="DataModel\NetMeteringInReadModel.cs" />
@@ -187,8 +193,14 @@
     <Compile Include="DataModel\NetMeteringPrevReadModel.cs" />
     <Compile Include="DataModel\NMSelAcctNoModel.cs" />
     <Compile Include="DataModel\OfficeModel.cs" />
+    <Compile Include="DataModel\PaymentApplyModel.cs" />
+    <Compile Include="DataModel\PaymentDetailModel.cs" />
+    <Compile Include="DataModel\PaymentHeaderModel.cs" />
+    <Compile Include="DataModel\PaymentViewModel.cs" />
     <Compile Include="DataModel\PendingChangeNameModel.cs" />
+    <Compile Include="DataModel\PoleRentalPaymentModel.cs" />
     <Compile Include="DataModel\ProcessResultModel.cs" />
+    <Compile Include="DataModel\ReadingRemarkModel.cs" />
     <Compile Include="DataModel\RoleModel.cs" />
     <Compile Include="DataModel\RouteModel.cs" />
     <Compile Include="DataModel\SeniorCitizenModel.cs" />

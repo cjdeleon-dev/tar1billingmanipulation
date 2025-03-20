@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WebForms;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -93,6 +94,25 @@ namespace TAR1ORMAN.Controllers
                 return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetAllMeterBrands()
+        {
+            var jsonResult = Json(new { data = getAllMeterBrands() }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+        }
+        public JsonResult GetAllMeterTypesByBrandId(int brandid)
+        {
+            var jsonResult = Json(new { data = getAllMeterTypesByBrandId(brandid) }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+        }
+
+        public JsonResult UpdateMeterSpecsByConsumerId(CMeterBrandTypeModel cmbtm)
+        {
+            cmbtm.UpdatedBy = User.Identity.Name;
+            return Json(updateConsumerMeterSpecs(cmbtm), JsonRequestBehavior.AllowGet);
+        }
+
 
 
         //functions and procedures
@@ -112,8 +132,8 @@ namespace TAR1ORMAN.Controllers
                                   "cons.statusid,rtrim(stat.description)[status],isnull(memberid,'')memberid,memberdate,bookno," +
                                   "seqno,cons.areaid,area.description[area],cons.subofficeid[officeid]," +
                                   "ofc.description[office],flatrate,flatdemand,coreloss,kvaload,tsfrental," +
-                                  "mtrmultiplier,trfcount,mtrserialno,mtrsealno,mtrsidesealno,metertype," +
-                                  "mtrbrand,dateinstalled,prvmtrserialno,mtrampere,mtrdial,scflag,clrsr,dateclaimburial " +
+                                  "mtrmultiplier,trfcount,mtrserialno,mtrsealno,mtrsidesealno,isnull(metertype,'')metertype," +
+                                  "isnull(meterbrand,'')meterbrand,dateinstalled,prvmtrserialno,mtrampere,mtrdial,scflag,clrsr,dateclaimburial " +
                                   "from arsconsumer cons inner join arstype typ " +
                                   "on cons.consumertypeid = typ.consumertypeid " +
                                   "inner join arsstatus stat " +
@@ -172,7 +192,7 @@ namespace TAR1ORMAN.Controllers
                             mcm.MeterSealNo = rdr["mtrsealno"].ToString();
                             mcm.MeterSideSealNo = rdr["mtrsidesealno"].ToString();
                             mcm.MeterType = rdr["metertype"].ToString();
-                            mcm.MeterBrand = rdr["mtrbrand"].ToString();
+                            mcm.MeterBrand = rdr["meterbrand"].ToString();
                             if (rdr["dateinstalled"].ToString() != "")
                                 mcm.DateInstalled = Convert.ToDateTime(rdr["dateinstalled"].ToString()).ToString("yyyy-MM-dd");
                             else
@@ -518,6 +538,145 @@ namespace TAR1ORMAN.Controllers
             }
 
             return lstmcbm;
+        }
+
+        private List<MeterBrandModel> getAllMeterBrands()
+        {
+            List<MeterBrandModel> lmbm = new List<MeterBrandModel>();
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select id,brand from b_meterbrands;";
+
+                try
+                {
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            lmbm.Add(new MeterBrandModel
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                MeterBrand = dr["brand"].ToString()
+                            });
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lmbm = null;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return lmbm;
+        }
+
+        private List<MeterTypeModel> getAllMeterTypesByBrandId(int id)
+        {
+            List<MeterTypeModel> lmtm = new List<MeterTypeModel>();
+
+            DataTable dt = new DataTable();
+
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                da.SelectCommand.Connection.Open();
+
+                da.SelectCommand.CommandType = CommandType.Text;
+                da.SelectCommand.CommandText = "select id,type from b_metertypes where brandid=@brandid;";
+
+                da.SelectCommand.Parameters.AddWithValue("@brandid", id);
+
+                try
+                {
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            lmtm.Add(new MeterTypeModel
+                            {
+                                Id = Convert.ToInt32(dr["id"]),
+                                MeterType = dr["type"].ToString()
+                            });
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lmtm = null;
+                }
+                finally
+                {
+                    da.SelectCommand.Connection.Close();
+                }
+            }
+
+            return lmtm;
+        }
+
+        private bool updateConsumerMeterSpecs(CMeterBrandTypeModel cmbt)
+        {
+            bool result = true;
+
+            SqlTransaction trans;
+
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["getconnstr"].ToString());
+                con.Open();
+
+                trans = con.BeginTransaction();
+
+                cmd.Connection = con;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "update arsconsumer " +
+                                  "set meterbrand=@meterbrand, metertype=@metertype " +
+                                  "where consumerid=@consumerid";
+                cmd.Transaction = trans;
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@meterbrand", cmbt.MeterBrand);
+                cmd.Parameters.AddWithValue("@metertype", cmbt.MeterType);
+                cmd.Parameters.AddWithValue("@consumerid", cmbt.ConsumerId);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    trans.Commit();
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    result = false;
+                }
+                finally
+                {
+                    trans.Dispose();
+                    cmd.Dispose();
+                    con.Close();
+                }
+            }
+
+            return result;
         }
     }
 }

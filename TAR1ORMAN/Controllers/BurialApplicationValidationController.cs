@@ -868,7 +868,7 @@ namespace TAR1ORMAN.Controllers
                 cmd.Connection = con;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = "select mcdateofdeath[DateOfDeath],mccauseofdeath[CauseOfDeath],claimantname[ClaimantName],claimantaddress[ClaimantAddress],relationship[RelToClaimant],contactnum[ContactNo], " +
-                                  "'ROSARIO E. CALALANG'[ScreenedBy],'MSD Chief'[ScreenedByPos],'ENGR. DANNY L. MALONZO'[RecommendedBy],'OIC - ISD'[RecommendedByPos],'ALLAN G. BERMUDEZ'[ApprovedBy],'General Manager'[ApprovedByPos] " +
+                                  "'ROSARIO E. CALALANG'[ScreenedBy],'MSD Chief'[ScreenedByPos],'ENGR. DANNY L. MALONZO'[RecommendedBy],'OIC - ISD'[RecommendedByPos],'ENGR. LORETO A. MARCELINO' [ApprovedBy],'Acting General Manager'[ApprovedByPos] " +
                                   "from tbl_burialclaimants " +
                                   "where burialresulthdrid = @hdrid;";
 

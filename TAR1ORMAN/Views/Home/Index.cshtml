@@ -8,7 +8,7 @@
     }
 </style>
 
-<script src="~/Scripts/myscripts/homescriptv1.1.9.js"></script>
+<script src="~/Scripts/myscripts/homescriptv1.2.2.js"></script>
 
 <div class="container">
     <div class="row">
@@ -115,14 +115,44 @@
             <h5>4Ps Verifier and Application</h5>
             <p><a class="btn btn-success" href="@Url.Action("FourPsVerify","FourPsApplication")">Proceed Now &raquo;</a></p>
         </div>
-        <div class="col-md-4" id="fourps">
+        <div class="col-md-4" id="netmeter">
             <h5>Net Metering List</h5>
             <p><a class="btn btn-success" href="@Url.Action("NetMeteringList","NetMetering")">Proceed Now &raquo;</a></p>
         </div>
 
-        <div class="col-md-4" id="fourps">
+        <div class="col-md-4" id="aging">
             <h5>Aging Of Accounts As Of Today</h5>
             <p><a class="btn btn-success" href="@Url.Action("Index","AgingAsOfToday")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="mrblog">
+            <h5>Fetch MRB Logs By Date</h5>
+            <p><a class="btn btn-success" href="@Url.Action("MRBLog","MRBLogs")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="readrem">
+            <h5>Fetch Reading Remarks</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","ReadingRemark")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="torview">
+            <h5>TOR Viewer</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","TOR")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="mtrbrands">
+            <h5>Meter Brands List</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","MeterBrand")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="polerental">
+            <h5>Pole Rental Payment List</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","PoleRentalPaymentList")">Proceed Now &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4" id="dtdcrew">
+            <h5>List of Disconnection Crews</h5>
+            <p><a class="btn btn-success" href="@Url.Action("Index","DisconCrew")">Proceed Now &raquo;</a></p>
         </div>
 
     </div>

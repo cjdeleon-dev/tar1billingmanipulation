@@ -13,7 +13,7 @@ namespace TAR1ORMAN.Controllers
         public ActionResult Index()
         {
             ViewBag.UserId = User.Identity.Name;
-            if (User.IsInRole("SYSADMIN"))
+            if (User.IsInRole("IT")|| User.IsInRole("SYSADMIN")|| User.IsInRole("FINHEAD")|| User.IsInRole("AREAMNGR")|| User.IsInRole("AUDIT"))
             {
                 ViewBag.Message = "ADMIN";
             }

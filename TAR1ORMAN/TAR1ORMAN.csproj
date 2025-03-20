@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TAR1ORMAN</RootNamespace>
     <AssemblyName>TAR1ORMAN</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress>true</Use64BitIISExpress>
@@ -158,6 +158,7 @@
     <Compile Include="Controllers\ActiveWithZeroConsumptionController.cs" />
     <Compile Include="Controllers\AgingAsOfTodayController.cs" />
     <Compile Include="Controllers\AgingByDateController.cs" />
+    <Compile Include="Controllers\AppliedBurialController.cs" />
     <Compile Include="Controllers\ApprovalChangeNameListController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BurialApplicationValidationController.cs" />
@@ -165,8 +166,8 @@
     <Compile Include="Controllers\ChangeNameAppliedListController.cs" />
     <Compile Include="Controllers\ChangeNameListForBODResController.cs" />
     <Compile Include="Controllers\ClaimedBurialController.cs" />
-    <Compile Include="Controllers\CrewsDTDConsumersController.cs" />
     <Compile Include="Controllers\DailyChangedStatusController.cs" />
+    <Compile Include="Controllers\DisconCrewController.cs" />
     <Compile Include="Controllers\DisconListController.cs" />
     <Compile Include="Controllers\DisconListV2Controller.cs" />
     <Compile Include="Controllers\DisconRptSummaryListController.cs" />
@@ -180,9 +181,13 @@
     <Compile Include="Controllers\ListForDisconnectionController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MemConsController.cs" />
+    <Compile Include="Controllers\MeterBrandController.cs" />
+    <Compile Include="Controllers\MRBLogsController.cs" />
     <Compile Include="Controllers\NetMeteringController.cs" />
     <Compile Include="Controllers\PendingChangeNameListController.cs" />
+    <Compile Include="Controllers\PoleRentalPaymentListController.cs" />
     <Compile Include="Controllers\ProcessingController.cs" />
+    <Compile Include="Controllers\ReadingRemarkController.cs" />
     <Compile Include="Controllers\SeniorCitizenController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SOAController.cs" />
@@ -190,6 +195,7 @@
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\TopActiveDisconByTownController.cs" />
     <Compile Include="Controllers\TopHighKwhController.cs" />
+    <Compile Include="Controllers\TORController.cs" />
     <Compile Include="Controllers\TORtoPDFController.cs" />
     <Compile Include="Datasets\dsBurialResult.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -533,9 +539,7 @@
     <Content Include="lib\jquery-validation\LICENSE.md" />
     <Content Include="lib\jquery\.bower.json" />
     <Content Include="lib\jquery\dist\jquery.min.map" />
-    <None Include="Properties\PublishProfiles\50DOT254.pubxml" />
     <None Include="Properties\PublishProfiles\DOT222.pubxml" />
-    <None Include="Properties\PublishProfiles\web192.pubxml" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
@@ -613,6 +617,7 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <None Include="Properties\PublishProfiles\WEBAPPHOST.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -627,7 +632,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\myscripts\agingasacctgscript_v1.0.0.2.js" />
-    <Content Include="Scripts\myscripts\bavscriptv1.3.2.js" />
+    <Content Include="Scripts\myscripts\appliedburialscript_v0.0.0.1.js" />
+    <Content Include="Scripts\myscripts\bavscriptv1.3.3.js" />
     <Content Include="Scripts\myscripts\changenamescript_v1.2.0.js" />
     <Content Include="Scripts\myscripts\claimedburialscript.js" />
     <Content Include="Scripts\myscripts\activewithzeroconsumptionscript.js" />
@@ -635,14 +641,19 @@
     <Content Include="Scripts\myscripts\cnlistforbodresscript_v1.0.0.2.js" />
     <Content Include="Scripts\myscripts\cnpendinglistscript_v1.1.1.js" />
     <Content Include="Scripts\myscripts\dailychangedstat.js" />
+    <Content Include="Scripts\myscripts\disconcrewscript_v0.0.0.1.js" />
     <Content Include="Scripts\myscripts\disconlistscript.js" />
-    <Content Include="Scripts\myscripts\empcareoffscript.js" />
+    <Content Include="Scripts\myscripts\empcareoffscript_v0.0.1.js" />
     <Content Include="Scripts\myscripts\dtdwithcurrbillsscript.js" />
-    <Content Include="Scripts\myscripts\fourpslistscript_v1.0.0.1.js" />
+    <Content Include="Scripts\myscripts\fourpslistscript_v1.0.0.2.js" />
     <Content Include="Scripts\myscripts\fourpsverifyscript_v1.1.6.js" />
-    <Content Include="Scripts\myscripts\members_v1.1.3.js" />
-    <Content Include="Scripts\myscripts\memconsumer_v1.1.9.js" />
+    <Content Include="Scripts\myscripts\members_v1.1.4.js" />
+    <Content Include="Scripts\myscripts\memconsumer_v1.2.1.js" />
+    <Content Include="Scripts\myscripts\meterbrandscript_v0.0.0.1.js" />
+    <Content Include="Scripts\myscripts\mrbscript_v1.0.0.1.js" />
     <Content Include="Scripts\myscripts\nmconsledgerscript_v1.0.0.3.js" />
+    <Content Include="Scripts\myscripts\polerentpayscript_v1.0.0.0.js" />
+    <Content Include="Scripts\myscripts\readingremarkscript_v0.0.1.js" />
     <Content Include="Scripts\myscripts\soa_v1.0.0.0.js" />
     <Content Include="Scripts\myscripts\summaryofdtdlist_v1.0.0.js" />
     <Content Include="Scripts\myscripts\sumofdtdrpt.js" />
@@ -650,11 +661,12 @@
     <Content Include="Scripts\myscripts\tophighkwhperbillperiod1.1.3.js" />
     <Content Include="Scripts\myscripts\topactivedisconbytown1.1.4.js" />
     <Content Include="Scripts\myscripts\forwriteoffscript_v1.1.1.js" />
-    <Content Include="Scripts\myscripts\homescriptv1.1.9.js" />
+    <Content Include="Scripts\myscripts\homescriptv1.2.2.js" />
     <Content Include="Scripts\myscripts\orInSubtraction.js" />
     <Content Include="Scripts\myscripts\orInAddition.js" />
     <Content Include="Scripts\myscripts\orPrefAddSubNorm.js" />
     <Content Include="Scripts\myscripts\seniorcitizenscript.js" />
+    <Content Include="Scripts\myscripts\torscript_v1.0.0.3.js" />
     <Content Include="Scripts\myscripts\tor_v1.0.0.2.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="SqlServerTypes\readme.htm" />
@@ -721,10 +733,17 @@
     <Content Include="Scripts\myscripts\netmeteringscript_v1.0.0.1.js" />
     <Content Include="Views\NetMetering\ViewConsumerLedger.cshtml" />
     <Content Include="Views\AgingAsOfToday\Index.cshtml" />
-    <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.3.js" />
+    <Content Include="Scripts\myscripts\agingasoftodayscript_v1.0.0.4.js" />
     <Content Include="Views\FourPsAppliedList\Index.cshtml" />
     <Content Include="Views\AgingByDate\Index.cshtml" />
     <Content Include="Views\Members\Index.cshtml" />
+    <Content Include="Views\TOR\Index.cshtml" />
+    <Content Include="Views\MRBLogs\MRBLog.cshtml" />
+    <Content Include="Views\PoleRentalPaymentList\Index.cshtml" />
+    <Content Include="Views\ReadingRemark\Index.cshtml" />
+    <Content Include="Views\MeterBrand\Index.cshtml" />
+    <Content Include="Views\DisconCrew\Index.cshtml" />
+    <Content Include="Views\AppliedBurial\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -733,6 +752,7 @@
     <Folder Include="Views\ChangeName\" />
     <Folder Include="Views\CrewsDTDConsumers\" />
     <Folder Include="Views\ListForDisconnection\" />
+    <Folder Include="Views\PoleRentalList\" />
     <Folder Include="Views\PostDTDPerCrew\" />
   </ItemGroup>
   <ItemGroup>
@@ -808,6 +828,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties lib_4bootstrap_4dist_4css_4bootstrap_1min_1css_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

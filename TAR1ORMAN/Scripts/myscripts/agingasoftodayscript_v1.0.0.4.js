@@ -134,44 +134,15 @@ function processdata() {
 
             if (response) {
 
-                $('#myTable1').DataTable({
-                    ajax: {
-                        "url": "/AgingAsOfToday/GetData?townidtypeid=" + strparam,
-                        "type": "GET",
-                        "contentType": "application/json;charset=UTF-8",
-                        "datatype": "json"
-                    },
-                    pageLength: 25,
-                    dom: "Bfrtip",
-                    buttons: [{
-                        extend: "excel",
-                        filename: fileName,
-                        text: "EXPORT TO EXCEL",
+                getData(strparam, fileName);
+                document.body.style.cursor = 'default';
+                $('#modalLoading').modal('hide');
 
-                    }],
-                    initComplete: function (settings, json) {
-                        document.body.style.cursor = 'default';
-                        $('#modalLoading').modal('hide');
-                    },
-                    columns: [
-                        { "data": "TownId", "autoWidth": true },
-                        { "data": "AccountNo", "autoWidth": true },
-                        { "data": "Name", "autoWidth": true },
-                        { "data": "Address", "autoWidth": true },
-                        { "data": "Status", "autoWidth": true },
-                        { "data": "Days30", "autoWidth": true },
-                        { "data": "Days30V", "autoWidth": true },
-                        { "data": "Days60", "autoWidth": true },
-                        { "data": "Days90", "autoWidth": true },
-                        { "data": "Days120", "autoWidth": true },
-                        { "data": "Above120", "autoWidth": true }
-                    ]
-                });
-                
             } else {
                 document.body.style.cursor = 'default';
                 $('#modalLoading').modal('hide');
                 alert('There are no data to load.');
+
             }
             
         },
@@ -182,6 +153,40 @@ function processdata() {
         }
     });
 
+}
+
+function getData(strparam, filename) {
+    
+    $('#myTable1').DataTable({
+        ajax: {
+            "url": "/AgingAsOfToday/GetData?townidtypeid=" + strparam,
+            "type": "GET",
+            "datatype": "json"
+        },
+        pageLength: 25,
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'excel',
+            filename: filename,
+            text: 'EXPORT TO EXCEL'
+        }],
+        initComplete: function (settings, json) {
+            document.body.style.cursor = 'default';
+            $('#modalLoading').modal('hide');
+        },
+        columns: [
+            { "data": "TownId", "autoWidth": true },
+            { "data": "AccountNo", "autoWidth": true },
+            { "data": "Name", "autoWidth": true },
+            { "data": "Address", "autoWidth": true },
+            { "data": "Status", "autoWidth": true },
+            { "data": "Days30", "autoWidth": true },
+            { "data": "Days60", "autoWidth": true },
+            { "data": "Days90", "autoWidth": true },
+            { "data": "Days120", "autoWidth": true },
+            { "data": "Above120", "autoWidth": true }
+        ],
+    });
 }
 
 function gotoAcctngFormat() {
