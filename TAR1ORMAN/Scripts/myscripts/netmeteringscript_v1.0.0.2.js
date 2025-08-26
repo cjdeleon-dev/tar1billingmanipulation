@@ -1,6 +1,6 @@
 ﻿function loaddata() {
 
-    //var fileName = "S_RECAP_CONSUMER_CLASS_BASED_" + billp;
+    var fileName = "NETMETERING_LIST";
 
     document.body.style.cursor = 'progress';
     $('#modalLoading').modal('show');
@@ -13,12 +13,12 @@
             "datatype": "json"
          },
          pageLength: 25,
-         //dom: 'Bfrtip',
-         //buttons: [{
-         //    extend: 'excel',
-         //    filename: fileName,
-         //    text: 'EXPORT TO EXCEL'
-         //}],
+         dom: 'Bfrtip',
+         buttons: [{
+             extend: 'excel',
+             filename: fileName,
+             text: 'EXPORT TO EXCEL'
+         }],
          initComplete: function (settings, json) {
              document.body.style.cursor = 'default';
              $('#modalLoading').modal('hide');

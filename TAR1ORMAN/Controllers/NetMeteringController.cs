@@ -14,7 +14,7 @@ namespace TAR1ORMAN.Controllers
     {
         private static string _selactno = string.Empty;
 
-        [Authorize(Roles = "AREAMNGR,AUDIT,BILLING,FINHEAD,IT,SYSADMIN")]
+        [Authorize(Roles = "AREAMNGR,AUDIT,BILLING,FINHEAD,IT,SYSADMIN,MDTO")]
         // GET: NetMetering
         public ActionResult NetMeteringList()
         {

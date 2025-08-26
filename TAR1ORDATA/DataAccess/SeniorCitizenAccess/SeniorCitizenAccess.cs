@@ -34,13 +34,22 @@ namespace TAR1ORDATA.DataAccess.SeniorCitizenAccess
                     {
                         foreach (DataRow dr in dt.Rows)
                         {
+                            string dateApp = string.Empty;
+                            string dateExp = string.Empty;
+
+                            if (dr["applieddate"] != DBNull.Value)
+                                dateApp = Convert.ToDateTime(dr["applieddate"]).ToString("MM/dd/yyyy");
+
+                            if (dr["expirydate"] != DBNull.Value)
+                                dateExp = Convert.ToDateTime(dr["expirydate"]).ToString("MM/dd/yyyy");
+
                             lstscm.Add(new SeniorCitizenModel
                             {
                                 AccountNo = dr["consumerid"].ToString(),
                                 Name = dr["name"].ToString(),
                                 Address = dr["address"].ToString(),
-                                AppliedDate = Convert.ToDateTime(dr["applieddate"]).ToShortDateString(),
-                                ExpiryDate = Convert.ToDateTime(dr["expirydate"]).ToShortDateString()
+                                AppliedDate = dateApp,
+                                ExpiryDate = dateExp
                             });
                         }
                     }

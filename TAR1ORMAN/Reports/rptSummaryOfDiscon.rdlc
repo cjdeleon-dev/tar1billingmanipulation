@@ -1264,7 +1264,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=IIF(RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="OIC",REPLACE(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr")," - OIC",""),First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"))</Value>
+                    <Value>=SWITCH(
+	RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="OIC",
+		REPLACE(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr")," - OIC",""),
+	RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="ACT",
+		REPLACE(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr")," - ACT",""),
+	RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)&lt;&gt;"OIC" AND RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)&lt;&gt;"ACT",
+		First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr")
+)</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>9pt</FontSize>
@@ -1333,7 +1340,12 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=IIF(RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="OIC", "Finance Head OIC","Finance Head")</Value>
+                    <Value>=SWITCH(
+RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="OIC", "OIC - Finance Head",
+RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)="ACT", "Acting Finance Head",
+RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)&lt;&gt;"OIC" AND 
+RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)&lt;&gt;"ACT", "Finance Head"
+)</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>9pt</FontSize>

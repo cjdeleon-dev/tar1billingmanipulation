@@ -104,12 +104,15 @@ function addNewDisconCrew() {
                 if (result.data.IsSucceed) {
                    
                     swal('\nADDED CREW', result.data.ResultMessage, 'success');
-
+                    loadAllData();
+                    var oTable = $('#myTable1').dataTable();
+                    oTable.fnPageChange('last');
                 } else {
                     swal('\nERROR', result.data.ResultMessage, 'error');
                 }
+                 
                 $('#myAddNewCrewModal').modal('hide');
-                window.location = "/DisconCrew/Index";
+                
             },
             error: function (errormessage) {
                 swal('Error', errormessage.responseText, 'warning');

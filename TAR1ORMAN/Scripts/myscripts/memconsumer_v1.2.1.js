@@ -437,7 +437,7 @@ function updateProfile() {
         
     var objProfile = {
         AccountNo: $('#txtAccountNo').val(),
-        AccountName: "",
+        AccountName: $('#txtModName').val(),
         AccountStat: "",
         AccountAdd: $('#txtModAddress').val(),
         AccountPoleId: $('#txtModPoleId').val(),

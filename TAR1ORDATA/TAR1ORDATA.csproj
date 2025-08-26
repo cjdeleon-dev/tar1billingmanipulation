@@ -208,6 +208,7 @@
     <Compile Include="DataModel\SumDTDRptCrewModel.cs" />
     <Compile Include="DataModel\SumDTDRptDetailModel.cs" />
     <Compile Include="DataModel\SumDTDRptHeaderModel.cs" />
+    <Compile Include="DataModel\TempConsumerModel.cs" />
     <Compile Include="DataModel\TownModel.cs" />
     <Compile Include="DataModel\TransactionHeaderModel.cs" />
     <Compile Include="DataModel\TransactionSearchModel.cs" />

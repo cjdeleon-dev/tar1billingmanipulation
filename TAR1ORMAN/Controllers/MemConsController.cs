@@ -425,13 +425,14 @@ namespace TAR1ORMAN.Controllers
                 cmd.Connection = con;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = "update arsconsumer " +
-                                  "set address=@address,poleid=@poleid,consumertypeid=@consumertypeid,memberid=@memberid,memberdate=@memberdate," +
+                                  "set name=@name,address=@address,poleid=@poleid,consumertypeid=@consumertypeid,memberid=@memberid,memberdate=@memberdate," +
                                   "bookno=@bookno,seqno=@seqno,areaid=@areaid,subofficeid=@subofficeid,isclaimburial=@isclaimburial," +
                                   "dateclaimburial=@dateclaimburial,updatedby=@updatedby,lastupdated=getdate() " +
                                   "where consumerid=@consumerid;";
                 cmd.Transaction = trans;
 
                 cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@name", mm.AccountName);
                 cmd.Parameters.AddWithValue("@address", mm.AccountAdd);
                 if(mm.AccountPoleId!=null)
                     cmd.Parameters.AddWithValue("@poleid", mm.AccountPoleId);
