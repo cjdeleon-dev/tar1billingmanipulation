@@ -1450,7 +1450,7 @@ RIGHT(First(Fields!CheckedBy.Value, "dsSummaryOfDisconRptHdr"),3)&lt;&gt;"ACT", 
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=IIF(First(Fields!NotedBy.Value, "dsSummaryOfDisconRptHdr")="FRANCIS OWEN D. DIZON","Finance Manager","Area Manager")</Value>
+                    <Value>=IIF(First(Fields!NotedBy.Value, "dsSummaryOfDisconRptHdr")="MAYVELLENE M. DE AQUINO","Finance Manager","Area Manager")</Value>
                     <Style>
                       <FontFamily>Calibri</FontFamily>
                       <FontSize>9pt</FontSize>
